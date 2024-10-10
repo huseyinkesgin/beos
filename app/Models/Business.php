@@ -6,18 +6,24 @@ use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Land extends BaseModel
+class Business extends BaseModel
 {
     protected $fillable = [
         'uuid',
         'price',
-        'zoning_status',
-        'area_m2',
-        'similar',
-        'height_limit',
+        'land_area_m2',
+        'open_area',
+        'closed_area',
+        'floor_count',
+        'floor_level',
+        'electricity_power',
+        'building_year',
+        'is_factory',
+        'is_warehouse',
+        'is_store',
+        'is_furnished',
         'loanable',
         'deed_type',
-        'isSwap',
         'property_no',
         'state_id',
         'city_id',

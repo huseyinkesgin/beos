@@ -3,9 +3,7 @@
 namespace App\Models;
 
 use App\Models\Category;
-use App\Models\BaseModel;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Portfolio;
 
 class Type extends BaseModel
 {
@@ -15,15 +13,18 @@ class Type extends BaseModel
         'name',
         'form_path',
         'isActive',
-        'note'
+        'note',
     ];
 
-
-    public function Category()
+    public function category()
     {
         return $this->belongsTo(Category::class);
     }
 
+    public function portfolios()
+    {
+        return $this->hasMany(Portfolio::class);
+    }
 
     public function scopeFilter($query, $search = null, $activeFilter = 'all', $deletedFilter = 'without')
     {
@@ -56,4 +57,3 @@ class Type extends BaseModel
         return $query->orderBy($field, $direction);
     }
 }
-

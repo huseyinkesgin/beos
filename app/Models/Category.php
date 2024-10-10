@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Type;
+use App\Models\Portfolio;
+
 class Category extends BaseModel
 {
     protected $fillable = [
@@ -10,6 +13,16 @@ class Category extends BaseModel
         'isActive',
         'note',
     ];
+
+    public function types()
+    {
+        return $this->hasMany(Type::class);
+    }
+
+    public function portfolios()
+    {
+        return $this->hasMany(Portfolio::class);
+    }
 
     public function scopeFilter($query, $search, $activeFilter, $deletedFilter)
     {

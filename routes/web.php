@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Livewire\People\CustomerIndex;
 use App\Livewire\Location\DistrictIndex;
 use App\Livewire\Portfolio\CategoryIndex;
+use App\Livewire\Portfolio\PortfolioIndex;
 
 Route::get('/', function () {
     return view('welcome');
@@ -32,3 +33,5 @@ Route::get('categories', CategoryIndex::class)->name('categories');
 Route::get('types', TypeIndex::class)->name('types');
 
 Route::get('customers', CustomerIndex::class)->name('customers');
+
+Route::get('portfolios', PortfolioIndex::class)->name('portfolios');

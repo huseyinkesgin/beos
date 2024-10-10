@@ -11,18 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('lands', function (Blueprint $table) {
+        Schema::create('businesses', function (Blueprint $table) {
             $table->uuid('uuid')->primary();
             $table->decimal('price', 12, 2); // Ücret
-            $table->string('zoning_status'); // İmar Durumu
-            $table->decimal('area_m2', 10, 2); // m²
-
-            $table->string('similar')->nullable(); // Emsal
-            $table->string('height_limit')->nullable(); // Gabari
-            $table->boolean('isCredit')->default(false); // Krediye Uygunluk
-            $table->string('deed_type'); // Tapu Durumu
-
-            $table->boolean('isSwap'); // Takas Durumu
+            $table->decimal('land_area_m2', 10, 2)->nullable(); // Arsa Alanı
+            $table->decimal('open_area', 10, 2)->nullable(); // Açık Alan
+            $table->decimal('closed_area', 10, 2)->nullable(); // Kapalı Alan
+            $table->unsignedInteger('floor_count')->nullable(); // Kat Sayısı
+            $table->unsignedInteger('floor_level')->nullable(); // Kat Seviyesi
+            $table->decimal('electricity_power', 8, 2)->nullable(); // Elektrik KWA
+            $table->unsignedInteger('building_year')->nullable(); // Yapım Yılı
+            $table->boolean('is_factory')->default(false); // Fabrika mı?
+            $table->boolean('is_warehouse')->default(false); // Depo mu?
+            $table->boolean('is_store')->default(false); // Mağaza mı?
+            $table->boolean('is_furnished')->default(false); // Eşyalı mı?
+            $table->boolean('loanable')->default(false); // Krediye uygunluk
+            $table->string('deed_type'); // Tapu Çeşidi
             $table->string('property_no')->nullable(); // Taşınmaz No
             $table->foreignUuid('state_id')->constrained(); // İl
             $table->foreignUuid('city_id')->constrained(); // İlçe
@@ -46,6 +50,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('lands');
+        Schema::dropIfExists('businesses');
     }
 };

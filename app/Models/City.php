@@ -2,6 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\State;
+use App\Models\District;
+use App\Models\BaseModel;
+use App\Models\Portfolio;
+
 class City extends BaseModel
 {
     protected $fillable = [
@@ -10,7 +15,7 @@ class City extends BaseModel
         'name',
     ];
 
-    public function State()
+    public function state()
     {
         return $this->belongsTo(State::class);
     }
@@ -18,6 +23,11 @@ class City extends BaseModel
     public function districts()
     {
         return $this->hasMany(District::class);
+    }
+
+    public function portfolios()
+    {
+        return $this->hasMany(Portfolio::class);
     }
 
     public function scopeFilter($query, $search = null, $activeFilter = 'all', $deletedFilter = 'without')

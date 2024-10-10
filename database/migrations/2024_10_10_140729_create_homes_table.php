@@ -11,18 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('lands', function (Blueprint $table) {
+        Schema::create('homes', function (Blueprint $table) {
             $table->uuid('uuid')->primary();
             $table->decimal('price', 12, 2); // Ücret
-            $table->string('zoning_status'); // İmar Durumu
             $table->decimal('area_m2', 10, 2); // m²
-
-            $table->string('similar')->nullable(); // Emsal
-            $table->string('height_limit')->nullable(); // Gabari
-            $table->boolean('isCredit')->default(false); // Krediye Uygunluk
-            $table->string('deed_type'); // Tapu Durumu
-
-            $table->boolean('isSwap'); // Takas Durumu
+            $table->string('room_count'); // Oda Sayısı (ör. 2+1)
+            $table->unsignedInteger('floor_level'); // Kaçıncı Kat
+            $table->unsignedInteger('total_floors'); // Toplam Kat Sayısı
+            $table->boolean('is_furnished')->default(false); // Eşyalı mı
+            $table->boolean('isCredit')->default(false); // Krediye uygunluk
+            $table->string('deed_type'); // Tapu Çeşidi
             $table->string('property_no')->nullable(); // Taşınmaz No
             $table->foreignUuid('state_id')->constrained(); // İl
             $table->foreignUuid('city_id')->constrained(); // İlçe
@@ -46,6 +44,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('lands');
+        Schema::dropIfExists('homes');
     }
 };

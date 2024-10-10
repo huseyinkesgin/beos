@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\City;
 use App\Models\State;
+use App\Models\Portfolio;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -27,6 +28,11 @@ class District extends BaseModel
     {
         return $this->belongsTo(State::class);
     }
+
+    public function portfolios()
+{
+    return $this->hasMany(Portfolio::class);
+}
 
     public function scopeFilter($query, $search, $activeFilter, $deletedFilter)
     {
