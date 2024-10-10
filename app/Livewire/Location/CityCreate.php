@@ -10,9 +10,8 @@ use Livewire\Component;
 
 class CityCreate extends Component
 {
-    use InteractsWithBanner;
-
-    public $state_id; 
+   
+    public $state_id;
     public $name;
     public $isActive = true;
     public $note;
@@ -49,7 +48,7 @@ class CityCreate extends Component
         $this->dispatch('notify', title: 'Başarılı', text: 'İlçe başarıyla kayıt edildi!', type: 'success');
         $this->reset();
     }
-    
+
 
     public function render()
     {

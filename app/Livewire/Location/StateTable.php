@@ -12,7 +12,6 @@ class StateTable extends Component
 {
 
     use WithPagination;
-    use InteractsWithBanner;
     use HasSortable;
 
     public $search = '';

@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
 class Customer extends BaseModel
 {
     protected $fillable = [
@@ -21,4 +18,41 @@ class Customer extends BaseModel
         'isActive',      // BaseModel'den gelen aktiflik alanı
         'note',
     ];
+
+    public function scopeFilter($query, $search = null, $activeFilter = 'all', $deletedFilter = 'without', $customerType = '', $category = '')
+    {
+        $query->when($search, function ($query) use ($search) {
+            $query->where('name', 'like', '%'.$search.'%');
+        });
+
+        // Active/Inactive filtering
+        if ($activeFilter !== 'all') {
+            $isActive = $activeFilter == 'active';
+            $query->where('isActive', $isActive);
+        }
+
+        // Soft delete filtering
+        if ($deletedFilter == 'with') {
+            $query->withTrashed();
+        } elseif ($deletedFilter == 'only') {
+            $query->onlyTrashed();
+        }
+
+        // Customer Type filtering - boş veya null olduğunda filtreyi geçerli kılmıyoruz
+        if (! is_null($customerType) && $customerType !== '') {
+            $query->where('customer_type', $customerType);
+        }
+
+        // Category filtering - boş veya null olduğunda filtreyi geçerli kılmıyoruz
+        if (! is_null($category) && $category !== '') {
+            $query->where('category', $category);
+        }
+
+        return $query;
+    }
+
+    public function scopeSortable($query, $field, $direction)
+    {
+        return $query->orderBy($field, $direction);
+    }
 }
