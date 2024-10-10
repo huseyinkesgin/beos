@@ -6,16 +6,16 @@ use App\Models\Type;
 use App\Models\State;
 use Livewire\Component;
 use App\Models\Category;
-use Laravel\Jetstream\InteractsWithBanner;
+use Illuminate\Support\Facades\File;
 
 class TypeEdit extends Component
 {
-    use InteractsWithBanner;
 
     public $typeId;
     public $category_id;
     public $name;
     public $isActive;
+    public $form_path;
     public $note;
     public $open = false;
 
@@ -25,6 +25,7 @@ class TypeEdit extends Component
     {
         return [
             'category_id' => 'required',
+            'form_path' => 'required',
             'name' => 'required|string|max:255|unique:types,name,' . $this->typeId,
             'isActive' => 'boolean',
             'note' => 'nullable|string',
@@ -44,7 +45,24 @@ class TypeEdit extends Component
         $this->name = $type->name;
         $this->isActive = $type->isActive;
         $this->note = $type->note;
+        $this->form_path = $type->form_path;
+
         $this->open = true;
+    }
+
+    public function getFormOptions()
+    {
+        $files = File::files(resource_path('views/admin/portfolio/forms'));
+        $formOptions = [];
+
+        foreach ($files as $file) {
+            $name = $file->getFilename();
+            if (preg_match('/^(.+)-form\.blade\.php$/', $name, $matches)) {
+                $formOptions[] = $matches[1]; // '-' öncesini alır
+            }
+        }
+
+        return $formOptions;
     }
 
     public function save()
@@ -56,6 +74,7 @@ class TypeEdit extends Component
             'category_id'=> $this->category_id,
             'name' => $this->name,
             'isActive' => $this->isActive,
+            'form_path' => $this->form_path,
             'note' => $this->note,
         ]);
 

@@ -2,7 +2,7 @@
 <div>
     <!-- Yeni Müşteri Ekle Butonu -->
     <x-dark-button class="" wire:click="$dispatch('openCreateModal')">
-        Yeni Kategori Ekle
+        Yeni Müşteri Ekle
     </x-dark-button>
 
     <!-- Modal -->

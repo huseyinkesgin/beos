@@ -24,11 +24,20 @@
 
             <div class="my-4">
                 <x-label>Durum</x-label>
-                <x-select id="isActive" wire:model="isActive" class="w-full px-4 py-2 rounded">
+                <x-select id="isActive" wire:model.live="isActive" class="w-full px-4 py-2 rounded">
                     <option value="1">Aktif</option>
                     <option value="0">Pasif</option>
                 </x-select>
             </div>
+
+            <div class="my-4">
+                <x-select wire:model.live="form_path">
+                    <option value="">Form Seçiniz</option>
+                    @foreach($this->getFormOptions() as $form)
+                        <option value="admin.portfolio.forms.{{ $form }}-form">{{ ucfirst($form) }}</option>
+                    @endforeach
+                </x-select>
+                </div>
 
         </x-form>
 

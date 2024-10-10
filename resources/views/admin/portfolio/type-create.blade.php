@@ -35,6 +35,14 @@
                         <option value="0">Pasif</option>
                     </x-select>
                 </div>
+                <div class="my-4">
+                <x-select wire:model.live="form_path">
+                    <option value="">Form Seçiniz</option>
+                    @foreach($this->getFormOptions() as $form)
+                        <option value="admin.portfolio.forms.{{ $form }}-form">{{ ucfirst($form) }}</option>
+                    @endforeach
+                </x-select>
+                </div>
 
             </x-form>
         </x-slot>

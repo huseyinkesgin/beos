@@ -3,22 +3,23 @@
 namespace App\Livewire\Portfolio;
 
 use App\Models\Type;
-use App\Models\Category;
-use Illuminate\Support\Str;
-use Laravel\Jetstream\InteractsWithBanner;
 use Livewire\Component;
+use App\Models\Category;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class TypeCreate extends Component
 {
-   
     public $category_id;
     public $name;
     public $isActive = true;
     public $note;
+    public $form_path;
     public $open = false;
 
     protected $rules = [
         'category_id' => 'required',
+        'form_path' => 'required',
         'name' => 'required|string|max:255|unique:types,name,',
         'isActive' => 'boolean',
         'note' => 'nullable|string',
@@ -31,6 +32,21 @@ class TypeCreate extends Component
         $this->open = true;
     }
 
+    public function getFormOptions()
+    {
+        $files = File::files(resource_path('views/admin/portfolio/forms'));
+        $formOptions = [];
+
+        foreach ($files as $file) {
+            $name = $file->getFilename();
+            if (preg_match('/^(.+)-form\.blade\.php$/', $name, $matches)) {
+                $formOptions[] = $matches[1]; // '-' öncesini alır
+            }
+        }
+
+        return $formOptions;
+    }
+
     public function save()
     {
         $this->validate();
@@ -40,6 +56,7 @@ class TypeCreate extends Component
             'category_id' => $this->category_id,
             'name' => $this->name,
             'isActive' => $this->isActive,
+            'form_path' => $this->form_path,
             'note' => $this->note,
         ]);
 
@@ -49,11 +66,10 @@ class TypeCreate extends Component
         $this->reset();
     }
 
-
     public function render()
     {
         $categories = Category::active()->get();
-        return view('admin.portfolio.type-create',[
+        return view('admin.portfolio.type-create', [
             'categories' => $categories
         ]);
     }

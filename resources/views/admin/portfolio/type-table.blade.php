@@ -21,6 +21,7 @@
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
                 <x-th>Sıra No</x-th>
+                <x-th>Form Tipi</x-th>
                 <x-th>
                     <button wire:click="sortBy('id')" class="flex items-center font-bold">
                         ID
@@ -49,6 +50,7 @@
                 <tr>
                     <x-td>{{ $types->firstItem() + $index }}</x-td>
                     <x-td>{{ $type->id }}</x-td>
+                    <x-td>{{ Str::before(Str::afterLast($type->form_path, 'forms.'), '-form') }}</x-td>
                     <x-td>{{ $type->category->name }} </x-td>
                     <x-td>{{ $type->name }}</x-td>
                     <x-td>

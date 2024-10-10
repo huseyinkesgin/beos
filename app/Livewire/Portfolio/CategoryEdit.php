@@ -4,12 +4,9 @@ namespace App\Livewire\Portfolio;
 
 use App\Models\Category;
 use Livewire\Component;
-use Laravel\Jetstream\InteractsWithBanner;
 
 class CategoryEdit extends Component
 {
-    use InteractsWithBanner;
-
     public $categoryId;
     public $name;
     public $isActive;

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('category_id')->constrained();
             $table->string('name');
+            $table->string('form_path')->nullable();
             $table->boolean('isActive')->default(true); // BaseModel'den gelen aktiflik alanı
             $table->text('note')->nullable();
             $table->timestamps();

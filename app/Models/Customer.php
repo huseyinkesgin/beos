@@ -22,7 +22,14 @@ class Customer extends BaseModel
     public function scopeFilter($query, $search = null, $activeFilter = 'all', $deletedFilter = 'without', $customerType = '', $category = '')
     {
         $query->when($search, function ($query) use ($search) {
-            $query->where('name', 'like', '%'.$search.'%');
+            $query->where(function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('email', 'like', '%' . $search . '%')
+                    ->orWhere('phone', 'like', '%' . $search . '%')
+                    ->orWhere('company_name', 'like', '%' . $search . '%')
+                    ->orWhere('tax_no', 'like', '%' . $search . '%')
+                    ->orWhere('tax_office', 'like', '%' . $search . '%');
+            });
         });
 
         // Active/Inactive filtering

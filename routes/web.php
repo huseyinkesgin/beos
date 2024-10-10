@@ -22,13 +22,13 @@ Route::middleware([
     })->name('dashboard');
 });
 
-Route::get('states', StateIndex::class);
-Route::get('cities', CityIndex::class);
-Route::get('districts', DistrictIndex::class);
+Route::get('states', StateIndex::class)->name('states');
+Route::get('cities', CityIndex::class)->name('cities');
+Route::get('districts', DistrictIndex::class)->name('districts');
 
 
 
-Route::get('categories', CategoryIndex::class);
-Route::get('types', TypeIndex::class);
+Route::get('categories', CategoryIndex::class)->name('categories');
+Route::get('types', TypeIndex::class)->name('types');
 
-Route::get('customers', CustomerIndex::class);
+Route::get('customers', CustomerIndex::class)->name('customers');

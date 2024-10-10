@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex justify-between">
             <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                {{ __('İl Listesi') }}
+                {{ __('Kategori Listesi') }}
             </h2>
 
             <livewire:portfolio.category-create />

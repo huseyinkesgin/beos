@@ -104,10 +104,9 @@
                                 Kalıcı Sil
                             </x-danger-button>
                         @else
-                            <x-secondary-button wire:click="$dispatch('openEditModal', { id: '{{ $customer->id }}' })"
-                                wire:loading.attr="disabled">
-                                Düzenle
-                            </x-secondary-button>
+                        <x-secondary-button wire:click="$dispatch('openEditModal', { id: '{{ $customer->id }}' })" wire:loading.attr="disabled">
+                            Düzenle
+                        </x-danger-button>
                             <x-danger-button wire:click="$dispatch('openDeleteModal', { id: '{{ $customer->id }}' })"
                                 wire:loading.attr="disabled" class="ml-2">
                                 Sil

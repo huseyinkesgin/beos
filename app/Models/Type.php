@@ -13,6 +13,7 @@ class Type extends BaseModel
         'id',
         'category_id',
         'name',
+        'form_path',
         'isActive',
         'note'
     ];

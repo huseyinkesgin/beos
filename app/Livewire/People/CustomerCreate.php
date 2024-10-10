@@ -76,7 +76,7 @@ class CustomerCreate extends Component
             'phone' => $this->phone,
             'email' => $this->email,
             'address' => $this->address,
-            'is_active' => $this->isActive,
+            'isActive' => $this->isActive,
             'note' => $this->note
         ]);
 
