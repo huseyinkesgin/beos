@@ -6,36 +6,34 @@ use App\Models\Home;
 use App\Models\Land;
 use Livewire\Component;
 use App\Models\Business;
+use App\Models\Category;
 use App\Models\Portfolio;
 use Livewire\WithPagination;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class PortfolioTable extends Component
 {
     use WithPagination;
 
     public $search = '';
-    public $typeFilter = '';
     public $categoryFilter = '';
+    public $pagination = 10;
 
     protected $listeners = ['refreshTable' => '$refresh'];
 
     public function render()
     {
-        $lands = Land::query()
+        $portfolios = Portfolio::query()
             ->when($this->search, fn($query) => $query->where('portfolio_no', 'like', "%{$this->search}%"))
-            ->get();
+            ->when($this->categoryFilter, fn($query) => $query->where('category_id', $this->categoryFilter))
+            ->paginate($this->pagination);
 
-        $homes = Home::query()
-            ->when($this->search, fn($query) => $query->where('portfolio_no', 'like', "%{$this->search}%"))
-            ->get();
-
-        $businesses = Business::query()
-            ->when($this->search, fn($query) => $query->where('portfolio_no', 'like', "%{$this->search}%"))
-            ->get();
-
-        $portfolios = $lands->merge($homes)->merge($businesses)->paginate(10);
+        $categories = Category::active()->get(); // Kategorileri al ve view'a gönder
 
         return view('admin.portfolio.portfolio-table', [
             'portfolios' => $portfolios,
+            'categories' => $categories,
         ]);
-}}
+    }
+}

@@ -5,13 +5,18 @@ namespace App\Models;
 use App\Models\City;
 use App\Models\State;
 use App\Models\Portfolio;
+use App\Traits\UuidTrait;
+use App\Traits\ScopesTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class District extends BaseModel
+class District extends Model
 {
+    use ScopesTrait,SoftDeletes;
+
     protected $fillable = [
-        'id',
+
         'state_id',
         'city_id',
         'name',

@@ -6,13 +6,21 @@ use App\Models\State;
 use App\Models\District;
 use App\Models\BaseModel;
 use App\Models\Portfolio;
+use App\Traits\UuidTrait;
+use App\Traits\ScopesTrait;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class City extends BaseModel
+class City extends Model
 {
+    use ScopesTrait,SoftDeletes;
+
     protected $fillable = [
-        'id',        // UUID
+
         'state_id',  // Foreign key
         'name',
+        'is_active',
+        'note'
     ];
 
     public function state()

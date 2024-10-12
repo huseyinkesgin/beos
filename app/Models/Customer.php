@@ -3,9 +3,15 @@
 namespace App\Models;
 
 use App\Models\Portfolio;
+use App\Traits\UuidTrait;
+use App\Traits\ScopesTrait;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Customer extends BaseModel
+class Customer extends Model
 {
+    use ScopesTrait,SoftDeletes;
+
     protected $fillable = [
         'customer_type', // varsayılan olarak Bireysel
         'category',      // mal sahibi, emlakçı, komisyoncu, referans, alıcı
@@ -74,4 +80,15 @@ class Customer extends BaseModel
     {
         return $query->orderBy($field, $direction);
     }
+
+    public function scopePartnerList($query)
+    {
+        return $query->whereIn('category', ['Emlakçı', 'Referans', 'Partner']);
+    }
+
+    public function scopeOwnerList($query)
+    {
+        return $query->whereIn('category', ['Mal Sahibi', 'OtherOwnerCategories']);
+    }
+
 }

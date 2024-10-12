@@ -4,9 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\City;
 use App\Models\State;
-use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class CitySeeder extends Seeder
 {
@@ -15,26 +13,39 @@ class CitySeeder extends Seeder
      */
     public function run(): void
     {
-        $states = State::all();
+        $kocaeli = State::where('name', 'Kocaeli')->first();
+        $istanbul = State::where('name', 'İstanbul')->first();
 
-        if ($states->isEmpty()) {
-            // Hata mesajı veya varsayılan durum eklemek isteyebilirsiniz
-            return; // Durum yoksa çık
+        if ($kocaeli && $istanbul) {
+            City::create([
+                'state_id' => $kocaeli->id,
+                'name' => 'Gebze',
+                'isActive' => true,
+            ]);
+
+            City::create([
+                'state_id' => $kocaeli->id,
+                'name' => 'Dilovası',
+                'isActive' => true,
+            ]);
+
+            City::create([
+                'state_id' => $kocaeli->id,
+                'name' => 'Çayırova',
+                'isActive' => true,
+            ]);
+
+            City::create([
+                'state_id' => $istanbul->id,
+                'name' => 'Tuzla',
+                'isActive' => true,
+            ]);
+
+            City::create([
+                'state_id' => $istanbul->id,
+                'name' => 'Kartal',
+                'isActive' => true,
+            ]);
         }
-
-        City::create(attributes: [
-            'id' => (string) Str::uuid(),
-            'state_id' => $states->first()->id, // İlk durumu al
-            'name' => 'Gebze',
-            'isActive' => true,
-        ]);
-
-        // Diğer şehirleri de ekleyebilirsiniz
-        City::create([
-            'id' => (string) Str::uuid(),
-            'state_id' => $states->first()->id, // İkinci şehir için aynı durumu kullanabilirsiniz
-            'name' => 'Dilovası',
-            'isActive' => true,
-        ]);
     }
 }

@@ -12,30 +12,21 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('homes', function (Blueprint $table) {
-            $table->uuid('uuid')->primary();
-            $table->decimal('price', 12, 2); // Ücret
+            $table->id();
+            $table->foreignId('portfolio_id')->constrained;
             $table->decimal('area_m2', 10, 2); // m²
             $table->string('room_count'); // Oda Sayısı (ör. 2+1)
+            $table->string('building_years')->nullable();// Bina yapım yılı
             $table->unsignedInteger('floor_level'); // Kaçıncı Kat
             $table->unsignedInteger('total_floors'); // Toplam Kat Sayısı
-            $table->boolean('is_furnished')->default(false); // Eşyalı mı
-            $table->boolean('isCredit')->default(false); // Krediye uygunluk
-            $table->string('deed_type'); // Tapu Çeşidi
-            $table->string('property_no')->nullable(); // Taşınmaz No
-            $table->foreignUuid('state_id')->constrained(); // İl
-            $table->foreignUuid('city_id')->constrained(); // İlçe
-            $table->foreignUuid('district_id')->constrained(); // Bölge
-            $table->string('lot'); // Ada
-            $table->string('parcel'); // Parsel
-            $table->text('description')->nullable(); // Açıklama
-            $table->string('portfolio_no')->nullable(); // Portföy No
-            $table->string('advisor')->nullable(); // Danışman
-            $table->foreignUuid('partner_customer_id')->nullable()->constrained('customers'); // Partner
-            $table->foreignUuid('owner_customer_id')->nullable()->constrained('customers'); // Mal Sahibi
-            $table->boolean('isActive')->default(true);
-            $table->text('note')->nullable();
-            $table->softDeletes(); // Soft delete
-            $table->timestamps();
+            $table->string('heating_type')->nullable(); //ısıtma tipi
+            $table->string('bathroom_count')->nullable(); //ısıtma tipi
+            $table->boolean('isFurnished')->default(false); // Eşyalı mı
+            $table->boolean('isBalcon')->default(false); // Balkon var  mı
+            $table->boolean('isElevator')->default(false); // Asansör var mı
+            $table->string('parking')->nullable(); //otomark tipi
+            $table->string('usage_status')->nullable(); //kullanım durumu
+
         });
     }
 

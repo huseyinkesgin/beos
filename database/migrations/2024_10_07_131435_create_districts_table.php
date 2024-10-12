@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('districts', function (Blueprint $table) {
-            $table->uuid('id')->primary(); // UUID primary key
-            $table->foreignUuid('state_id')->constrained();
-            $table->foreignUuid('city_id')->constrained();
+            $table->id();
+            $table->foreignId('state_id')->constrained();
+            $table->foreignId('city_id')->constrained();
             $table->string('name');
             $table->boolean('isActive')->default(true); // BaseModel'den gelen aktiflik alanı
             $table->text('note')->nullable();

@@ -2,10 +2,21 @@
 
 namespace App\Models;
 
-class State extends BaseModel
+use App\Models\City;
+use App\Models\Portfolio;
+use App\Traits\UuidTrait;
+use App\Traits\ScopesTrait;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class State extends Model
 {
+    use ScopesTrait,SoftDeletes;
+
+
+
     protected $fillable = [
-        'id',
+
         'name',
         'isActive',
         'note',

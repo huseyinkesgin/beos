@@ -4,11 +4,18 @@ namespace App\Models;
 
 use App\Models\Type;
 use App\Models\Portfolio;
+use App\Traits\UuidTrait;
+use App\Traits\ScopesTrait;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Category extends BaseModel
+class Category extends Model
 {
+
+    use ScopesTrait,SoftDeletes;
+
     protected $fillable = [
-        'id',
+
         'name',
         'isActive',
         'note',

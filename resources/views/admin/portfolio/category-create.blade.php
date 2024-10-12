@@ -13,8 +13,8 @@
             <x-form>
 
                 <div class="my-4">
-                    <x-label>İl Adı</x-label>
-                    <x-input type="text" class="w-full" placeholder="İl adını yazınız" wire:model.live="name" />
+                    <x-label>Kategori Adı</x-label>
+                    <x-input type="text" class="w-full" placeholder="Kategori adını yazınız" wire:model.live="name" />
                     <x-input-error for="name" class="mt-2" />
                 </div>
 

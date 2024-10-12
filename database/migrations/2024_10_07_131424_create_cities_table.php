@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('cities', function (Blueprint $table) {
-            $table->uuid('id')->primary(); 
-            $table->foreignUuid('state_id')->constrained();
+            $table->id();
+            $table->foreignId('state_id')->constrained();
             $table->string('name');
             $table->boolean('isActive')->default(true); // BaseModel'den gelen aktiflik alanı
             $table->text('note')->nullable();
             $table->timestamps();
-            $table->softDeletes(); 
+            $table->softDeletes();
         });
     }
 

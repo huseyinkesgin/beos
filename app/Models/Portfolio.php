@@ -2,16 +2,46 @@
 
 namespace App\Models;
 
-use App\Models\City;
-use App\Models\Type;
-use App\Models\State;
-use App\Models\Category;
-use App\Models\Customer;
-use App\Models\District;
-use App\Models\BaseModel;
+use App\Traits\UuidTrait;
+use App\Traits\ScopesTrait;
+use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Portfolio extends BaseModel
+class Portfolio extends Model
 {
+    use ScopesTrait,SoftDeletes;
+
+
+
+    protected $fillable = [
+
+        'status',
+        'price',
+        'category_id',
+        'type_id',
+        'state_id',
+        'city_id',
+        'district_id',
+        'lot',
+        'parcel',
+        'description',
+        'portfolio_no',
+        'advisor',
+        'partner_customer_id',
+        'owner_customer_id',
+        'isActive',
+        'note',
+        'isCredit',
+        'isSwap',
+        'deed_type',
+        'property_no',
+        'deposit'
+    ];
+
+
+
+    // İlişkiler
     public function category()
     {
         return $this->belongsTo(Category::class);

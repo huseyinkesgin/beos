@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('customers', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->id();
             $table->string('customer_type')->default('Bireysel');
             $table->string('category');// mal sahibi, emlakçı, komisyoncu, referans,alıcı
             $table->string('name');

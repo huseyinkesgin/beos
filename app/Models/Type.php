@@ -3,12 +3,19 @@
 namespace App\Models;
 
 use App\Models\Category;
+use App\Models\BaseModel;
 use App\Models\Portfolio;
+use App\Traits\UuidTrait;
+use App\Traits\ScopesTrait;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Type extends BaseModel
+class Type extends Model
 {
+    use ScopesTrait,SoftDeletes;
+
     protected $fillable = [
-        'id',
+
         'category_id',
         'name',
         'form_path',

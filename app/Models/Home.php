@@ -3,34 +3,37 @@
 namespace App\Models;
 
 use App\Models\BaseModel;
+use App\Models\Portfolio;
+use App\Traits\UuidTrait;
+use App\Traits\ScopesTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Home extends BaseModel
+class Home extends Model
 {
+    use ScopesTrait,SoftDeletes;
+
     protected $fillable = [
-        'uuid',
-        'price',
+
+        'portfolio_id',
         'area_m2',
         'room_count',
+        'building_years',
         'floor_level',
         'total_floors',
-        'is_furnished',
-        'isCredit',
-        'deed_type',
-        'property_no',
-        'state_id',
-        'city_id',
-        'district_id',
-        'lot',
-        'parcel',
-        'description',
-        'portfolio_no',
-        'advisor',
-        'partner_customer_id',
-        'owner_customer_id',
-        'isActive',
-        'note'
+        'heating_type',
+        'bathroom_count',
+        'isFurnished',
+        'isBalcon',
+        'isElevator',
+        'parking',
+        'usage_status'
     ];
+
+    public function portfolio()
+    {
+        return $this->belongsTo(Portfolio::class);
+    }
 
 }

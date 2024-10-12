@@ -2,35 +2,39 @@
 
 namespace App\Models;
 
-use App\Models\BaseModel;
+use App\Traits\UuidTrait;
+use App\Traits\ScopesTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Land extends BaseModel
+class Land extends Model
 {
+    use ScopesTrait,SoftDeletes;
+
+
+
     protected $fillable = [
-        'uuid',
-        'price',
+
+        'portfolio_id',
         'zoning_status',
         'area_m2',
         'similar',
         'height_limit',
-        'loanable',
-        'deed_type',
-        'isSwap',
-        'property_no',
-        'state_id',
-        'city_id',
-        'district_id',
-        'lot',
-        'parcel',
-        'description',
-        'portfolio_no',
-        'advisor',
-        'partner_customer_id',
-        'owner_customer_id',
-        'isActive',
-        'note'
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            if (empty($model->{$model->getKeyName()})) {
+                $model->{$model->getKeyName()} = (string) \Illuminate\Support\Str::uuid();
+            }
+        });
+    }
+
+    public function portfolio()
+    {
+        return $this->belongsTo(Portfolio::class);
+    }
 }

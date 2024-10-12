@@ -2,11 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Type;
 use App\Models\Category;
-use Illuminate\Support\Str;
+use App\Models\Type;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class TypeSeeder extends Seeder
 {
@@ -15,40 +13,65 @@ class TypeSeeder extends Seeder
      */
     public function run(): void
     {
-        $categories = Category::all();
+        $arsaCategory = Category::where('name', 'Arsa')->first();
+        $isyeriCategory = Category::where('name', 'İşyeri')->first();
+        $konutCategory = Category::where('name', 'Konut')->first();
 
-        if ($categories->isEmpty()) {
-            // Hata mesajı veya varsayılan durum eklemek isteyebilirsiniz
-            return; // Durum yoksa çık
+        if ($arsaCategory) {
+            Type::create([
+                'category_id' => $arsaCategory->id,
+                'name' => 'Arsa',
+                'form_path' => "admin.portfolio.forms.Arsa-form",
+                'isActive' => true
+            ]);
+            Type::create([
+                'category_id' => $arsaCategory->id,
+                'name' => 'Tarla',
+                'form_path' => "admin.portfolio.forms.Arsa-form",
+                'isActive' => true
+            ]);
         }
 
-        Type::create(attributes: [
-            'id' => (string) Str::uuid(),
-            'category_id' => $categories->first()->id, // İlk durumu al
-            'name' => 'Ticari Arsa',
-            'isActive' => true,
-        ]);
+        if ($isyeriCategory) {
+            Type::create([
+                'category_id' => $isyeriCategory->id,
+                'name' => 'Fabrika',
+                'form_path' => "admin.portfolio.forms.Fabrika-form",
+                'isActive' => true
+            ]);
+            Type::create([
+                'category_id' => $isyeriCategory->id,
+                'name' => 'Depo',
+                'form_path' => "admin.portfolio.forms.Depo-form",
+                'isActive' => true
+            ]);
+            Type::create([
+                'category_id' => $isyeriCategory->id,
+                'name' => 'Dükkan',
+                'form_path' => "admin.portfolio.forms.Magaza-form",
+                'isActive' => true
+            ]);
+        }
 
-        // Diğer şehirleri de ekleyebilirsiniz
-        Type::create([
-            'id' => (string) Str::uuid(),
-            'category_id' => $categories->first()->id, // İkinci şehir için aynı durumu kullanabilirsiniz
-            'name' => 'Sanayi Arsası',
-            'isActive' => true,
-        ]);
-
-        Type::create([
-            'id' => (string) Str::uuid(),
-            'category_id' => $categories->first()->id, // İkinci şehir için aynı durumu kullanabilirsiniz
-            'name' => 'Konut Arsası',
-            'isActive' => true,
-        ]);
-
-        Type::create([
-            'id' => (string) Str::uuid(),
-            'category_id' => $categories->first()->id, // İkinci şehir için aynı durumu kullanabilirsiniz
-            'name' => 'Diğer Tarım Arsası',
-            'isActive' => true,
-        ]);
+        if ($konutCategory) {
+            Type::create([
+                'category_id' => $konutCategory->id,
+                'name' => 'Daire',
+                'form_path' => "admin.portfolio.forms.Daire-form",
+                'isActive' => true
+            ]);
+            Type::create([
+                'category_id' => $konutCategory->id,
+                'name' => 'Rezidans',
+                'form_path' => "admin.portfolio.forms.Daire-form",
+                'isActive' => true
+            ]);
+            Type::create([
+                'category_id' => $konutCategory->id,
+                'name' => 'Villa',
+                'form_path' => "admin.portfolio.forms.Daire-form",
+                'isActive' => true
+            ]);
+        }
     }
 }

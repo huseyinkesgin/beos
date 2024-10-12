@@ -47,10 +47,5 @@
         <x-input-error for="is_furnished" class="mt-2" />
     </div>
 
-    <!-- Additional Description -->
-    <div class="my-4">
-        <x-label for="description">Açıklama</x-label>
-        <x-textarea class="w-full" wire:model="description" id="description" placeholder="Ek açıklama giriniz" />
-        <x-input-error for="description" class="mt-2" />
-    </div>
+   
 </div>
