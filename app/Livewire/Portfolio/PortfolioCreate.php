@@ -139,11 +139,11 @@ public $height_limit;
         }
     }
 
-    public function closeModal()
-{
-    $this->open = false;
-    $this->resetFields(); // Yeni bir reset metodu ile alanları sıfırlayacağız
-}
+//     public function closeModal()
+// {
+//     $this->open = false;
+//     $this->resetFields(); // Yeni bir reset metodu ile alanları sıfırlayacağız
+// }
 
 
     public function save()

@@ -13,7 +13,6 @@
         <thead>
             <tr>
                 <x-th>Portföy No</x-th>
-                <x-th>Kategori</x-th>
                 <x-th>Tip</x-th>
                 <x-th>Fiyat</x-th>
                 <x-th>Durum</x-th>
@@ -23,9 +22,19 @@
         <tbody>
             @foreach ($portfolios as $portfolio)
                 <tr>
-                    <x-td>{{ $portfolio->portfolio_no }}</x-td>
-                    <x-td>{{ ucfirst(optional($portfolio->category)->name) }}</x-td>
-                    <x-td>{{ ucfirst(optional($portfolio->type)->name) }}</x-td>
+                    <x-td>{{ $portfolio->portfolio_no }}
+                        <br>
+                        {{ $portfolio->status }}          {{ ucfirst(optional($portfolio->type)->name) }}
+                        <br>
+                        {{ $portfolio->owner->name }}
+
+                    </x-td>
+
+                    <x-td>
+                        <br> {{ $portfolio->state->name }} > {{ $portfolio->city->name }} > {{  $portfolio->district->name }}
+                        <br> {{ $portfolio->lot }} / {{  $portfolio->parcel }}
+
+                    </x-td>
                     <x-td>{{ number_format($portfolio->price, 2) }} ₺</x-td>
                     <x-td>{{ $portfolio->isActive ? 'Aktif' : 'Pasif' }}</x-td>
                     <x-td>
