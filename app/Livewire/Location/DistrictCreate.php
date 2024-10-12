@@ -63,7 +63,6 @@ class DistrictCreate extends Component
         $this->validate();
 
         District::create([
-            'id' => (string) Str::uuid(),
             'state_id' => $this->selectedState,
             'city_id' => $this->city_id,
             'name' => $this->name,

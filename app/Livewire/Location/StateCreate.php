@@ -33,7 +33,6 @@ class StateCreate extends Component
         $this->validate();
 
         State::create([
-            'id' => (string) Str::uuid(),
             'name' => $this->name,
             'isActive' => $this->isActive,
             'note' => $this->note,
@@ -44,7 +43,7 @@ class StateCreate extends Component
         $this->dispatch('notify', title: 'Başarılı', text: 'İl başarıyla kayıt edildi!', type: 'success');
         $this->reset();
     }
-    
+
 
     public function render()
     {

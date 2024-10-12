@@ -52,7 +52,6 @@ class TypeCreate extends Component
         $this->validate();
 
         Type::create([
-            'id' => (string) Str::uuid(),
             'category_id' => $this->category_id,
             'name' => $this->name,
             'isActive' => $this->isActive,

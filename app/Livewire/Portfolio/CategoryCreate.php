@@ -33,7 +33,6 @@ class CategoryCreate extends Component
         $this->validate();
 
         Category::create([
-            'id' => (string) Str::uuid(),
             'name' => $this->name,
             'isActive' => $this->isActive,
             'note' => $this->note,

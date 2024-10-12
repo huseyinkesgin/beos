@@ -10,7 +10,7 @@ use Livewire\Component;
 
 class CityCreate extends Component
 {
-   
+
     public $state_id;
     public $name;
     public $isActive = true;
@@ -36,7 +36,6 @@ class CityCreate extends Component
         $this->validate();
 
         City::create([
-            'id' => (string) Str::uuid(),
             'state_id' => $this->state_id,
             'name' => $this->name,
             'isActive' => $this->isActive,

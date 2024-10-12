@@ -12,26 +12,18 @@ class Land extends Model
 {
     use ScopesTrait,SoftDeletes;
 
+    protected $guarded = [];
+
+    // protected $fillable = [
+
+    //     'portfolio_id',
+    //     'zoning_status',
+    //     'area_m2',
+    //     'similar',
+    //     'height_limit',
+    // ];
 
 
-    protected $fillable = [
-
-        'portfolio_id',
-        'zoning_status',
-        'area_m2',
-        'similar',
-        'height_limit',
-    ];
-
-    protected static function boot()
-    {
-        parent::boot();
-        static::creating(function ($model) {
-            if (empty($model->{$model->getKeyName()})) {
-                $model->{$model->getKeyName()} = (string) \Illuminate\Support\Str::uuid();
-            }
-        });
-    }
 
     public function portfolio()
     {
