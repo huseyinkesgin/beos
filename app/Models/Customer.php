@@ -27,6 +27,12 @@ class Customer extends Model
         'note',
     ];
 
+    public function addresses()
+    {
+        return $this->morphMany(Address::class, 'addressable');
+    }
+    
+
     public function ownedPortfolios()
     {
         return $this->hasMany(Portfolio::class, 'owner_customer_id');
