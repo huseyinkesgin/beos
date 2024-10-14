@@ -19,7 +19,7 @@ class PortfolioCreate extends Component
 
 
     // ~~~~~~~~~~ PORTFOLİO DATABASE ~~~~~~~~~ //
-    public $portfolio_no,  $state_id, $city_id, $district_id, $category_id, $type_id,  $lot, $parcel, $price, $status ="Satılık", $deposit, $property_no, $isCredit = false, $deed_type, $isSwap = false, $description,$advisor,$partner_customer_id,$owner_customer_id,$isActive = true ,$note;
+    public $portfolio_no,  $state_id, $city_id, $district_id, $category_id, $type_id,  $lot, $parcel, $price, $status ="Satılık", $deposit, $property_no, $isCredit = false, $deed_type, $isSwap = false, $description,$advisor,$partner_customer_id,$owner_customer_id,$isActive = true ,$note,$additional_fees  ;
 
     // ~~~~~~~~~~~~ ORTAK DATABASE ~~~~~~~~~~~ //
     public $area_m2,$portfolio_id, $floor_level, $heating_type,$building_year, $usage_status, $zoning_status,$similar,$height_limit;
@@ -138,6 +138,7 @@ class PortfolioCreate extends Component
             'category_id' => 'required',
             'type_id' => 'required',
             'portfolio_no' => 'required|string',
+            'area_m2' => 'required|numeric',
             'lot' => 'required|numeric',
             'parcel' => 'required|numeric',
             'price' => 'required|numeric',
@@ -159,17 +160,33 @@ class PortfolioCreate extends Component
         return Portfolio::create($validatedData);
     }
 
+    // ~~~~~~~~~~~ ARSA OLUŞTURMA ~~~~~~~~~~~ //
+    protected function createLand($portfolio)
+    {
+        if ($this->category_id == $this->landCategoryId) {
+            $landData = $this->validate([
+                'zoning_status' => 'required|string',
+                'similar' => 'nullable|string',
+                'height_limit' => 'nullable|string',
+            ]);
+
+            $landData['portfolio_id'] = $portfolio->id;
+
+            Land::create($landData);
+            $this->dispatch('closeModal');
+        }
+    }
 
     // ~~~~~~~~~~~ İŞYERİ OLUŞTURMA ~~~~~~~~~~~ //
     protected function createBusiness($portfolio)
     {
         if ($this->category_id == $this->businessCategoryId) {
             $businessData = $this->validate([
-                'area_m2' => 'required|numeric',
+
                 'open_area' => 'required|numeric',
                 'closed_area' => 'required|numeric',
                 'business_area' => 'required|numeric',
-                'office_area' => 'nullable|numeric',
+                'office_area' => 'required|numeric',
                 'floor_count' => 'nullable|integer',
                 'floor_level' => 'nullable|integer',
                 'electricity_power' => 'nullable|numeric',
@@ -179,6 +196,7 @@ class PortfolioCreate extends Component
                 'usage_status' => 'required|string',
                 'ground_analysis' => 'nullable|string',
                 'height' => 'required|numeric',
+
             ]);
 
             $businessData['portfolio_id'] = $portfolio->id;
@@ -193,7 +211,6 @@ class PortfolioCreate extends Component
     {
         if ($this->category_id == $this->homeCategoryId) {
             $homeData = $this->validate([
-                'area_m2' => 'required|numeric',
                 'room_count' => 'required|integer',
                 'building_years' => 'nullable|integer',
                 'floor_level' => 'nullable|integer',
@@ -214,7 +231,7 @@ class PortfolioCreate extends Component
         }
     }
 
-    
+
 
     public function render()
     {

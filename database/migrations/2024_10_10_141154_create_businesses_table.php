@@ -14,11 +14,10 @@ return new class extends Migration
         Schema::create('businesses', function (Blueprint $table) {
             $table->id();
             $table->foreignUuid('portfolio_id')->constrained;
-            $table->string('area_m2',)->nullable();
             $table->string('open_area')->nullable();
             $table->string('closed_area')->nullable();
             $table->string('business_area')->nullable();
-            $table->string('office_area')->nullable(); 
+            $table->string('office_area')->nullable();
             $table->unsignedInteger('floor_count')->nullable(); // Kat Sayısı
             $table->unsignedInteger('floor_level')->nullable(); // Kat Seviyesi
             $table->string('electricity_power')->nullable(); //
@@ -29,6 +28,7 @@ return new class extends Migration
             $table->boolean('ground_analysis')->default(true); //zemin edütü
             $table->string('height')->nullable(); // Yükseklik
             $table->timestamps();
+            $table->softDeletes();
 
         });
     }

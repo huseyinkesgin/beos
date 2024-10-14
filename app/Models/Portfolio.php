@@ -15,7 +15,7 @@ class Portfolio extends Model
 
 
     protected $fillable = [
-
+        'area_m2',
         'status',
         'price',
         'category_id',
@@ -36,7 +36,8 @@ class Portfolio extends Model
         'isSwap',
         'deed_type',
         'property_no',
-        'deposit'
+        'deposit',
+        'additional_fees'
     ];
 
 
@@ -75,5 +76,10 @@ class Portfolio extends Model
     public function partner()
     {
         return $this->belongsTo(Customer::class, 'partner_customer_id');
+    }
+
+    public function business()
+    {
+        return $this->hasOne(Business::class, 'portfolio_id');
     }
 }

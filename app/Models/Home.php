@@ -17,7 +17,6 @@ class Home extends Model
     protected $fillable = [
 
         'portfolio_id',
-        'area_m2',
         'room_count',
         'building_years',
         'floor_level',

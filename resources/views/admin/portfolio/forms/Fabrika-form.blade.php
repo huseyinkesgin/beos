@@ -79,16 +79,16 @@
                 <x-input-error for="closed_area" class="mt-2" />
             </div>
 
-            <!-- Açık Alan -->
+            <!-- İşletme Alanı -->
             <div class="flex-1 my-4">
                 <x-label for="business_area">İşletme Alanı (m²)</x-label>
                 <x-input type="text" class="w-full" wire:model.live="business_area" id="business_area" />
                 <x-input-error for="business_area" class="mt-2" />
             </div>
 
-            <!-- Kapalı Alan -->
+              <!-- Ofis Alanı -->
             <div class="flex-1 my-4">
-                <x-label for="office_area">Kapalı Alan (m²)</x-label>
+                <x-label for="office_area">Ofis Alan (m²)</x-label>
                 <x-input type="text" class="w-full" wire:model.live="office_area" id="office_area" />
                 <x-input-error for="office_area" class="mt-2" />
             </div>
@@ -131,7 +131,7 @@
 
         </div>
 
-        <!-- Other Fields -->
+
         <div class="flex flex-row mx-4 space-x-2">
             <!-- Elektrik KWA -->
             <div class="flex-1 my-4">
@@ -149,7 +149,7 @@
             <!-- Isıtma Tipi -->
             <div class="flex-1 my-4">
                 <x-label for="heating_type">Isıtma Tipi</x-label>
-                <x-select wire:model.live="heading_type" id="headinf_type" class="w-full">
+                <x-select wire:model.live="heating_type" id="heating_type" class="w-full">
                     <option value="">Seçiniz</option>
                     <option value="Kombi">Kombi</option>
                     <option value="Merkezi Sistem">Merkezi Sistem</option>
@@ -243,8 +243,8 @@
             </div>
 
         </div>
-
-        @if ($status == 'Kiralık')
+         <!-- Depozito -->
+                    @if ($status == 'Kiralık')
         <div class="flex flex-row mx-4 space-x-2">
             <div class="flex-1 my-4">
                 <x-label for="deposit">Depozito</x-label>
@@ -255,7 +255,7 @@
         @endif
 
         <div class="flex flex-row justify-between mx-4">
-
+             <!-- Mal Sahibi -->
             <div class="flex-1 my-4">
                 <x-label for="owner_customer_id">Mal Sahibi Seç</x-label>
                 <x-select wire:model.live="owner_customer_id" id="owner_customer_id" class="w-full">
@@ -271,7 +271,7 @@
         </div>
         <div class="flex flex-row justify-between mx-4">
 
-            {{-- PARTNER VAR MI --}}
+             <!-- Partner Var mı -->
             <div class="flex-1 my-4">
                 <x-label for="has_partner" class="mr-2">Partner Var Mı?</x-label>
                 <x-checkbox wire:model.live="has_partner" id="has_partner" />
@@ -280,6 +280,7 @@
         </div>
 
 
+         <!-- Partner Listesi -->
         @if ($has_partner || $owner_customer_id == '0')
         <div class="flex flex-row justify-between mx-4">
             <div class="flex-1 my-4">
@@ -296,4 +297,4 @@
             </div>
         </div>
         @endif
-    </div> <!-- Kapanış div -->
+    </div>

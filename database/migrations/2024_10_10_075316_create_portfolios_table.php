@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained(); //kategori
             $table->foreignId('type_id')->constrained(); // emlak tipi
             $table->string('portfolio_no')->nullable(); // Portföy No
+            $table->string('area_m2'); // Ada
             $table->string('lot'); // Ada
             $table->string('parcel'); // Parsel
             $table->string('price'); // Ücret

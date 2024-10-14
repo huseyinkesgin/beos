@@ -19,7 +19,6 @@ class Business extends Model
     protected $fillable = [
 
         'portfolio_id',
-        'area_m2',
         'open_area',
         'closed_area',
         'business_area',

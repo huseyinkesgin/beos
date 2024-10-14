@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('portfolio_id')->constrained;
 
-            $table->string('area_m2'); // m²
             $table->string('zoning_status'); // İmar Durumu
             $table->string('similar')->nullable(); // Emsal
             $table->string('height_limit')->nullable(); // Gabari
-            $table->timestamps(); 
+            $table->timestamps();
+            $table->softDeletes();
 
         });
     }

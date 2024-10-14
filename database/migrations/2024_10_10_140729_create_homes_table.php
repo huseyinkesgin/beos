@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('homes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('portfolio_id')->constrained;
-            $table->decimal('area_m2', 10, 2); // m²
             $table->string('room_count'); // Oda Sayısı (ör. 2+1)
             $table->string('building_year')->nullable();// Bina yapım yılı
             $table->unsignedInteger('floor_level'); // Kaçıncı Kat
@@ -27,6 +26,7 @@ return new class extends Migration
             $table->string('parking')->nullable(); //otomark tipi
             $table->string('usage_status')->nullable(); //kullanım durumu
             $table->timestamps();
+            $table->softDeletes();
 
         });
     }
