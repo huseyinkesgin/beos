@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('zoning_status'); // İmar Durumu
             $table->string('similar')->nullable(); // Emsal
             $table->string('height_limit')->nullable(); // Gabari
-            $table->timestamps(); // Timestamps ekleyin
+            $table->timestamps(); 
 
         });
     }

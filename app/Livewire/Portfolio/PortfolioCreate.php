@@ -16,87 +16,56 @@ use App\Models\Portfolio;
 
 class PortfolioCreate extends Component
 {
-    public $portfolio_no;
-    public $portfolio_id;
 
-    public $lot;
 
-    public $parcel;
+    // ~~~~~~~~~~ PORTFOLİO DATABASE ~~~~~~~~~ //
+    public $portfolio_no,  $state_id, $city_id, $district_id, $category_id, $type_id,  $lot, $parcel, $price, $status ="Satılık", $deposit, $property_no, $isCredit = false, $deed_type, $isSwap = false, $description,$advisor,$partner_customer_id,$owner_customer_id,$isActive = true ,$note;
 
-    public $price;
+    // ~~~~~~~~~~~~ ORTAK DATABASE ~~~~~~~~~~~ //
+    public $area_m2,$portfolio_id, $floor_level, $heating_type,$building_year, $usage_status, $zoning_status,$similar,$height_limit;
 
-    public $property_no;
-    public $area_m2;
-public $zoning_status;
-public $similar;
-public $height_limit;
 
-    public $isCredit = false;
+    // ~~~~~~~~~~~ İŞYERİ DATABASE ~~~~~~~~~~~ //
+    public $open_area, $closed_area, $business_area, $office_area, $floor_count,  $electricity_power,  $building_condition,
+    $ground_analysis, $height;
 
-    public $deed_type;
+    // ~~~~~~~~~~~~ KONUT DATABASE ~~~~~~~~~~~ //
+    public $room_count,  $total_floors,  $bathroom_count, $isFurnished, $isBalcon, $isElevator, $parking;
 
-    public $isSwap = false;
-
-    public $description;
-
-    public $advisor;
-
-    public $partner_customer_id;
-
-    public $owner_customer_id;
-
-    public $note;
-
-    public $status = 'Satılık';
-
-    public $deposit;
-
-    public $additional_fees;
-
+    // ~~~~~~~~~~~ İL - İLÇE- BÖLGE ~~~~~~~~~~ //
     public $states;
-
     public $cities;
-
     public $districts = [];
 
-    public $state_id;
 
-    public $city_id;
-
-    public $district_id;
-
+   // ~~~~~~~~ PARTNER VE MAL SAHİBİ ~~~~~~~~ //
     public $has_partner = false;
-
     public $partnerList;
-
     public $ownerList;
 
+    // ~~~~~~~~~~ KATEGORİ VE TİPLER ~~~~~~~~~ //
     public $categories;
-
     public $types = [];
-
-    public $category_id;
-
-    public $type_id;
-
     public $form_path;
 
-    public $isActive = true;
-     // Kategori ID'leri
-     public $landCategoryId;
-     public $businessCategoryId;
-     public $homeCategoryId;
+   //  ARSA, İŞTERİ VE KONUT DATABASE ULAŞMA  //
+    public $landCategoryId;
+    public $businessCategoryId;
+    public $homeCategoryId;
 
+
+    // ~~~~~~~~~~~~~~~~MODAL İÇİN~~~~~~~~~~~~~~~~~~~~~~~ //
     public $open = false;
+
+
 
     protected $listeners = ['openCreateModal' => 'openModal'];
 
     public function openModal()
     {
-
         $this->open = true; // Open the modal
-
     }
+
 
     public function mount()
     {
@@ -111,6 +80,7 @@ public $height_limit;
         $this->homeCategoryId = Category::where('name', 'Konut')->first()->id ?? null;
     }
 
+    // ~~~~~~~ DİNAMİK İL - İLÇE SEÇİMİ ~~~~~~ //
     public function updatedStateId($value)
     {
         $this->cities = City::where('state_id', $value)->get();
@@ -124,6 +94,7 @@ public $height_limit;
         $this->district_id = null;
     }
 
+     // --------------------- DİNAMİK KATEGORİ VE TİP SEÇİMİ --------------------- //
     public function updatedCategoryId($value)
     {
         $this->types = Type::where('category_id', $value)->get(); // Kategoriye göre typeları al
@@ -139,101 +110,111 @@ public $height_limit;
         }
     }
 
-//     public function closeModal()
-// {
-//     $this->open = false;
-//     $this->resetFields(); // Yeni bir reset metodu ile alanları sıfırlayacağız
-// }
-
+    // ~~~~~~~~~~~ PORTFOLIO KAYIT ~~~~~~~~~~~ //
 
     public function save()
     {
         $portfolio = $this->createPortfolio();
-        $this->createLand($portfolio);
+        if ($this->category_id == $this->landCategoryId) {
+            $this->createLand($portfolio);
+        } elseif ($this->category_id == $this->businessCategoryId) {
+            $this->createBusiness($portfolio);
+        } elseif ($this->category_id == $this->homeCategoryId) {
+            $this->createHome($portfolio);
+        }
 
         $this->dispatch('refreshTable');
-        $this->dispatch('closeModal');
+
         $this->dispatch('notify', title: 'Başarılı', text: 'Portföy başarıyla kayıt edildi!', type: 'success');
     }
 
+    // ~~~~~~~~~~~ PORTFOLIO OLUŞTURMA ~~~~~~~~~~~ //
     protected function createPortfolio()
-{
-    $validatedData = $this->validate([
-        'state_id' => 'required',
-        'city_id' => 'required',
-        'district_id' => 'required',
-        'category_id' => 'required',
-        'type_id' => 'required',
-        'portfolio_no' => 'nullable|string',
-        'lot' => 'required|string',
-        'parcel' => 'required|string',
-        'price' => 'required|numeric',
-        'status' => 'required|string',
-        'deposit' => 'nullable|numeric|min:0',
-        'additional_fees' => 'nullable|string',
-        'property_no' => 'nullable|string',
-        'isCredit' => 'boolean',
-        'deed_type' => 'required|string',
-        'isSwap' => 'boolean',
-        'description' => 'nullable|string',
-        'advisor' => 'nullable|string',
-        'partner_customer_id' => 'nullable|exists:customers,id',
-        'owner_customer_id' => 'nullable|exists:customers,id',
-        'isActive' => 'boolean',
-        'note' => 'nullable|string',
-    ]);
-
-    return Portfolio::create($validatedData);
-}
-
-protected function resetFields()
-{
-    $this->portfolio_no = null;
-    $this->portfolio_id = null;
-    $this->lot = null;
-    $this->parcel = null;
-    $this->price = null;
-    $this->property_no = null;
-    $this->area_m2 = null;
-    $this->zoning_status = null;
-    $this->similar = null;
-    $this->height_limit = null;
-    $this->isCredit = false;
-    $this->deed_type = null;
-    $this->isSwap = false;
-    $this->description = null;
-    $this->advisor = null;
-    $this->partner_customer_id = null;
-    $this->owner_customer_id = null;
-    $this->note = null;
-    $this->status = 'Satılık';
-    $this->deposit = null;
-    $this->additional_fees = null;
-    $this->state_id = null;
-    $this->city_id = null;
-    $this->district_id = null;
-    $this->category_id = null;
-    $this->type_id = null;
-    $this->form_path = null;
-    $this->has_partner = false;
-    $this->isActive = true;
-}
-
-protected function createLand($portfolio)
-{
-    if ($this->category_id == $this->landCategoryId) {
-        $landData = $this->validate([
-            'area_m2' => 'required|string',
-            'zoning_status' => 'required|string',
-            'similar' => 'nullable|string',
-            'height_limit' => 'nullable|string',
+    {
+        $validatedData = $this->validate([
+            'state_id' => 'required',
+            'city_id' => 'required',
+            'district_id' => 'required',
+            'category_id' => 'required',
+            'type_id' => 'required',
+            'portfolio_no' => 'required|string',
+            'lot' => 'required|numeric',
+            'parcel' => 'required|numeric',
+            'price' => 'required|numeric',
+            'status' => 'required|string',
+            'deposit' => 'nullable|string',
+            'additional_fees' => 'nullable|string',
+            'property_no' => 'required|numeric',
+            'isCredit' => 'boolean',
+            'deed_type' => 'required|string',
+            'isSwap' => 'boolean',
+            'description' => 'nullable|string',
+            'advisor' => 'nullable|string',
+            'partner_customer_id' => 'nullable|exists:customers,id',
+            'owner_customer_id' => 'nullable|exists:customers,id',
+            'isActive' => 'boolean',
+            'note' => 'nullable|string',
         ]);
 
-        $landData['portfolio_id'] = $portfolio->id;
-
-        Land::create($landData);
+        return Portfolio::create($validatedData);
     }
-}
+
+
+    // ~~~~~~~~~~~ İŞYERİ OLUŞTURMA ~~~~~~~~~~~ //
+    protected function createBusiness($portfolio)
+    {
+        if ($this->category_id == $this->businessCategoryId) {
+            $businessData = $this->validate([
+                'area_m2' => 'required|numeric',
+                'open_area' => 'required|numeric',
+                'closed_area' => 'required|numeric',
+                'business_area' => 'required|numeric',
+                'office_area' => 'nullable|numeric',
+                'floor_count' => 'nullable|integer',
+                'floor_level' => 'nullable|integer',
+                'electricity_power' => 'nullable|numeric',
+                'building_year' => 'nullable|integer',
+                'heating_type' => 'nullable|string',
+                'building_condition' => 'nullable|string',
+                'usage_status' => 'required|string',
+                'ground_analysis' => 'nullable|string',
+                'height' => 'required|numeric',
+            ]);
+
+            $businessData['portfolio_id'] = $portfolio->id;
+
+            Business::create($businessData);
+            $this->dispatch('closeModal');
+        }
+    }
+
+    // ~~~~~~~~~~~ KONUT OLUŞTURMA ~~~~~~~~~~~ //
+    protected function createHome($portfolio)
+    {
+        if ($this->category_id == $this->homeCategoryId) {
+            $homeData = $this->validate([
+                'area_m2' => 'required|numeric',
+                'room_count' => 'required|integer',
+                'building_years' => 'nullable|integer',
+                'floor_level' => 'nullable|integer',
+                'total_floors' => 'nullable|integer',
+                'heating_type' => 'nullable|string',
+                'bathroom_count' => 'nullable|integer',
+                'isFurnished' => 'boolean',
+                'isBalcon' => 'boolean',
+                'isElevator' => 'boolean',
+                'parking' => 'nullable|string',
+                'usage_status' => 'nullable|string',
+            ]);
+
+            $homeData['portfolio_id'] = $portfolio->id;
+
+            Home::create($homeData);
+            $this->dispatch('closeModal');
+        }
+    }
+
+    
 
     public function render()
     {

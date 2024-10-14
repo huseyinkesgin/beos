@@ -4,7 +4,6 @@
     <div class="border rounded-lg shadow-lg bg-slate-50">
         <!-- Area Fields -->
         <div class="flex flex-row mx-4 space-x-2">
-
             <!-- Portföy No -->
             <div class="flex-1 my-4">
                 <x-label for="portfolio_no">Portföy No</x-label>
@@ -23,6 +22,19 @@
                 <x-input type="number" class="w-full" wire:model.live="price" id="price" />
                 <x-input-error for="price" class="mt-2" />
             </div>
+
+            @if ($status == 'Kiralık')
+            <div class="flex-1 my-4">
+                <x-label for="additional_fees">Ek Ücretler</x-label>
+                <x-select wire:model.live="additional_fees" id="additional_fees" class="w-full">
+                    <option value="">Seçiniz</option>
+                    <option value="+ KDV">+ KDV</option>
+                    <option value="+ Stopaj">+ Stopaj</option>
+                    <option value="Bilinmiyor">Bilinmiyor</option>
+                </x-select>
+                <x-input-error for="additional_fees" class="mt-2" />
+            </div>
+            @endif
         </div>
         <div class="flex flex-row mx-4 space-x-2">
             <div class="flex-1 my-4">
@@ -56,28 +68,28 @@
             <!-- Açık Alan -->
             <div class="flex-1 my-4">
                 <x-label for="open_area">Açık Alan (m²)</x-label>
-                <x-input type="number" class="w-full" wire:model.live="open_area" id="open_area" />
+                <x-input type="text" class="w-full" wire:model.live="open_area" id="open_area" />
                 <x-input-error for="open_area" class="mt-2" />
             </div>
 
             <!-- Kapalı Alan -->
             <div class="flex-1 my-4">
                 <x-label for="closed_area">Kapalı Alan (m²)</x-label>
-                <x-input type="number" class="w-full" wire:model.live="closed_area" id="closed_area" />
+                <x-input type="text" class="w-full" wire:model.live="closed_area" id="closed_area" />
                 <x-input-error for="closed_area" class="mt-2" />
             </div>
 
             <!-- Açık Alan -->
             <div class="flex-1 my-4">
                 <x-label for="business_area">İşletme Alanı (m²)</x-label>
-                <x-input type="number" class="w-full" wire:model.live="business_area" id="business_area" />
+                <x-input type="text" class="w-full" wire:model.live="business_area" id="business_area" />
                 <x-input-error for="business_area" class="mt-2" />
             </div>
 
             <!-- Kapalı Alan -->
             <div class="flex-1 my-4">
                 <x-label for="office_area">Kapalı Alan (m²)</x-label>
-                <x-input type="number" class="w-full" wire:model.live="office_area" id="office_area" />
+                <x-input type="text" class="w-full" wire:model.live="office_area" id="office_area" />
                 <x-input-error for="office_area" class="mt-2" />
             </div>
         </div>
@@ -101,7 +113,18 @@
             <!-- Kat Seviyesi -->
             <div class="flex-1 my-4">
                 <x-label for="floor_level">Kat Seviyesi</x-label>
-                <x-input type="number" class="w-full" wire:model.live="floor_level" id="floor_level" />
+                <x-select wire:model.live="floor_level" id="floor_level" class="w-full">
+                    <option value="Zemin Kat">Zemin Kat</option>
+                    <option value="Asma Kat">Asma Kat</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                </x-select>
                 <x-input-error for="floor_level" class="mt-2" />
             </div>
 
@@ -126,7 +149,7 @@
             <!-- Isıtma Tipi -->
             <div class="flex-1 my-4">
                 <x-label for="heating_type">Isıtma Tipi</x-label>
-                <x-select wire:model.live="headinf_type" id="headinf_type" class="w-full">
+                <x-select wire:model.live="heading_type" id="headinf_type" class="w-full">
                     <option value="">Seçiniz</option>
                     <option value="Kombi">Kombi</option>
                     <option value="Merkezi Sistem">Merkezi Sistem</option>
@@ -173,8 +196,8 @@
                 <x-label for="ground_analysis">Zemin Etüdü</x-label>
                 <x-select wire:model.live="ground_analysis" id="ground_analysis" class="w-full">
                     <option value="Seçiniz">Seçiniz</option>
-                    <option value="Var">Var</option>
-                    <option value="Yok">Yok</option>
+                    <option value="1">Var</option>
+                    <option value="0">Yok</option>
                 </x-select>
                 <x-input-error for="ground_analysis" class="mt-2" />
             </div>
@@ -205,8 +228,8 @@
                 <x-label for="isSwap">Takas Durumu</x-label>
                 <x-select wire:model.live="isSwap" id="isSwap" class="w-full">
                     <option value="">Seçiniz</option>
-                    <option value="Evet">Evet</option>
-                    <option value="Hayır">Hayır</option>
+                    <option value="1">Evet</option>
+                    <option value="0">Hayır</option>
                 </x-select>
                 <x-input-error for="isSwap" class="mt-2" />
             </div>
@@ -220,8 +243,8 @@
             </div>
 
         </div>
-    </div>
-    @if ($status == 'Kiralık')
+
+        @if ($status == 'Kiralık')
         <div class="flex flex-row mx-4 space-x-2">
             <div class="flex-1 my-4">
                 <x-label for="deposit">Depozito</x-label>
@@ -229,37 +252,48 @@
                 <x-input-error for="deposit" class="mt-2" />
             </div>
         </div>
-    @endif
-    <div class="flex flex-row mx-4 space-x-2">
-        <div class="flex items-center my-4">
-            <x-label for="has_partner" class="mr-2">Partner Var Mı?</x-label>
-            <x-checkbox wire:model.live="has_partner" id="has_partner" />
+        @endif
+
+        <div class="flex flex-row justify-between mx-4">
+
+            <div class="flex-1 my-4">
+                <x-label for="owner_customer_id">Mal Sahibi Seç</x-label>
+                <x-select wire:model.live="owner_customer_id" id="owner_customer_id" class="w-full">
+                    <option value="">Seçiniz</option>
+                    <option value="0">Bilinmiyor</option>
+                    @foreach ($ownerList as $owner)
+                    <option value="{{ $owner->id }}">{{ $owner->name }}</option>
+                    @endforeach
+                </x-select>
+                <x-input-error for="owner_customer_id" class="mt-2" />
+
+            </div>
         </div>
-    </div>
-</div>
+        <div class="flex flex-row justify-between mx-4">
 
-@if ($has_partner)
-    <div class="my-4">
-        <x-label for="partner_customer_id">Partner Seç</x-label>
-        <x-select wire:model.live="partner_customer_id" id="partner_customer_id" class="w-full">
-            <option value="">Seçiniz</option>
-            @if (!empty($partnerList))
-                @foreach ($partnerList as $partner)
+            {{-- PARTNER VAR MI --}}
+            <div class="flex-1 my-4">
+                <x-label for="has_partner" class="mr-2">Partner Var Mı?</x-label>
+                <x-checkbox wire:model.live="has_partner" id="has_partner" />
+                <x-input-error for="has_partner" class="mt-2" />
+            </div>
+        </div>
+
+
+        @if ($has_partner || $owner_customer_id == '0')
+        <div class="flex flex-row justify-between mx-4">
+            <div class="flex-1 my-4">
+                <x-label for="partner_customer_id">Partner Seç</x-label>
+                <x-select wire:model.live="partner_customer_id" id="partner_customer_id" class="w-full">
+                    <option value="">Seçiniz</option>
+                    @if (!empty($partnerList))
+                    @foreach ($partnerList as $partner)
                     <option value="{{ $partner->id }}">{{ $partner->name }}</option>
-                @endforeach
-            @endif
-        </x-select>
-        <x-input-error for="partner_customer_id" class="mt-2" />
-    </div>
-@endif
-
-<div class="my-4">
-    <x-label for="owner_customer_id">Mal Sahibi Seç</x-label>
-    <x-select wire:model.live="owner_customer_id" id="owner_customer_id" class="w-full">
-        <option value="">Seçiniz</option>
-        @foreach ($ownerList as $owner)
-            <option value="{{ $owner->id }}">{{ $owner->name }}</option>
-        @endforeach
-    </x-select>
-    <x-input-error for="owner_customer_id" class="mt-2" />
-</div </div>
+                    @endforeach
+                    @endif
+                </x-select>
+                <x-input-error for="partner_customer_id" class="mt-2" />
+            </div>
+        </div>
+        @endif
+    </div> <!-- Kapanış div -->

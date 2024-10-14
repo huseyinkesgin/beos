@@ -14,20 +14,21 @@ return new class extends Migration
         Schema::create('businesses', function (Blueprint $table) {
             $table->id();
             $table->foreignUuid('portfolio_id')->constrained;
-            $table->decimal('area_m2', 10, 2)->nullable(); // Arsa Alanı
-            $table->decimal('open_area', 10, 2)->nullable(); // Açık Alan
-            $table->decimal('closed_area', 10, 2)->nullable(); // Kapalı Alan
-            $table->decimal('business_area', 10, 2)->nullable(); // Kapalı Alan
-            $table->decimal('office_area', 10, 2)->nullable(); // Kapalı Alan
+            $table->string('area_m2',)->nullable();
+            $table->string('open_area')->nullable();
+            $table->string('closed_area')->nullable();
+            $table->string('business_area')->nullable();
+            $table->string('office_area')->nullable(); 
             $table->unsignedInteger('floor_count')->nullable(); // Kat Sayısı
             $table->unsignedInteger('floor_level')->nullable(); // Kat Seviyesi
-            $table->decimal('electricity_power', 8, 2)->nullable(); // Elektrik KWA
+            $table->string('electricity_power')->nullable(); //
             $table->unsignedInteger('building_year')->nullable(); // Yapım Yılı
             $table->string('heating_type')->nullable(); //ısıtma tipi
             $table->string('building_condition')->nullable(); //yapının durumu
             $table->string('usage_status')->nullable(); //kullanım durumu
             $table->boolean('ground_analysis')->default(true); //zemin edütü
             $table->string('height')->nullable(); // Yükseklik
+            $table->timestamps();
 
         });
     }
