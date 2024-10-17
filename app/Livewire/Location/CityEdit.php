@@ -5,14 +5,12 @@ namespace App\Livewire\Location;
 use App\Models\City;
 use App\Models\State;
 use Livewire\Component;
-use Laravel\Jetstream\InteractsWithBanner;
 
 class CityEdit extends Component
 {
-    use InteractsWithBanner;
 
     public $cityId;
-    public $state_id; 
+    public $state_id;
     public $name;
     public $isActive;
     public $note;
@@ -38,6 +36,7 @@ class CityEdit extends Component
     public function loadCity($id)
     {
         $city = City::findOrFail($id);
+        
         $this->cityId = $city->id;
         $this->state_id = $city->state_id;
         $this->name = $city->name;

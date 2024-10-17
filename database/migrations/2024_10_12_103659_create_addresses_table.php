@@ -19,7 +19,6 @@ return new class extends Migration
             $table->foreignId('city_id')->constrained();
             $table->foreignId('district_id')->constrained();
             $table->string('postal_code');
-            $table->string('country');
             $table->string('address_type')->default('home'); // 'home', 'work', 'depot' gibi
             $table->boolean('is_default')->default(false); // Varsayılan adresi belirtmek için
             $table->morphs('addressable'); // Polymorphic ilişki için

@@ -2,12 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Traits\ScopesTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Address extends Model
 {
-    protected $fillable = ['address_line1', 'address_line2', 'city', 'state', 'postal_code', 'country'];
+    use ScopesTrait,SoftDeletes;
+
+
+    protected $fillable = ['state_id','city_id','district_id', 'address_line1', 'address_line2',  'postal_code','isActive','is_default','addressable_type','addressable_id'];
 
     public function addressable()
     {

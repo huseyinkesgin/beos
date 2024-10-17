@@ -1,10 +1,13 @@
 <?php
 
+use App\Livewire\Finance\BillIndex;
 use App\Livewire\Location\CityIndex;
 use App\Livewire\Location\StateIndex;
 use App\Livewire\Portfolio\TypeIndex;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\People\CustomerIndex;
+use App\Livewire\People\PersonnelShow;
+use App\Livewire\People\PersonnelIndex;
 use App\Livewire\Location\DistrictIndex;
 use App\Livewire\Portfolio\CategoryIndex;
 use App\Livewire\Portfolio\PortfolioIndex;
@@ -33,5 +36,10 @@ Route::get('categories', CategoryIndex::class)->name('categories');
 Route::get('types', TypeIndex::class)->name('types');
 
 Route::get('customers', CustomerIndex::class)->name('customers');
+Route::get('personnels', PersonnelIndex::class)->name('personnels');
 
 Route::get('portfolios', PortfolioIndex::class)->name('portfolios');
+
+Route::get('/personnel/{id}', PersonnelShow::class)->name('personnel.show');
+
+Route::get('bills',BillIndex::class)->name('bills');

@@ -1,20 +1,13 @@
  {{-- resources/views/admin/location/state-table.blade.php --}}
 
 <div>
-    <div class="flex items-center justify-between mb-4">
+    <div class="flex items-center justify-between mx-5">
         <div class="flex space-x-4">
-            <x-select wire:model.live="activeFilter" class="w-20">
-                <option value="all">Tümü</option>
-                <option value="active">Aktif</option>
-                <option value="inactive">Pasif</option>
-            </x-select>
-            <x-select wire:model.live="deletedFilter" class="w-32">
-                <option value="without">Güncel</option>
-                {{-- <option value="with">Hepsi</option> --}}
-                <option value="only">Silinmiş</option>
-            </x-select>
+            <x-paginate />
+            <x-filter-isactive />
+            <x-filter-trashed />
         </div>
-        <x-input type="text" wire:model.live.debounce.300ms="search" placeholder="Ara..." />
+        <x-search />
     </div>
 
     <x-table>
@@ -22,13 +15,13 @@
             <tr>
                 <x-th>Sıra No</x-th>
                 <x-th>
-                    <button wire:click="sortBy('id')" class="font-bold flex items-center">
+                    <button wire:click="sortBy('id')" class="flex items-center font-bold">
                         ID
                         <span class="ml-1">{!! $this->getSortIcon('id') !!}</span>
                     </button>
                 </x-th>
                 <x-th>
-                    <button wire:click="sortBy('name')" class="font-bold flex items-center">
+                    <button wire:click="sortBy('name')" class="flex items-center font-bold">
                         Adı
                         <span class="ml-1">{!! $this->getSortIcon('name') !!}</span>
                     </button>
@@ -77,28 +70,17 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6" class="text-center py-8">
-                        <p class="text-red-500 font-semibold">Üzgünüm, herhangi bir veri bulunamadı.</p>
+                    <td colspan="6" class="py-8 text-center">
+                        <p class="font-semibold text-red-500">Üzgünüm, herhangi bir veri bulunamadı.</p>
                     </td>
                 </tr>
             @endforelse
         </tbody>
     </x-table>
 
-    <div class="flex items-center justify-between pt-5">
-        <!-- Sol Taraf: Show ve Sayfa Seçici -->
-        <div class="flex items-center space-x-2">
-            <x-select wire:model.live="pagination" class="w-16">
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="15">15</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-            </x-select>
-        </div>
-        <div class="ml-4">
+
+        <div class="m-3">
             {{ $states->links() }}
         </div>
-    </div>
-    
+
 </div>

@@ -1,16 +1,10 @@
 <!-- resources/views/admin/location/customer-table.blade.php -->
 <div>
-    <div class="flex items-center justify-between mb-4">
+    <div class="flex items-center justify-between mx-5">
         <div class="flex space-x-4">
-            <x-select wire:model.live="activeFilter" class="w-20">
-                <option value="all">Tümü</option>
-                <option value="active">Aktif</option>
-                <option value="inactive">Pasif</option>
-            </x-select>
-            <x-select wire:model.live="deletedFilter" class="w-32">
-                <option value="without">Güncel</option>
-                <option value="only">Silinmiş</option>
-            </x-select>
+            <x-paginate />
+            <x-filter-isactive />
+            <x-filter-trashed />
             <x-select wire:model.live="customer_type_filter" class="w-32">
                 <option value="">Müşteri Türü</option>
                 <option value="Bireysel">Bireysel</option>
@@ -25,7 +19,7 @@
                 <option value="Referans">Referans</option>
             </x-select>
         </div>
-        <x-input type="text" wire:model.live.debounce.300ms="search" placeholder="Ara..." />
+        <x-search />
     </div>
 
     <x-table>
@@ -124,18 +118,9 @@
         </tbody>
     </x-table>
 
-    <div class="flex items-center justify-between pt-5">
-        <div class="flex items-center space-x-2">
-            <x-select wire:model.live="pagination" class="w-16">
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="15">15</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-            </x-select>
-        </div>
-        <div class="ml-4">
+
+        <div class="m-3">
             {{ $customers->links() }}
         </div>
-    </div>
+
 </div>

@@ -1,22 +1,18 @@
 <div>
-    <div class="flex items-center justify-between mb-4 space-x-4">
-        <!-- Ara -->
-        <x-input type="text" placeholder="Ara..." wire:model.live="search" />
-<!-- Aktif/Pasif Seçimi -->
-<x-select wire:model.live="isActiveFilter" class="w-full">
-    <option value="">Aktif / Pasif</option>
-    <option value="1">Aktif</option>
-    <option value="0">Pasif</option>
-</x-select>
-        <!-- Durum Seçimi -->
-    <x-select wire:model.live="statusFilter" class="w-full">
+    <div class="flex items-center justify-between mx-5">
+        <div class="flex space-x-4">
+        <x-paginate />
+        <x-filter-isactive />
+        <x-filter-trashed />
+
+    <x-select wire:model.live="statusFilter" class="min-w-32">
         <option value="">Tüm Durumlar</option>
         <option value="Satılık">Satılık</option>
         <option value="Kiralık">Kiralık</option>
         <!-- Ek durumlar varsa buraya ekleyebilirsiniz -->
     </x-select>
         <!-- Kategori Seçimi -->
-        <x-select wire:model.live="categoryFilter" class="w-full">
+        <x-select wire:model.live="categoryFilter" class="min-w-36">
             <option value="">Tüm Kategoriler</option>
             @foreach($categories as $category)
                 <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -24,7 +20,7 @@
         </x-select>
 
         <!-- İl Seçimi -->
-        <x-select wire:model.live="stateFilter" class="w-full">
+        <x-select wire:model.live="stateFilter" class="min-w-32">
             <option value="">Tüm İller</option>
             @foreach($states as $state)
                 <option value="{{ $state->id }}">{{ $state->name }}</option>
@@ -32,7 +28,7 @@
         </x-select>
 
         <!-- İlçe Seçimi -->
-        <x-select wire:model.live="cityFilter" class="w-full" :disabled="!$stateFilter">
+        <x-select wire:model.live="cityFilter" class="min-w-32" :disabled="!$stateFilter">
             <option value="">Tüm İlçeler</option>
             @foreach($cities as $city)
                 <option value="{{ $city->id }}">{{ $city->name }}</option>
@@ -40,12 +36,14 @@
         </x-select>
 
         <!-- Bölge Seçimi -->
-        <x-select wire:model.live="districtFilter" class="w-full" :disabled="!$cityFilter">
+        <x-select wire:model.live="districtFilter" class="min-w-32" :disabled="!$cityFilter">
             <option value="">Tüm Bölgeler</option>
             @foreach($districts as $district)
                 <option value="{{ $district->id }}">{{ $district->name }}</option>
             @endforeach
         </x-select>
+    </div>
+    <x-search />
     </div>
 
     <x-table>
