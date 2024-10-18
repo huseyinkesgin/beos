@@ -106,12 +106,17 @@
 
                 <x-td>{{ $bill->payment_date }}</x-td>
                 <x-td class="italic">
-                    {{ $bill->created_at }} <br>
-                    <span class="text-red-600"> {{ $bill->updated_at }}</span>
-                    @if ($bill->deleted_at)
-                    <br><span class="text-red-600">{{ $state->deleted_at }}</span>
-                    @endif
-
+                    @if ($editableBillId === $bill->id && $editableField === 'payment_date')
+            <!-- Düzenleme modunda ise input göster -->
+            <input type="date" wire:model.defer="payment_date" wire:keydown.enter="saveField({{ $bill->id }})" />
+            <button wire:click="saveField({{ $bill->id }})">Kaydet</button>
+        @else
+            <!-- Normal modda ise tıklanabilir text göster -->
+            <span wire:click="editField({{ $bill->id }}, 'payment_date')">
+                <!-- Eğer payment_date varsa formatla, yoksa '---' göster -->
+                {{ $bill->payment_date ? \Carbon\Carbon::parse($bill->payment_date)->format('d.m.Y') : '---' }}
+            </span>
+        @endif
                 </x-td>
                 <x-td>
                     @if ($deletedFilter === 'only')

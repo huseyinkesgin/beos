@@ -113,18 +113,7 @@ class PersonnelCreate extends Component
             'isActive' => $this->isActive,
         ]);
 
-         // Adres kaydetme
-         $personnel->addresses()->create([
-            'address_line1' => $this->address_line1,
-            'address_line2' => $this->address_line2,
-            'state_id' => $this->state_id,
-            'city_id' => $this->city_id,
-            'district_id' => $this->district_id,
-            'postal_code' => $this->postal_code,
-            'address_type' => $this->address_type,
-            'is_default' => $this->is_default,
-            'isActive' => $this->isActive,
-        ]);
+        
 
         $this->dispatch('refreshTable');
         $this->dispatch('closeModal');

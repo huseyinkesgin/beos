@@ -82,4 +82,37 @@ class Portfolio extends Model
     {
         return $this->hasOne(Business::class, 'portfolio_id');
     }
+
+    public function scopeFilter($query, $search, $deletedFilter)
+    {
+        // Arama
+        $query->when($search, function ($query) use ($search) {
+            $query->where('type', 'like', '%'.$search.'%');
+        });
+
+        // Silinmiş kayıt filtreleme
+        $query->trashed($deletedFilter);
+
+        return $query;
+    }
+
+    public function scopeSortable($query, $field, $direction)
+    {
+        return $query->orderBy($field, $direction);
+    }
+
+
+    // 'type' ilişkisine dayalı bir scope
+    public function scopeOfType($query, $typeName)
+    {
+        return $query->whereHas('type', function ($query) use ($typeName) {
+            $query->where('name', $typeName);
+        });
+    }
+
+    // 'status' bilgisine dayalı bir scope
+    public function scopeOfStatus($query, $status)
+    {
+        return $query->where('status', $status);
+    }
 }

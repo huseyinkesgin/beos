@@ -14,27 +14,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-        }
-    </style>
-
     @livewireStyles
 </head>
 
-<body class="h-screen overflow-hidden">
+<body class="flex flex-col h-screen">
     <!-- Ana Flex Konteyner -->
-    <div class="flex h-full">
-
+    <div class="flex flex-grow">
         @include('layouts.parts.sidebar')
 
         <!-- Sağda kalan İçerik Alanı -->
-        <div class="w-full ml-48" :class="{ 'ml-0': !sidebarOpen }" x-transition>
-
-       @include('layouts.parts.topbar')
-
-
+        <div class="flex flex-col w-full">
+            @include('layouts.parts.topbar')
 
             <!-- Page Heading (Varsa) -->
             @if (isset($header))
@@ -46,14 +36,13 @@
             @endif
 
             <!-- Ana İçerik -->
-            <div class="m-5 h-min">
+            <div class="flex-grow m-5">
                 {{ $slot }}
             </div>
-            <!-- Ana İçerik Bitişi -->
 
-           @include('layouts.parts.footer')
+            <!-- Footer her zaman en altta kalacak -->
+            @include('layouts.parts.footer')
         </div>
-        <!-- İçerik Alanı Bitişi-->
     </div>
 
     <!-- Modals -->
@@ -64,5 +53,6 @@
     <script src="https://kit.fontawesome.com/yourkitid.js" crossorigin="anonymous"></script>
     @livewireScripts
 </body>
+
 
 </html>

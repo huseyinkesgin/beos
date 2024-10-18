@@ -1,4 +1,64 @@
 <div>
+
+        <!-- Widgetlar -->
+    <div class="grid grid-cols-6 gap-4 p-4 mb-5">
+        <!-- Toplam Satılık Portföy Sayısı -->
+        <div class="p-4 text-white bg-blue-500 rounded-lg shadow-md">
+            <h3 class="text-xl font-bold"> Satılık Arsa</h3>
+            <p class="text-2xl">{{ $totalSatilikArsa }}</p>
+        </div>
+         <!-- Toplam Satılık Portföy Sayısı -->
+         <div class="p-4 text-white bg-blue-500 rounded-lg shadow-md">
+            <h3 class="text-xl font-bold"> Satılık Fabrika</h3>
+            <p class="text-2xl">{{ $totalSatilikFabrika }}</p>
+        </div>
+         <!-- Toplam Satılık Portföy Sayısı -->
+         <div class="p-4 text-white bg-blue-500 rounded-lg shadow-md">
+            <h3 class="text-xl font-bold">Toplam Satılık Portföy</h3>
+            <p class="text-2xl">{{ $totalSatilik }}</p>
+        </div>
+
+        <!-- Toplam Kiralık Portföy Sayısı -->
+        <div class="p-4 text-white bg-green-500 rounded-lg shadow-md">
+            <h3 class="text-xl font-bold">Toplam Kiralık Portföy</h3>
+            <p class="text-2xl">{{ $totalKiralik }}</p>
+        </div>
+
+        <!-- Aktif Portföy Sayısı -->
+        <div class="p-4 text-white bg-yellow-500 rounded-lg shadow-md">
+            <h3 class="text-xl font-bold">Aktif Portföyler</h3>
+            <p class="text-2xl">{{ $totalAktif }}</p>
+        </div>
+
+        <!-- Pasif Portföy Sayısı -->
+        <div class="p-4 text-white bg-red-500 rounded-lg shadow-md">
+            <h3 class="text-xl font-bold">Pasif Portföyler</h3>
+            <p class="text-2xl">{{ $totalPasif }}</p>
+        </div>
+
+        <!-- Toplam Satılık Portföy Değeri -->
+        <div class="p-4 text-white bg-purple-500 rounded-lg shadow-md">
+            <h3 class="text-xl font-bold">Arsa Satılık Değeri</h3>
+            <p class="text-2xl">{{ number_format($totalSatilikArsaDegeri, 0) }} ₺</p>
+        </div>
+
+        <!-- Toplam Kiralık Portföy Kira Değeri -->
+        <div class="p-4 text-white bg-indigo-500 rounded-lg shadow-md">
+            <h3 class="text-xl font-bold">Toplam Kira Değeri</h3>
+            <p class="text-2xl">{{ number_format($totalKiraDegeri, 0) }} ₺</p>
+        </div>
+        <!-- Toplam Satılık Portföy Değeri -->
+        <div class="p-4 text-white bg-purple-500 rounded-lg shadow-md">
+            <h3 class="text-xl font-bold">Fabrika Satılık Değeri</h3>
+            <p class="text-2xl">{{ number_format($totalSatilikFabrikaDegeri, 0) }} ₺</p>
+        </div>
+
+        <!-- Toplam Kiralık Portföy Kira Değeri -->
+        <div class="p-4 text-white bg-indigo-500 rounded-lg shadow-md">
+            <h3 class="text-xl font-bold">Depo Satılık Değeri</h3>
+            <p class="text-2xl">{{ number_format($totalSatilikDepoDegeri, 0) }} ₺</p>
+        </div>
+    </div>
     <div class="flex items-center justify-between mx-5">
         <div class="flex space-x-4">
         <x-paginate />

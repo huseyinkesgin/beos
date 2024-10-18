@@ -15,8 +15,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('personnel_id')->constrained('personnels')->onDelete('cascade'); // personel ID
             $table->string('expense_type'); // harcama türü (market, ofis vb.)
+            $table->string('note'); // açıklama
             $table->decimal('amount', 10, 2); // harcama tutarı
             $table->string('payment_method'); // ödeme yöntemi
+            $table->date('expense_date')- // harcama tarihi
+            $table->boolean('has_receipt')->default(false); // fiş/fatura var mı
             $table->timestamps();
             $table->softDeletes();
 

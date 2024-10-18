@@ -8,7 +8,7 @@ use Laravel\Jetstream\InteractsWithBanner;
 
 class StateEdit extends Component
 {
-    use InteractsWithBanner;
+    
 
     public $stateId;
     public $name;
@@ -55,9 +55,9 @@ class StateEdit extends Component
 
         $this->dispatch('refreshTable');
         $this->dispatch('closeModal');
-        
+
         $this->dispatch('notify', title: 'Başarılı', text: 'İl başarıyla güncellendi!', type: 'success');
-       
+
         $this->reset(['stateId', 'name', 'isActive', 'note', 'open']);
     }
 
