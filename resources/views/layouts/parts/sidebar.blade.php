@@ -17,6 +17,7 @@
     <x-dropdown-menu title="Giderler" active="bills" icon="fas fa-users">
         <x-dropdown-submenu href="{{ route('bills') }}" title="Faturalar" active="bills" />
         <x-dropdown-submenu href="{{ route('personel.expense') }}" title="Ofis Harcamaları" active="personel.expense" />
+        <x-dropdown-submenu href="{{ route('personel.balance') }}" title="Nakit Girişleri" active="personel.balance" />
     </x-dropdown-menu>
 
     <!-- Kişiler Menüsü -->

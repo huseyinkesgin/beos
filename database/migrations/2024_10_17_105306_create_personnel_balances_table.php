@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('personnel_balances', function (Blueprint $table) {
             $table->id();
             $table->foreignId('personnel_id')->constrained('personnels')->onDelete('cascade'); // personel ID
-            $table->decimal('initial_balance', 10, 2); // başlangıç nakit
-            $table->decimal('current_balance', 10, 2); // mevcut nakit bakiye
+            $table->decimal('cash_in', 10, 2)->nullable(); // Nakit giriş
+            $table->decimal('cash_out', 10, 2)->nullable(); // Nakit çıkış
+            $table->decimal('balance', 10, 2)->default(0); // Otomatik hesaplanan bakiye
             $table->timestamps();
             $table->softDeletes();
 

@@ -12,6 +12,7 @@ use App\Livewire\Location\DistrictIndex;
 use App\Livewire\Portfolio\CategoryIndex;
 use App\Livewire\Portfolio\PortfolioIndex;
 use App\Livewire\Finance\PersonelExpenceIndex;
+use App\Livewire\Finance\PersonnelBalanceIndex;
 use App\Livewire\Finance\PersonnelExpenseIndex;
 
 Route::get('/', function () {
@@ -46,3 +47,5 @@ Route::get('/personnel/{id}', PersonnelShow::class)->name('personnel.show');
 
 Route::get('bills',BillIndex::class)->name('bills');
 Route::get('personel-expenses',PersonnelExpenseIndex::class)->name('personel.expense');
+
+Route::get('balances', PersonnelBalanceIndex::class)->name('personel.balance');

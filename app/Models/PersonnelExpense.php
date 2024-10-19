@@ -3,11 +3,9 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use App\Models\Personnel;
 use App\Traits\ScopesTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PersonnelExpense extends Model
 {
@@ -19,24 +17,24 @@ class PersonnelExpense extends Model
         'note',
         'amount',
         'payment_method',
-        'expense_date'
+        'expense_date',
     ];
 
-    // İlişki: Bu harcamanın ait olduğu personel
+    // Personel ilişkisi
     public function personnel()
     {
         return $this->belongsTo(Personnel::class);
     }
 
+    // Harcama tarih formatını alır
+    public function getExpenseDateAttribute($value)
+    {
+        return Carbon::parse($value)->format('d.m.Y');
+    }
 
-     public function getExpenseDateAttribute($value)
-     {
-         return Carbon::parse($value)->format('d.m.Y');
-     }
-
-     public function setExpenseDateAttribute($value)
-{
-    $this->attributes['expense_date'] = Carbon::parse($value)->format('Y-m-d');
-}
-
+    // Harcama tarihini veritabanına uygun formatta kaydeder
+    public function setExpenseDateAttribute($value)
+    {
+        $this->attributes['expense_date'] = Carbon::parse($value)->format('Y-m-d');
+    }
 }

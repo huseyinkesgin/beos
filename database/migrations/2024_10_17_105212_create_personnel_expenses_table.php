@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('note'); // açıklama
             $table->decimal('amount', 10, 2); // harcama tutarı
             $table->string('payment_method'); // ödeme yöntemi
-            $table->date('expense_date')- // harcama tarihi
+            $table->date('expense_date'); // harcama tarihi
             $table->boolean('has_receipt')->default(false); // fiş/fatura var mı
             $table->timestamps();
             $table->softDeletes();

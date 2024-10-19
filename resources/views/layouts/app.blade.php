@@ -50,7 +50,7 @@
 
     <!-- Bildirim ve Livewire Scriptleri -->
     <x-bildirim />
-    <script src="https://kit.fontawesome.com/yourkitid.js" crossorigin="anonymous"></script>
+    {{-- <script src="https://kit.fontawesome.com/yourkitid.js" crossorigin="anonymous"></script> --}}
     @livewireScripts
 </body>
 

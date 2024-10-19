@@ -4,39 +4,39 @@ namespace App\Livewire\Finance;
 
 use Carbon\Carbon;
 use Livewire\Component;
+use App\Models\Personnel;
+use App\Models\PersonnelBalance;
 use Livewire\WithPagination;
 use App\Models\PersonnelExpense;
 
 class PersonnelExpenseTable extends Component
 {
-
-
     use WithPagination;
 
     public $search = '';
-
     public $deletedFilter = 'without';
-
     public $pagination = 10;
-
     public $sortField = 'created_at';
-
     public $sortDirection = 'asc';
-
 
     public $thisMonthTotals = [];
     public $thisYearTotals = [];
     public $paymentMethodMonthTotals = [];
     public $paymentMethodYearTotals = [];
+    public $personnels;
 
+    protected $listeners = ['refreshTable' => '$refresh']; // Tabloyu günceller
 
-    protected $listeners = ['refreshTable' => '$refresh']; // Tabloyu güncelleme
     public function mount()
     {
+        // Totalleri hesaplama fonksiyonları
         $this->calculateTotals();
         $this->calculatePaymentMethodTotals();
+
+        $this->personnels = Personnel::all();
     }
 
+    // Harcama türüne göre ay ve yıl toplamlarını hesapla
     public function calculateTotals()
     {
         $currentYear = Carbon::now()->year;
@@ -57,6 +57,8 @@ class PersonnelExpenseTable extends Component
                 ->sum('amount');
         }
     }
+
+    // Ödeme yöntemine göre ay ve yıl toplamlarını hesapla
     public function calculatePaymentMethodTotals()
     {
         $currentYear = Carbon::now()->year;
@@ -78,8 +80,7 @@ class PersonnelExpenseTable extends Component
         }
     }
 
-
-
+    // Sıralama fonksiyonu
     public function sortBy($field)
     {
         if ($this->sortField === $field) {
@@ -105,16 +106,14 @@ class PersonnelExpenseTable extends Component
         $this->resetPage();
     }
 
-
-
-
+    // Render işlemi
     public function render()
     {
         $expenses = PersonnelExpense::where('expense_type', 'like', '%' . $this->search . '%')
         ->orWhereHas('personnel', function ($query) {
             $query->where('first_name', 'like', '%' . $this->search . '%');
         })
-        ->orderBy('expense_date', 'desc') // Tarihe göre sıralama
+        ->orderBy($this->sortField, $this->sortDirection)
         ->paginate($this->pagination);
 
         return view('admin.finance.personnel-expense-table', [
@@ -123,6 +122,7 @@ class PersonnelExpenseTable extends Component
             'thisYearTotals' => $this->thisYearTotals,
             'paymentMethodMonthTotals' => $this->paymentMethodMonthTotals,
             'paymentMethodYearTotals' => $this->paymentMethodYearTotals,
+            'personnels' => $this->personnels
         ]);
     }
 }
