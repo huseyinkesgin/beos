@@ -2,7 +2,7 @@
     <x-dark-button class="" wire:click="$dispatch('openCreateModal')">
         Yeni Personel Ekle
     </x-dark-button>
-    <x-dialog-modal wire:model="open">
+    <x-dialog-modal wire:model="open" maxWidth="md">
         <x-slot name="title">
             Yeni Personel Oluştur
         </x-slot>
@@ -55,7 +55,7 @@
                     </div>
                 </div>
                 <!-- Adres Bilgileri -->
-              
+
 
             </x-form>
         </x-slot>

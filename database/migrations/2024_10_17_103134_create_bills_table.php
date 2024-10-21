@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('payment_method'); // ödeme yöntemi
             $table->string('bill_no'); // fatura no
             $table->boolean('is_recurring')->default(true); // düzenli fatura mı
-            $table->string('status')->default('Ödenecek');
-            $table->date('payment_date')->nullable(); 
+            $table->enum('status',['Ödenecek','Ödendi'])->default('Ödenecek');
+            $table->date('payment_date')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

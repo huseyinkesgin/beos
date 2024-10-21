@@ -64,23 +64,23 @@ class Bill extends Model
         return $query->orderBy($field, $direction);
     }
 
-    // bill_date için erişimci (Accessor)
-    public function getBillDateAttribute($value)
-    {
-        return Carbon::parse($value)->format('d.m.Y');
-    }
+    // // bill_date için erişimci (Accessor)
+    // public function getBillDateAttribute($value)
+    // {
+    //     return Carbon::parse($value)->format('d.m.Y');
+    // }
 
-    // last_date için erişimci (Accessor)
-    public function getLastDateAttribute($value)
-    {
-        return Carbon::parse($value)->format('d.m.Y');
-    }
+    // // last_date için erişimci (Accessor)
+    // public function getLastDateAttribute($value)
+    // {
+    //     return Carbon::parse($value)->format('d.m.Y');
+    // }
 
-    // payment_date için erişimci (Accessor)
-    public function getPaymentDateAttribute($value)
-    {
-        return Carbon::parse($value)->format('d.m.Y');
-    }
+    // // payment_date için erişimci (Accessor)
+    // public function getPaymentDateAttribute($value)
+    // {
+    //     return Carbon::parse($value)->format('d.m.Y');
+    // }
 
     public function setBillNoAttribute($value)
     {

@@ -1,5 +1,5 @@
  {{-- resources/views/livewire/location/state-edit.blade.php --}}
-<x-dialog-modal wire:model="open">
+<x-dialog-modal wire:model="open" maxWidth="sm">
     <x-slot name="title">
         İl Düzenle
     </x-slot>
@@ -22,7 +22,7 @@
             </div>
 
         </x-form>
-       
+
     </x-slot>
 
     <x-slot name="footer">

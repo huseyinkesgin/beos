@@ -49,3 +49,4 @@ Route::get('bills',BillIndex::class)->name('bills');
 Route::get('personel-expenses',PersonnelExpenseIndex::class)->name('personel.expense');
 
 Route::get('balances', PersonnelBalanceIndex::class)->name('personel.balance');
+Route::get('vehicles', PersonnelBalanceIndex::class)->name('vehicles');

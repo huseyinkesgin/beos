@@ -2,9 +2,10 @@
 
 namespace App\Livewire\People;
 
+use Livewire\Component;
 use App\Models\Customer;
 use App\Traits\HasSortable;
-use Livewire\Component;
+use Livewire\Attributes\On;
 use Livewire\WithPagination;
 
 class CustomerTable extends Component
@@ -100,7 +101,7 @@ class CustomerTable extends Component
         $customer = Customer::withTrashed()->findOrFail($id);
         $customer->restore();
         $this->dispatch('notify', title: 'Başarılı', text: 'Müşteri başarıyla çöp kutusundan kurtarıldı!', type: 'success');
-        $this->dispatch('refreshTable');
+        $this->dispatch('customer-trashed');
     }
 
     public function forceDelete($id)
@@ -108,10 +109,15 @@ class CustomerTable extends Component
         $customer = Customer::withTrashed()->findOrFail($id);
         $customer->forceDelete();
 
+        $this->dispatch('customer-deleted');
         $this->dispatch('notify', title: 'Başarılı', text: 'Müşteri başarıyla tamamen silindi!', type: 'success');
-        $this->dispatch('refreshTable');
     }
 
+
+    #[On('customer-created')]
+    #[On('customer-edited')]
+    #[On('customer-trashed')]
+    #[On('customer-deleted')]
     public function render()
     {
         $customers = Customer::filter(

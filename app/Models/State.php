@@ -13,8 +13,6 @@ class State extends Model
 {
     use ScopesTrait,SoftDeletes;
 
-
-
     protected $fillable = [
 
         'name',
@@ -34,24 +32,18 @@ class State extends Model
 
     public function scopeFilter($query, $search, $activeFilter, $deletedFilter)
     {
-        // Arama
         $query->when($search, function ($query) use ($search) {
             $query->where('name', 'like', '%'.$search.'%');
         });
 
-        // Aktif/Pasif filtreleme
         $query->when($activeFilter !== 'all', function ($query) use ($activeFilter) {
             $query->where('isActive', $activeFilter === 'active');
         });
 
-        // Silinmiş kayıt filtreleme
         $query->trashed($deletedFilter);
 
         return $query;
     }
 
-    public function scopeSortable($query, $field, $direction)
-    {
-        return $query->orderBy($field, $direction);
-    }
+
 }

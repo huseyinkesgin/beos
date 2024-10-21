@@ -1,5 +1,5 @@
  {{-- resources/views/livewire/location/city-edit.blade.php --}}
- <x-dialog-modal wire:model="open">
+ <x-dialog-modal wire:model="open" maxWidth="sm">
     <x-slot name="title">
         Bölge Düzenle
     </x-slot>
@@ -21,8 +21,8 @@
                 <x-label>İlçe Seç</x-label>
                 <x-select id="city_id" wire:model.live="city_id" class="w-full px-4 py-2 rounded">
                     <option value="">Seçiniz</option>
-                    @foreach ($cities as $city )
-                    <option value="{{ $city->id }}">{{ $city->name }}</option>
+                    @foreach ($cities as $city)
+                        <option value="{{ $city->id }}" @if($city->id == $city_id) selected @endif>{{ $city->name }}</option>
                     @endforeach
                 </x-select>
             </div>

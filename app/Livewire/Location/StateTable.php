@@ -3,9 +3,16 @@
 namespace App\Livewire\Location;
 
 use App\Models\State;
-use App\Traits\HasSortable;
 use Livewire\Component;
+use App\Traits\HasSortable;
+use App\Traits\SearchReset;
+use Livewire\Attributes\On;
 use Livewire\WithPagination;
+use App\Traits\PaginateReset;
+use App\Traits\ActiveFilterReset;
+use App\Traits\DeleteFilterReset;
+use App\Traits\ToggleActiveTrait;
+use App\Traits\RestoreAndDeleteTrait;
 use Laravel\Jetstream\InteractsWithBanner;
 
 class StateTable extends Component
@@ -13,89 +20,24 @@ class StateTable extends Component
 
     use WithPagination;
     use HasSortable;
+    use ToggleActiveTrait,RestoreAndDeleteTrait;
+    use SearchReset, DeleteFilterReset, ActiveFilterReset, PaginateReset;
 
+    /* ------------------------- Tablo Dışı Özellikler ------------------------- */
     public $search = '';
     public $activeFilter = 'all';
     public $deletedFilter = 'without';
     public $pagination = 10;
-
-    protected $listeners = ['refreshTable' => '$refresh'];
-
-    public $sortField = 'created_at'; // Varsayılan sıralama alanı
-    public $sortDirection = 'asc'; // Varsayılan sıralama yönü
-
-    public function sortBy($field)
-    {
-        if ($this->sortField === $field) {
-            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
-        } else {
-            $this->sortField = $field;
-            $this->sortDirection = 'asc';
-        }
-    }
-
-    public function scopeSortable($query, $field, $direction)
-    {
-        return $query->orderBy($field, $direction);
-    }
-
-    // Sıralama okunu döndürmek için metod
-    public function getSortIcon($field)
-    {
-        if ($this->sortField === $field) {
-            return $this->sortDirection === 'asc' ? '▲' : '▼';
-        }
-        return '';
-    }
-
-    function toggleActive($stateId)
-    {
-        $state = State::find($stateId);
-        if ($state) {
-            $state->isActive = !$state->isActive;
-            $state->save();
-            $this->dispatch('notify', title: 'Başarılı', text: 'İlin durumu başarlı bir şekilde güncellendi!', type: 'success');
-        }
-    }
+    public $sortField = 'created_at';
+    public $sortDirection = 'desc';
+    public $modelClass = State::class;
 
 
-    public function updatingSearch()
-    {
-        $this->resetPage();
-    }
 
-    public function updatingActiveFilter()
-    {
-        $this->resetPage();
-    }
-
-    public function updatingDeletedFilter()
-    {
-        $this->resetPage();
-    }
-
-    public function updatingPagination()
-    {
-        $this->resetPage();
-    }
-
-    public function restore($id)
-    {
-        $state = State::withTrashed()->findOrFail($id);
-        $state->restore();
-        $this->dispatch('notify', title: 'Başarılı', text: 'İl başarıyla çöp kutusundan kurtarıldı!', type: 'success');
-        $this->dispatch('refreshTable');
-    }
-
-    public function forceDelete($id)
-    {
-        $state = State::withTrashed()->findOrFail($id);
-        $state->forceDelete(); // Kalıcı olarak silme
-
-        $this->dispatch('notify', title: 'Başarılı', text: 'İl başarıyla tamamen silindi!', type: 'success');
-        $this->dispatch('refreshTable');
-    }
-
+    #[On('state-created')]
+    #[On('state-edited')]
+    #[On('state-trashed')]
+    #[On('state-deleted')]
     public function render()
     {
         $states = State::filter($this->search, $this->activeFilter, $this->deletedFilter)
@@ -107,6 +49,3 @@ class StateTable extends Component
         ]);
     }
 }
-
-
-

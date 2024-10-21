@@ -2,101 +2,39 @@
 
 namespace App\Livewire\Location;
 
+use Livewire\Component;
 use App\Models\District;
 use App\Traits\HasSortable;
-use Livewire\Component;
+use App\Traits\SearchReset;
+use Livewire\Attributes\On;
 use Livewire\WithPagination;
-use Laravel\Jetstream\InteractsWithBanner;
+use App\Traits\PaginateReset;
+use App\Traits\ActiveFilterReset;
+use App\Traits\DeleteFilterReset;
+use App\Traits\ToggleActiveTrait;
+use App\Traits\RestoreAndDeleteTrait;
 
 class DistrictTable extends Component
 {
 
     use WithPagination;
-    use InteractsWithBanner;
     use HasSortable;
+    use ToggleActiveTrait,RestoreAndDeleteTrait;
+    use SearchReset, DeleteFilterReset, ActiveFilterReset, PaginateReset;
 
+    /* ------------------------- Tablo Dışı Özellikler ------------------------- */
     public $search = '';
     public $activeFilter = 'all';
     public $deletedFilter = 'without';
     public $pagination = 10;
+    public $sortField = 'created_at';
+    public $sortDirection = 'desc';
+    public $modelClass = District::class;
 
-    protected $listeners = ['refreshTable' => '$refresh'];
-
-    public $sortField = 'created_at'; // Varsayılan sıralama alanı
-    public $sortDirection = 'asc'; // Varsayılan sıralama yönü
-
-    public function sortBy($field)
-    {
-        if ($this->sortField === $field) {
-            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
-        } else {
-            $this->sortField = $field;
-            $this->sortDirection = 'asc';
-        }
-    }
-
-    public function scopeSortable($query, $field, $direction)
-    {
-        return $query->orderBy($field, $direction);
-    }
-
-    // Sıralama okunu döndürmek için metod
-    public function getSortIcon($field)
-    {
-        if ($this->sortField === $field) {
-            return $this->sortDirection === 'asc' ? '▲' : '▼';
-        }
-        return '';
-    }
-
-    function toggleActive($districtId)
-    {
-        $district = District::find($districtId);
-        if ($district) {
-            $district->isActive = !$district->isActive;
-            $district->save();
-            $this->dispatch('notify', title: 'Başarılı', text: 'Bölge durumu başarlı bir şekilde güncellendi!', type: 'success');
-        }
-    }
-
-
-    public function updatingSearch()
-    {
-        $this->resetPage();
-    }
-
-    public function updatingActiveFilter()
-    {
-        $this->resetPage();
-    }
-
-    public function updatingDeletedFilter()
-    {
-        $this->resetPage();
-    }
-
-    public function updatingPagination()
-    {
-        $this->resetPage();
-    }
-
-    public function restore($id)
-    {
-        $district = District::withTrashed()->findOrFail($id);
-        $district->restore();
-        $this->dispatch('notify', title: 'Başarılı', text: 'Bölge başarıyla çöp kutusundan kurtarıldı!', type: 'success');
-        $this->dispatch('refreshTable');
-    }
-
-    public function forceDelete($id)
-    {
-        $district = District::withTrashed()->findOrFail($id);
-        $district->forceDelete(); // Kalıcı olarak silme
-
-        $this->dispatch('notify', title: 'Başarılı', text: 'Bölge başarıyla tamamen silindi!', type: 'success');
-        $this->dispatch('refreshTable');
-    }
-
+    #[On('district-created')]
+    #[On('district-edited')]
+    #[On('district-trashed')]
+    #[On('district-deleted')]
     public function render()
     {
         $districts = District::filter($this->search, $this->activeFilter, $this->deletedFilter)

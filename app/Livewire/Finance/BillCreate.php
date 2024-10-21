@@ -4,6 +4,7 @@ namespace App\Livewire\Finance;
 
 use App\Models\Bill;
 use Livewire\Component;
+use Livewire\Attributes\On;
 
 class BillCreate extends Component
 {
@@ -14,17 +15,16 @@ class BillCreate extends Component
     protected $rules = [
         'type' => 'required|string',
         'amount' => 'required|numeric',
-        'payment_date' => 'required|date',
         'payment_method' => 'required|string',
         'bill_no' => 'required|string',
         'last_date' => 'required|date',
         'bill_date' => 'required|date',
         'is_recurring' => 'boolean',
-        'status' => 'nullable',
+
     ];
 
-    protected $listeners = ['openCreateModal' => 'openModal'];
 
+    #[On('openCreateModal')]
     public function openModal()
     {
         $this->open = true;
@@ -37,17 +37,15 @@ class BillCreate extends Component
         Bill::create([
             'type' => $this->type,
             'amount' => $this->amount,
-            'payment_date' => $this->payment_date,
             'payment_method' => $this->payment_method,
             'last_date' => $this->last_date,
             'bill_date' => $this->bill_date,
             'is_recurring' => $this->is_recurring,
             'bill_no' => $this->bill_no,
-            'status' => $this->status,
+            // 'status' => $this->status,
         ]);
 
-        $this->dispatch('refreshTable');
-        $this->dispatch('closeModal');
+        $this->dispatch('bill-created');
         $this->dispatch('notify', title: 'Başarılı', text: 'Fatura başarıyla kayıt edildi!', type: 'success');
         $this->reset();
     }

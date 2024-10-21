@@ -2,20 +2,19 @@
 
 namespace App\Livewire\Location;
 
-use App\Models\District;
 use Livewire\Component;
+use App\Models\District;
+use Livewire\Attributes\On;
 use Laravel\Jetstream\InteractsWithBanner;
 
 class DistrictDelete extends Component
 {
 
-    use InteractsWithBanner;
-
     public $districtId;
     public $open = false;
 
-    protected $listeners = ['openDeleteModal' => 'confirmDelete'];
 
+    #[On('openDeleteModal')]
     public function confirmDelete($id)
     {
         $this->districtId = $id;
@@ -25,10 +24,10 @@ class DistrictDelete extends Component
     public function delete()
     {
         $district = District::findOrFail($this->districtId);
-        $district->delete(); // Soft delete işlemi
+        $district->delete();
 
-        $this->dispatch('refreshTable');
-        $this->dispatch('closeModal');
+
+        $this->dispatch('district-trashed');
         $this->dispatch('notify', title: 'Başarılı', text: 'Bölge başarılı bir şekilde çöp kutusuna gönderidi!', type: 'success');
         $this->reset(['districtId', 'open']);
     }

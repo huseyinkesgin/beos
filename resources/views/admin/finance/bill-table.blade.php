@@ -93,9 +93,9 @@
                         </x-select>
                     @else
                         <span wire:click="toggleSelectBox({{ $bill->id }})" class="cursor-pointer">
-                            @if ($bill->status === 'Ödenecek')
+                            @if ($bill->status == 'Ödenecek')
                                 <x-badge-red>Ödenecek</x-badge-red>
-                            @elseif ($bill->status === 'Ödendi')
+                            @elseif ($bill->status == 'Ödendi')
                                 <x-badge-green>Ödendi</x-badge-green>
                             @endif
                         </span>
@@ -104,20 +104,30 @@
                     </div>
                 </x-td>
 
-                <x-td>{{ $bill->payment_date }}</x-td>
+
                 <x-td class="italic">
-                    @if ($editableBillId === $bill->id && $editableField === 'payment_date')
-            <!-- Düzenleme modunda ise input göster -->
-            <input type="date" wire:model.defer="payment_date" wire:keydown.enter="saveField({{ $bill->id }})" />
-            <button wire:click="saveField({{ $bill->id }})">Kaydet</button>
-        @else
-            <!-- Normal modda ise tıklanabilir text göster -->
-            <span wire:click="editField({{ $bill->id }}, 'payment_date')">
-                <!-- Eğer payment_date varsa formatla, yoksa '---' göster -->
-                {{ $bill->payment_date ? \Carbon\Carbon::parse($bill->payment_date)->format('d.m.Y') : '---' }}
-            </span>
-        @endif
+                    @if ($editableBillId === $bill->id && $editableField == 'payment_date')
+                        <!-- Sadece Ödendi durumunda tarih input göster -->
+                        @if ($bill->status == 'Ödendi')
+                            <input type="date" wire:model.defer="payment_date" wire:keydown.enter="saveField({{ $bill->id }})" />
+                            <button wire:click="saveField({{ $bill->id }})">Kaydet</button>
+                        @else
+                            <!-- Eğer Ödenecek ise '---' göster ve input alanını gizle -->
+                            <span>---</span>
+                        @endif
+                    @else
+                        <!-- Tıklanabilir text göster, sadece Ödendi durumunda tarihi göster -->
+                        @if ($bill->status == 'Ödendi')
+                            <span wire:click="editField({{ $bill->id }}, 'payment_date')">
+                                {{ $bill->payment_date ? \Carbon\Carbon::parse($bill->payment_date)->format('d.m.Y') : '---' }}
+                            </span>
+                        @else
+                            <!-- Eğer Ödenecek ise '---' göster -->
+                            <span>---</span>
+                        @endif
+                    @endif
                 </x-td>
+                <x-td>{{ $bill->updated_at }}</x-td>
                 <x-td>
                     @if ($deletedFilter === 'only')
                     <x-secondary-button wire:click="restore('{{ $bill->id }}')" wire:loading.attr="disabled">

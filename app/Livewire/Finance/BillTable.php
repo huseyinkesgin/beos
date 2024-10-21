@@ -3,34 +3,39 @@
 namespace App\Livewire\Finance;
 
 use App\Models\Bill;
-use App\Traits\HasSortable;
 use Livewire\Component;
+use App\Traits\HasSortable;
+use App\Traits\SearchReset;
+use Livewire\Attributes\On;
 use Livewire\WithPagination;
+use App\Traits\PaginateReset;
+use App\Traits\ActiveFilterReset;
+use App\Traits\DeleteFilterReset;
+use App\Traits\ToggleActiveTrait;
+use App\Traits\RestoreAndDeleteTrait;
 
 class BillTable extends Component
 {
-    use HasSortable;
     use WithPagination;
+    use HasSortable;
+    use ToggleActiveTrait,RestoreAndDeleteTrait;
+    use SearchReset, DeleteFilterReset, ActiveFilterReset, PaginateReset;
+
+    public $search = '';
+    public $activeFilter = 'all';
+    public $deletedFilter = 'without';
+    public $pagination = 10;
+    public $sortField = 'created_at';
+    public $sortDirection = 'desc';
+    public $modelClass = Bill::class;
 
     public $selectedBillId = null;
-
     public $showSelectBox = false;
 
     public $this_month_unpaid_total = 0;
-
     public $this_month_paid_total = 0;
-
     public $this_year_paid_total = 0;
 
-    public $search = '';
-
-    public $deletedFilter = 'without';
-
-    public $pagination = 10;
-
-    public $sortField = 'created_at';
-
-    public $sortDirection = 'asc';
 
      // Yeni özellikler:
      public $editableBillId = null;  // Hangi satır düzenleniyor
@@ -39,7 +44,7 @@ class BillTable extends Component
 
 
 
-    protected $listeners = ['refreshTable' => '$refresh', 'refreshTotals' => 'calculateTotals'];
+    // protected $listeners = ['refreshTable' => '$refresh', 'refreshTotals' => 'calculateTotals'];
 
     public function mount()
     {
@@ -51,15 +56,7 @@ class BillTable extends Component
         $this->calculateTotals();
     }
 
-    public function sortBy($field)
-    {
-        if ($this->sortField === $field) {
-            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
-        } else {
-            $this->sortField = $field;
-            $this->sortDirection = 'asc';
-        }
-    }
+
 
     public function toggleSelectBox($billId)
     {
@@ -67,39 +64,7 @@ class BillTable extends Component
         $this->showSelectBox = ! $this->showSelectBox;
     }
 
-    public function updatingSearch()
-    {
-        $this->resetPage();
-    }
 
-    public function updatingDeletedFilter()
-    {
-        $this->resetPage();
-    }
-
-    public function updatingPagination()
-    {
-        $this->resetPage();
-    }
-
-    public function restore($id)
-    {
-        $bill = Bill::withTrashed()->findOrFail($id);
-        $bill->restore();
-        $this->dispatch('notify', title: 'Başarılı', text: 'Fatura başarıyla çöp kutusundan kurtarıldı!', type: 'success');
-        $this->dispatch('refreshTable');
-        $this->calculateTotals(); // Recalculate after restoring a bill
-    }
-
-    public function forceDelete($id)
-    {
-        $bill = Bill::withTrashed()->findOrFail($id);
-        $bill->forceDelete();
-
-        $this->dispatch('notify', title: 'Başarılı', text: 'Fatura başarıyla tamamen silindi!', type: 'success');
-        $this->dispatch('refreshTable');
-        $this->calculateTotals(); // Recalculate after permanent deletion
-    }
 
      // Satır içi düzenleme başlatmak için
      public function editField($billId, $field)
@@ -115,15 +80,15 @@ class BillTable extends Component
      {
          $bill = Bill::find($billId);
 
-         if ($this->editableField === 'payment_date') {
-             // Eğer payment_date boş değilse, Carbon ile formatla ve kaydet
-             $bill->payment_date = $this->payment_date ? \Carbon\Carbon::parse($this->payment_date) : null;
-         }
+         if ($this->editableField === 'payment_date' && $bill->status == 'Ödendi') {
+            // Eğer payment_date boş değilse, Carbon ile formatla ve kaydet
+            $bill->payment_date = $this->payment_date ? \Carbon\Carbon::parse($this->payment_date) : null;
+        }
 
          $bill->save();
          $this->editableBillId = null;
          $this->editableField = null;
-         $this->calculateTotals(); // Kaydettikten sonra toplamları güncelle
+
          $this->dispatch('notify', title: 'Başarılı', text: 'Ödeme tarihi başarıyla güncellendi!', type: 'success');
      }
 
@@ -156,13 +121,13 @@ class BillTable extends Component
         $bill = Bill::findOrFail($billId);
         $bill->status = $newStatus;
 
-        if ($newStatus === 'Ödendi') {
+        if ($newStatus == 'Ödendi') {
             // Ödendi olduğunda ödeme tarihini bugünün tarihi yapıyoruz
             $bill->payment_date = now();
-        } elseif ($newStatus === 'Ödenecek') {
+        } elseif ($newStatus == 'Ödenecek') {
             // Ödenecek olduğunda ödeme tarihini sıfırlamayın, mevcut haliyle bırakın
             // İsteğe bağlı olarak null yapabilirsiniz ancak hesaplamalar etkilenir
-            // $bill->payment_date = null;
+             $bill->payment_date = null;
         }
 
         $bill->save();
@@ -172,15 +137,19 @@ class BillTable extends Component
         $this->showSelectBox = false;
 
         $this->dispatch('notify', title: 'Başarılı', text: 'Fatura durumu güncellendi!', type: 'success');
-        $this->dispatch('refreshTable');
+        $this->dispatch('bill-edited');
     }
 
+    #[On('bill-created')]
+    #[On('bill-edited')]
+    #[On('bill-trashed')]
+    #[On('bill-deleted')]
     public function render()
     {
         $bills = Bill::filter($this->search, $this->deletedFilter)
             ->sortable($this->sortField, $this->sortDirection)
             ->paginate($this->pagination);
-
+            $this->calculateTotals(); //
         return view('admin.finance.bill-table', [
             'bills' => $bills,
             'this_month_unpaid_total' => $this->this_month_unpaid_total,

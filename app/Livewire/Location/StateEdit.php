@@ -4,19 +4,16 @@ namespace App\Livewire\Location;
 
 use App\Models\State;
 use Livewire\Component;
-use Laravel\Jetstream\InteractsWithBanner;
+use Livewire\Attributes\On;
 
 class StateEdit extends Component
 {
-    
+
+    public $name , $isActive = true, $note;
 
     public $stateId;
-    public $name;
-    public $isActive;
-    public $note;
     public $open = false;
 
-    protected $listeners = ['openEditModal' => 'loadState'];
 
     protected function rules()
     {
@@ -26,6 +23,8 @@ class StateEdit extends Component
             'note' => 'nullable|string',
         ];
     }
+
+    #[On('openEditModal')]
     public function openEditModal($id)
     {
         $this->loadState($id);
@@ -53,8 +52,7 @@ class StateEdit extends Component
             'note' => $this->note,
         ]);
 
-        $this->dispatch('refreshTable');
-        $this->dispatch('closeModal');
+        $this->dispatch('state-edited');
 
         $this->dispatch('notify', title: 'Başarılı', text: 'İl başarıyla güncellendi!', type: 'success');
 

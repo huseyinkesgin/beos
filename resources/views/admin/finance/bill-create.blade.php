@@ -1,10 +1,10 @@
 {{-- resources/views/livewire/location/state-create.blade.php --}}
 <div>
 
-    <x-dark-button class="" wire:click="$dispatch('openCreateModal')">
+    <x-dark-button wire:click="$dispatch('openCreateModal')">
         Yeni Fatura Ekle
     </x-dark-button>
-    <x-dialog-modal wire:model="open">
+    <x-dialog-modal wire:model="open" maxWidth="md">
         <x-slot name="title">
             Yeni Fatura Oluştur
         </x-slot>
@@ -77,7 +77,7 @@
                 </div>
 
 
-
+{{--
                 <div class="flex flex-row py-3 space-x-3">
                     <!-- status -->
                     <div class="w-full">
@@ -91,13 +91,7 @@
                         <x-input-error for="status" class="mt-2" />
                     </div>
 
-                    <!-- payment_date -->
-                    <div class="w-full">
-                        <x-label for="payment_date" value="Ödenme Tarihi" />
-                        <x-input type="date" id="payment_date" wire:model.live="payment_date" class="w-full" />
-                        <x-input-error for="payment_date" />
-                    </div>
-                </div>
+                </div> --}}
 
 
 

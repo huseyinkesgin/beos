@@ -3,7 +3,7 @@
 
 <div>
    <!-- Modal -->
-   <x-dialog-modal wire:model="open">
+   <x-dialog-modal wire:model="open" maxWidth="md">
     <x-slot name="title">
         Yeni Müşteri Oluştur
     </x-slot>

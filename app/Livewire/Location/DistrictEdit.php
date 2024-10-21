@@ -3,26 +3,18 @@
 namespace App\Livewire\Location;
 
 use App\Models\City;
-use App\Models\District;
 use App\Models\State;
-use Laravel\Jetstream\InteractsWithBanner;
 use Livewire\Component;
+use App\Models\District;
+use Livewire\Attributes\On;
 
 class DistrictEdit extends Component
 {
-    use InteractsWithBanner;
-
+    public $state_id , $city_id, $name, $isActive = true, $note;
     public $states;
-    public $cities;
+    public $cities = [];
     public $districtId;
-    public $state_id;
-    public $city_id;
-    public $name;
-    public $isActive;
-    public $note;
     public $open = false;
-
-    protected $listeners = ['openEditModal' => 'loadDistrict'];
 
     protected function rules()
     {
@@ -37,10 +29,15 @@ class DistrictEdit extends Component
 
     public function mount()
     {
-        $this->initializeStates();
-        $this->resetCities();
+        $this->states = State::active()->get();
+
+        // Eğer district düzenleme modundaysa mevcut state ve city bilgilerini yükleyelim
+        if ($this->districtId) {
+            $this->cities = City::where('state_id', $this->state_id)->get();
+        }
     }
 
+    #[On('openEditModal')]
     public function openEditModal($id)
     {
         $this->loadDistrict($id);
@@ -50,72 +47,29 @@ class DistrictEdit extends Component
     public function loadDistrict($id)
     {
         $district = District::findOrFail($id);
-        $this->setDistrict($district);
-        $this->loadCitiesByState($this->state_id);
-        $this->open = true;
-    }
-
-    public function updatedStateId($value)
-    {
-        $this->loadCitiesByState($value);
-        $this->city_id = null; // İl değiştiğinde ilçe seçimini sıfırla
-    }
-
-    public function save()
-    {
-        $this->validate();
-        $this->updateDistrict();
-        $this->dispatchEvents();
-        $this->resetForm();
-    }
-
-    public function render()
-    {
-        return view('admin.location.district-edit');
-    }
-
-    /**
-     * Initialize the states list.
-     */
-    private function initializeStates()
-    {
-        $this->states = State::active()->get();
-    }
-
-    /**
-     * Load the cities based on the selected state ID.
-     */
-    private function loadCitiesByState($stateId)
-    {
-        $this->cities = City::where('state_id', $stateId)->get();
-    }
-
-    /**
-     * Reset the cities collection.
-     */
-    private function resetCities()
-    {
-        $this->cities = collect();
-    }
-
-    /**
-     * Set the attributes for the district.
-     */
-    private function setDistrict(District $district)
-    {
         $this->districtId = $district->id;
         $this->state_id = $district->state_id;
         $this->city_id = $district->city_id;
         $this->name = $district->name;
         $this->isActive = $district->isActive;
         $this->note = $district->note;
+
+        // Seçili state'e göre şehirleri yükleyelim
+        $this->cities = City::where('state_id', $this->state_id)->get();
+        $this->open = true;
     }
 
-    /**
-     * Update the district details in the database.
-     */
-    private function updateDistrict()
+    public function updatedStateId($value)
     {
+        // State değiştirildiğinde, ilgili şehirleri yükleyelim
+        $this->cities = City::where('state_id', $value)->get();
+        $this->city_id = null; // Şehir seçimini sıfırlıyoruz
+    }
+
+    public function save()
+    {
+        $this->validate();
+
         $district = District::findOrFail($this->districtId);
         $district->update([
             'state_id' => $this->state_id,
@@ -124,23 +78,14 @@ class DistrictEdit extends Component
             'isActive' => $this->isActive,
             'note' => $this->note,
         ]);
-    }
 
-    /**
-     * Dispatch events after saving.
-     */
-    private function dispatchEvents()
-    {
-        $this->dispatch('refreshTable');
-        $this->dispatch('closeModal');
+        $this->dispatch('district-edited');
         $this->dispatch('notify', title: 'Başarılı', text: 'Bölge başarıyla güncellendi!', type: 'success');
+        $this->reset(['state_id', 'city_id', 'name', 'isActive', 'note', 'open']);
     }
 
-    /**
-     * Reset the form to its initial state.
-     */
-    private function resetForm()
+    public function render()
     {
-        $this->reset(['districtId', 'state_id', 'city_id', 'name', 'isActive', 'note', 'open']);
+        return view('admin.location.district-edit');
     }
 }

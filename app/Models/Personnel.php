@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use App\Models\Address;
 use App\Traits\ScopesTrait;
 use App\Models\PersonnelBalance;
 use App\Models\PersonnelExpense;
@@ -32,6 +33,34 @@ class Personnel extends Model
     public function balance()
     {
         return $this->hasMany(PersonnelBalance::class);
+    }
+
+    public function addresses()
+    {
+        return $this->morphMany(Address::class, 'addressable');
+    }
+
+
+    public function scopeFilter($query, $search, $activeFilter, $deletedFilter)
+    {
+       // Arama
+    $query->when($search, function ($query) use ($search) {
+        $query->where('name', 'like', '%' . $search . '%')
+
+            ->orWhereHas('city', function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%');
+            });
+    });
+
+        // Aktif/Pasif filtreleme
+        $query->when($activeFilter !== 'all', function ($query) use ($activeFilter) {
+            $query->where('isActive', $activeFilter === 'active');
+        });
+
+        // Silinmiş kayıt filtreleme
+        $query->trashed($deletedFilter);
+
+        return $query;
     }
 
 

@@ -4,24 +4,14 @@ namespace App\Livewire\People;
 
 use Livewire\Component;
 use App\Models\Customer;
+use Livewire\Attributes\On;
 
 class CustomerEdit extends Component
 {
+    public $customer_type = "Bireysel", $category, $name, $company_name, $tax_office, $tax_no, $phone, $email,$address, $isActive = true, $note;
     public $customerId;
-    public $customer_type;
-    public $category;
-    public $name;
-    public $company_name;
-    public $tax_office;
-    public $tax_no;
-    public $phone;
-    public $email;
-    public $address;
-    public $isActive;
-    public $note;
-    public $open = false;
 
-    protected $listeners = ['openEditModal' => 'loadCustomer'];
+    public $open = false;
 
     protected function rules()
     {
@@ -39,7 +29,7 @@ class CustomerEdit extends Component
         'note' => 'nullable|string'
     ];
 }
-
+    #[On('openEditModal')]
     public function openEditModal($id)
     {
         $this->loadCustomer($id);
@@ -83,9 +73,8 @@ class CustomerEdit extends Component
             'note' => $this->note
         ]);
 
-        $this->dispatch('refreshTable');
-        $this->dispatch('closeModal');
-        $this->dispatch('notify', title: 'Başarılı', text: 'Müşteri başarıyla güncellendi!', type: 'success');
+        $this->dispatch('customer-edited');
+        $this->dispatch('notify', title: 'Tebrikler', text: 'Müşteri başarıyla güncellendi!', type: 'success');
         $this->reset();
     }
 

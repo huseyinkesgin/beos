@@ -1,16 +1,16 @@
 <!-- resources/views/admin/location/customer-table.blade.php -->
 <div>
-    <div class="flex items-center justify-between mx-5">
+    <div class="flex justify-between mx-5">
         <div class="flex space-x-4">
             <x-paginate />
             <x-filter-isactive />
             <x-filter-trashed />
-            <x-select wire:model.live="customer_type_filter" class="w-32">
-                <option value="">Müşteri Türü</option>
+            <x-select wire:model.live="customer_type_filter" class="w-full">
+                <option value="">Tümü</option>
                 <option value="Bireysel">Bireysel</option>
                 <option value="Kurumsal">Kurumsal</option>
             </x-select>
-            <x-select wire:model.live="category_filter" class="w-32">
+            <x-select wire:model.live="category_filter" class="w-full">
                 <option value="">Kategori</option>
                 <option value="Mal Sahibi">Mal Sahibi</option>
                 <option value="Alıcı">Alıcı</option>
@@ -19,7 +19,9 @@
                 <option value="Referans">Referans</option>
             </x-select>
         </div>
+       <div>
         <x-search />
+       </div>
     </div>
 
     <x-table>

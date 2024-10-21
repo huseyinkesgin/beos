@@ -4,25 +4,16 @@ namespace App\Livewire\People;
 
 use Livewire\Component;
 use App\Models\Customer;
+use Livewire\Attributes\On;
 
 class CustomerCreate extends Component
 {
 
 
-    public $customer_type = "Bireysel";
-    public $category;
-    public $name;
-    public $company_name;
-    public $tax_office;
-    public $tax_no;
-    public $phone;
-    public $email;
-    public $address;
-    public $isActive = true; // varsayılan olarak aktif
-    public $note;
+    public $customer_type = "Bireysel", $category, $name, $company_name, $tax_office, $tax_no, $phone, $email,$address, $isActive = true, $note;
 
     public $open = false;
-    protected $listeners = ['openCreateModal' => 'openModal'];
+
     protected $rules = [
         'customer_type' => 'required|string',
         'category' => 'required|string',
@@ -36,30 +27,11 @@ class CustomerCreate extends Component
         'isActive' => 'boolean',
         'note' => 'nullable|string'
     ];
-
+    #[On('openCreateModal')]
     public function openModal()
     {
-        $this->resetForm(); // Formu temizle
-        $this->open = true; // Modal'ı aç
+       $this->open = true; // Modal'ı aç
     }
-
-
-
-    public function resetForm()
-    {
-        $this->customer_type = "Bireysel";
-        $this->category = null;
-        $this->name = null;
-        $this->company_name = null;
-        $this->tax_office = null;
-        $this->tax_no = null;
-        $this->phone = null;
-        $this->email = null;
-        $this->address = null;
-        $this->isActive = true;
-        $this->note = null;
-    }
-
 
 
     public function save()
@@ -80,9 +52,8 @@ class CustomerCreate extends Component
             'note' => $this->note
         ]);
 
-        $this->dispatch('refreshTable');
-        $this->dispatch('closeModal');
-        $this->dispatch('notify', title: 'Başarılı', text: 'İlçe başarıyla kayıt edildi!', type: 'success');
+        $this->dispatch('customer-created');
+        $this->dispatch('notify', title: 'Tebrikler!', text: 'Müşteri başarıyla kayıt edildi!', type: 'success');
         $this->reset();
     }
 

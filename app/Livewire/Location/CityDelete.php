@@ -4,18 +4,16 @@ namespace App\Livewire\Location;
 
 use App\Models\City;
 use Livewire\Component;
-use Laravel\Jetstream\InteractsWithBanner;
+use Livewire\Attributes\On;
 
 class CityDelete extends Component
 {
 
-    use InteractsWithBanner;
-
     public $cityId;
     public $open = false;
 
-    protected $listeners = ['openDeleteModal' => 'confirmDelete'];
 
+    #[On('openDeleteModal')]
     public function confirmDelete($id)
     {
         $this->cityId = $id;
@@ -25,14 +23,13 @@ class CityDelete extends Component
     public function delete()
     {
         $city = City::findOrFail($this->cityId);
-        $city->delete(); // Soft delete işlemi
+        $city->delete();
 
-        $this->dispatch('refreshTable');
-        $this->dispatch('closeModal');
+        $this->dispatch('city-trashed');
         $this->dispatch('notify', title: 'Başarılı', text: 'İlçe başarılı bir şekilde çöp kutusuna gönderidi!', type: 'success');
         $this->reset(['cityId', 'open']);
     }
-    
+
     public function render()
     {
         return view('admin.location.city-delete');

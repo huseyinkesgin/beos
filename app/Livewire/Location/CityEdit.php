@@ -5,18 +5,14 @@ namespace App\Livewire\Location;
 use App\Models\City;
 use App\Models\State;
 use Livewire\Component;
+use Livewire\Attributes\On;
 
 class CityEdit extends Component
 {
 
+    public $state_id, $name, $isActive = true, $note;
     public $cityId;
-    public $state_id;
-    public $name;
-    public $isActive;
-    public $note;
     public $open = false;
-
-    protected $listeners = ['openEditModal' => 'loadCity'];
 
     protected function rules()
     {
@@ -27,6 +23,7 @@ class CityEdit extends Component
             'note' => 'nullable|string',
         ];
     }
+    #[On('openEditModal')]
     public function openEditModal($id)
     {
         $this->loadCity($id);
@@ -36,7 +33,7 @@ class CityEdit extends Component
     public function loadCity($id)
     {
         $city = City::findOrFail($id);
-        
+
         $this->cityId = $city->id;
         $this->state_id = $city->state_id;
         $this->name = $city->name;
@@ -57,11 +54,8 @@ class CityEdit extends Component
             'note' => $this->note,
         ]);
 
-        $this->dispatch('refreshTable');
-        $this->dispatch('closeModal');
-
+        $this->dispatch('city-edited');
         $this->dispatch('notify', title: 'Başarılı', text: 'İlçe başarıyla güncellendi!', type: 'success');
-
         $this->reset(['cityId', 'name', 'isActive', 'note', 'open']);
     }
 

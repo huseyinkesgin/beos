@@ -4,17 +4,13 @@ namespace App\Livewire\Location;
 
 use App\Models\City;
 use App\Models\State;
-use Illuminate\Support\Str;
-use Laravel\Jetstream\InteractsWithBanner;
 use Livewire\Component;
+use Livewire\Attributes\On;
 
 class CityCreate extends Component
 {
 
-    public $state_id;
-    public $name;
-    public $isActive = true;
-    public $note;
+    public $state_id, $name, $isActive = true, $note;
     public $open = false;
 
     protected $rules = [
@@ -24,8 +20,8 @@ class CityCreate extends Component
         'note' => 'nullable|string',
     ];
 
-    protected $listeners = ['openCreateModal' => 'openModal'];
 
+    #[On('openCreateModal')]
     public function openModal()
     {
         $this->open = true;
@@ -42,8 +38,7 @@ class CityCreate extends Component
             'note' => $this->note,
         ]);
 
-        $this->dispatch('refreshTable');
-        $this->dispatch('closeModal');
+        $this->dispatch('city-created');
         $this->dispatch('notify', title: 'Başarılı', text: 'İlçe başarıyla kayıt edildi!', type: 'success');
         $this->reset();
     }

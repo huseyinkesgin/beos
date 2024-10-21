@@ -1,10 +1,10 @@
 {{-- resources/views/livewire/location/state-create.blade.php --}}
 <div>
 
-    <x-dark-button class="" wire:click="$dispatch('openCreateModal')">
+    <x-dark-button  wire:click="$dispatch('openCreateModal')" >
         Yeni İlçe Ekle
     </x-dark-button>
-    <x-dialog-modal wire:model="open">
+    <x-dialog-modal wire:model="open" maxWidth="sm">
         <x-slot name="title">
             Yeni İlçe Oluştur
         </x-slot>
@@ -18,7 +18,7 @@
                         <option value="">Seçiniz</option>
                         @foreach ($states as $state )
                         <option value="{{ $state->id }}">{{ $state->name }}</option>
-                        @endforeach        
+                        @endforeach
                     </x-select>
                 </div>
 

@@ -7,24 +7,19 @@ use App\Models\State;
 use Livewire\Component;
 use App\Models\District;
 use Illuminate\Support\Str;
+use Livewire\Attributes\On;
 
 
 class DistrictCreate extends Component
 {
 
-
+    public $state_id , $city_id, $name, $isActive = true, $note ;
     public $states;
     public $cities = [];
     public $selectedState;
 
 
-    public $state_id;
-    public $city_id;
-    public $name;
-    public $isActive = true;
-    public $note;
     public $open = false;
-    public $filteredCities = [];
 
     protected $rules = [
         'state_id' => 'required',
@@ -34,18 +29,17 @@ class DistrictCreate extends Component
         'note' => 'nullable|string',
     ];
 
-    protected $listeners = ['openCreateModal' => 'openModal'];
-
+    #[On('openCreateModal')]
     public function openModal()
     {
         $this->open = true;
+        $this->reset('selectedState','city_id','name');
+
     }
 
     public function mount(District $district)
     {
         $this->states = State::active()->get();
-
-
     }
 
     public function updatedSelectedState($value)
@@ -53,7 +47,6 @@ class DistrictCreate extends Component
         $this->state_id = $value;
         $this->cities = City::where('state_id', $value)->get();
         $this->city_id = null;
-
     }
 
 
@@ -70,8 +63,7 @@ class DistrictCreate extends Component
             'note' => $this->note,
         ]);
 
-        $this->dispatch('refreshTable');
-        $this->dispatch('closeModal');
+        $this->dispatch('district-created');
         $this->dispatch('notify', title: 'Başarılı', text: 'Bölge başarıyla kayıt edildi!', type: 'success');
         $this->reset(['selectedState', 'city_id', 'name', 'isActive', 'note', 'open']);
     }
@@ -79,10 +71,8 @@ class DistrictCreate extends Component
 
     public function render()
     {
-        $states = State::active()->get();
         return view('admin.location.district-create',[
 
-            'states' => $states
         ]);
     }
 }

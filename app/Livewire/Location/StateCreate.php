@@ -5,14 +5,11 @@ namespace App\Livewire\Location;
 use App\Models\State;
 use Livewire\Component;
 use Illuminate\Support\Str;
-use Laravel\Jetstream\InteractsWithBanner;
+use Livewire\Attributes\On;
 
 class StateCreate extends Component
 {
-    use InteractsWithBanner;
-    public $name;
-    public $isActive = true;
-    public $note;
+    public $name , $isActive = true, $note;
     public $open = false;
 
     protected $rules = [
@@ -21,8 +18,7 @@ class StateCreate extends Component
         'note' => 'nullable|string',
     ];
 
-    protected $listeners = ['openCreateModal' => 'openModal'];
-
+    #[On('openCreateModal')]
     public function openModal()
     {
         $this->open = true;
@@ -38,8 +34,7 @@ class StateCreate extends Component
             'note' => $this->note,
         ]);
 
-        $this->dispatch('refreshTable');
-        $this->dispatch('closeModal');
+        $this->dispatch('state-created');
         $this->dispatch('notify', title: 'Başarılı', text: 'İl başarıyla kayıt edildi!', type: 'success');
         $this->reset();
     }
