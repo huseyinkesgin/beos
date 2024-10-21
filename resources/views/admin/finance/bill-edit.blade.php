@@ -1,4 +1,4 @@
- {{-- resources/views/livewire/location/city-edit.blade.php --}}
+ {{-- resources/views/livewire/finance/bill-edit.blade.php --}}
  <x-dialog-modal wire:model="open" maxWidth="sm">
     <x-slot name="title">
         Fatura  Düzenle
@@ -94,8 +94,6 @@
                 </div>
 
             </div>
-
-
 
         </x-form>
     </x-slot>

@@ -16,7 +16,7 @@
         <div class="overflow-hidden bg-white shadow-2xl sm:rounded-lg">
 
            @livewire('finance.personnel-balance-edit')
-            {{-- @livewire('finance.personnel-balance-delete') --}}
+            @livewire('finance.personnel-balance-delete')
             @livewire('finance.personnel-balance-table')
 
         </div>

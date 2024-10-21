@@ -4,14 +4,14 @@ namespace App\Livewire\Finance;
 
 use Livewire\Component;
 use App\Models\Personnel;
+use Livewire\Attributes\On;
 use App\Models\PersonnelBalance;
 
 class PersonnelBalanceCreate extends Component
 {
-    public $personnel_id;
-    public $cash_in;
-    public $cash_out;
-    public $open = false; // Modal kontrolü
+    public  $personnel_id, $cash_in, $cash_out;
+
+    public $open = false; 
 
     protected $rules = [
         'personnel_id' => 'required|exists:personnels,id',
@@ -19,8 +19,7 @@ class PersonnelBalanceCreate extends Component
         'cash_out' => 'nullable|numeric|min:0',
     ];
 
-    protected $listeners = ['openBalanceModal' => 'openModal'];
-
+   #[On('openBalanceModal')]
     public function openModal()
     {
         $this->open = true; // Modal açılacak
@@ -39,8 +38,7 @@ class PersonnelBalanceCreate extends Component
         // Bakiye güncellemesi
         PersonnelBalance::updateBalance($this->personnel_id);
 
-        $this->dispatch('refreshTable');
-        $this->dispatch('closeModal');
+        $this->dispatch('balance-created');
         $this->dispatch('notify', title: 'Başarılı', text: 'Nakit girişi başarıyla kayıt edildi!', type: 'success');
         // Formu temizleme ve modalı kapatma
         $this->reset(['personnel_id', 'cash_in', 'cash_out', 'open']);

@@ -19,9 +19,9 @@ trait ScopesTrait
     // Scope for soft-deleted records
     public function scopeTrashed($query, $trashed)
     {
-        if ($trashed === 'with') {
+        if ($trashed == 'with') {
             return $query->withTrashed();
-        } elseif ($trashed === 'only') {
+        } elseif ($trashed == 'only') {
             return $query->onlyTrashed();
         }
         return $query;

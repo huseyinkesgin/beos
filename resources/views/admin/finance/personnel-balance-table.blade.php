@@ -12,6 +12,16 @@
         </div>
     @endforeach
 </div>
+
+<div class="flex items-center justify-between mx-5">
+    <div class="flex space-x-4">
+        <x-paginate />
+
+        <x-filter-trashed />
+        <x-filter-date />
+    </div>
+    <x-search />
+</div>
     <!-- Nakit işlemleri tablosu -->
     <x-table class="min-w-full table-auto">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -31,11 +41,26 @@
                 <x-td>{{ $balance->cash_in ? 'Giriş' : 'Çıkış' }}</x-td>
                 <x-td>{{ $balance->created_at->format('d.m.Y') }}</x-td>
                 <x-td>
-                    @if ($balance->cash_in)
-                    <x-secondary-button wire:click="$dispatch('openEditModal', { id: '{{ $balance->id }}' })" wire:loading.attr="disabled">
-                        Düzenle
-                    </x-danger-button>
-                    @endif
+                    <x-td>
+                        @if ($deletedFilter === 'only')
+                        <x-secondary-button wire:click="restore('{{ $balance->id }}')" wire:loading.attr="disabled">
+                            Geri Al
+                        </x-secondary-button>
+                        <x-danger-button wire:click="forceDelete('{{ $balance->id }}')" wire:loading.attr="disabled"
+                            class="ml-2">
+                            Kalıcı Sil
+                        </x-danger-button>
+                        @else
+                        <x-secondary-button wire:click="$dispatch('openEditModal', { id: '{{ $balance->id }}' })"
+                            wire:loading.attr="disabled">
+                            Düzenle
+                            </x-danger-button>
+                            <x-danger-button wire:click="$dispatch('openDeleteModal', { id: '{{ $balance->id }}' })"
+                                wire:loading.attr="disabled" class="ml-2">
+                                Sil
+                            </x-danger-button>
+                            @endif
+                    </x-td>
                 </x-td>
             </tr>
             @endforeach

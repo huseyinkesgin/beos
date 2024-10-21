@@ -1,21 +1,20 @@
 <?php
-
+/**
+ * Personel harcamalarında nakit seçildiğinde, O personele ait
+ * toplam bulunması gereken nakitden düşüyor ve şimdiki balansı buluyor.
+ * paymetn_method
+ */
 namespace App\Livewire\Finance;
 
 use Livewire\Component;
 use App\Models\Personnel;
+use Livewire\Attributes\On;
 use App\Models\PersonnelExpense;
 
 class PersonnelExpenseCreate extends Component
 {
 
-    public $personnel_id;
-    public $expense_type;
-    public $note;
-    public $amount;
-    public $payment_method;
-    public $expense_date;
-    public $has_receipt;
+    public $personnel_id , $expense_type, $note ,$amount , $payment_method ,$expense_date ,$has_receipt;
     public $open = false;
 
     protected $rules = [
@@ -28,8 +27,7 @@ class PersonnelExpenseCreate extends Component
         'has_receipt' => 'boolean',
     ];
 
-    protected $listeners = ['openCreateModal' => 'openModal'];
-
+    #[On('openCreateModal')]
     public function openModal()
     {
         $this->open = true;
@@ -49,8 +47,7 @@ class PersonnelExpenseCreate extends Component
             'has_receipt' => $this->has_receipt,
         ]);
 
-        $this->dispatch('refreshTable');
-        $this->dispatch('closeModal');
+        $this->dispatch('expense-created');
         $this->dispatch('notify', title: 'Başarılı', text: 'Harcama başarıyla kayıt edildi!', type: 'success');
         $this->reset();
     }

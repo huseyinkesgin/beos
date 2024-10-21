@@ -2,11 +2,11 @@
     <!-- resources/views/livewire/location/state-delete.blade.php -->
 <x-confirmation-modal wire:model="open">
     <x-slot name="title">
-       Personel Harcaması Silme
+        Nakit Akışını Silme
     </x-slot>
 
     <x-slot name="content">
-        <span class="flex justify-center text-lg font-semibold">Bu harcamayı silmek istediğinizden emin misiniz?</span>
+        <span class="flex justify-center text-lg font-semibold">Bu nakit akışını silmek istediğinizden emin misiniz?</span>
         <br>Bu işlem çöp kutusuna gönderir. Tamamen silmek için Silinmişlerden "KALICI SİL" yaparak silmelisiniz.
     </x-slot>
 

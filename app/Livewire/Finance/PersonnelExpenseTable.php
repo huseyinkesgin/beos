@@ -5,19 +5,33 @@ namespace App\Livewire\Finance;
 use Carbon\Carbon;
 use Livewire\Component;
 use App\Models\Personnel;
-use App\Models\PersonnelBalance;
+use App\Traits\HasSortable;
+use App\Traits\SearchReset;
+use Livewire\Attributes\On;
 use Livewire\WithPagination;
+use App\Traits\PaginateReset;
+use App\Models\PersonnelBalance;
 use App\Models\PersonnelExpense;
+use App\Traits\DeleteFilterReset;
+use App\Traits\RestoreAndDeleteTrait;
 
 class PersonnelExpenseTable extends Component
 {
     use WithPagination;
+    use HasSortable;
+    use RestoreAndDeleteTrait;
+    use SearchReset, DeleteFilterReset, PaginateReset;
 
     public $search = '';
     public $deletedFilter = 'without';
     public $pagination = 10;
     public $sortField = 'created_at';
-    public $sortDirection = 'asc';
+    public $sortDirection = 'desc';
+    public $modelClass = PersonnelExpense::class;
+
+
+    public $dateRange = ''; // SelectBox'tan gelen tarih aralığı seçimi
+    public $paymentMethod = null;
 
     public $thisMonthTotals = [];
     public $thisYearTotals = [];
@@ -25,7 +39,6 @@ class PersonnelExpenseTable extends Component
     public $paymentMethodYearTotals = [];
     public $personnels;
 
-    protected $listeners = ['refreshTable' => '$refresh']; // Tabloyu günceller
 
     public function mount()
     {
@@ -80,39 +93,16 @@ class PersonnelExpenseTable extends Component
         }
     }
 
-    // Sıralama fonksiyonu
-    public function sortBy($field)
-    {
-        if ($this->sortField === $field) {
-            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
-        } else {
-            $this->sortField = $field;
-            $this->sortDirection = 'asc';
-        }
-    }
 
-    public function updatingSearch()
-    {
-        $this->resetPage();
-    }
 
-    public function updatingDeletedFilter()
-    {
-        $this->resetPage();
-    }
-
-    public function updatingPagination()
-    {
-        $this->resetPage();
-    }
-
-    // Render işlemi
+    #[On('expense-created')]
+    #[On('expense-edited')]
+    #[On('expense-trashed')]
+    #[On('expense-deleted')]
     public function render()
     {
-        $expenses = PersonnelExpense::where('expense_type', 'like', '%' . $this->search . '%')
-        ->orWhereHas('personnel', function ($query) {
-            $query->where('first_name', 'like', '%' . $this->search . '%');
-        })
+        $expenses = PersonnelExpense::filter($this->search, $this->deletedFilter)
+        ->filterByDateRange($this->dateRange) // Trait'teki tarih aralığı filtresini kullanıyoruz
         ->orderBy($this->sortField, $this->sortDirection)
         ->paginate($this->pagination);
 

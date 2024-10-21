@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Personnel;
 use App\Traits\ScopesTrait;
+use App\Traits\DateRangeFilter;
 use App\Models\PersonnelExpense;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PersonnelBalance extends Model
 {
-    use ScopesTrait,SoftDeletes;
+    use ScopesTrait,SoftDeletes,DateRangeFilter;
 
     protected $fillable = [
         'personnel_id',
@@ -25,15 +26,17 @@ class PersonnelBalance extends Model
         return $this->belongsTo(Personnel::class);
     }
 
-    // Bakiye hesaplama işlemi, nakit giriş ve çıkışlara göre balance hesaplanacak
     public static function calculateBalance($personnel_id)
     {
-        // İlgili personelin tüm nakit giriş ve çıkışlarını alıyoruz
+        // İlgili personelin tüm nakit girişlerini ve çıkışlarını alıyoruz
         $totalIn = static::where('personnel_id', $personnel_id)->sum('cash_in');
         $totalOut = static::where('personnel_id', $personnel_id)->sum('cash_out');
 
+        // Nakit harcamaları toplamını alıyoruz (PersonnelExpense modelindeki "Nakit" ödemeleri)
+        $totalCashExpenses = PersonnelExpense::getTotalCashExpenses($personnel_id);
+
         // Mevcut balance'ı hesaplıyoruz
-        return $totalIn - $totalOut;
+        return $totalIn - $totalOut - $totalCashExpenses;
     }
 
     // Yeni nakit girişi ya da çıkışı olduğunda balance otomatik hesaplanacak
@@ -47,4 +50,17 @@ class PersonnelBalance extends Model
             ->first()
             ->update(['balance' => $balance]);
     }
+    public function scopeFilter($query, $search, $deletedFilter)
+    {
+        // Arama
+        $query->when($search, function ($query) use ($search) {
+            $query->where('personnel_id', 'like', '%'.$search.'%');
+        });
+
+        // Silinmiş kayıt filtreleme
+        $query->trashed($deletedFilter);
+
+        return $query;
+    }
+
 }

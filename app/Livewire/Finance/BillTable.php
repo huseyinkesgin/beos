@@ -57,16 +57,29 @@ class BillTable extends Component
     }
 
 
-
+    /**
+     * Fatura durumunu değiştirmek için üzerine tıkladığında
+     * selectbox'ın açılması için gereken fonkiyon
+     *
+     * @param [type] $billId
+     * @return void
+     */
     public function toggleSelectBox($billId)
     {
-        $this->selectedBillId = $this->selectedBillId === $billId ? null : $billId;
+        $this->selectedBillId = $this->selectedBillId == $billId ? null : $billId;
         $this->showSelectBox = ! $this->showSelectBox;
     }
 
 
 
-     // Satır içi düzenleme başlatmak için
+     /**
+      * Eğer ödenecek statüsünden ödendi statüsüne getirilirse,
+      * Ödeme tarihinin ne zaman yapıldığını buradan tarih seçererek
+      * yapabiliyoruz
+      * @param [type] $billId
+      * @param [type] $field
+      * @return void
+      */
      public function editField($billId, $field)
      {
          $this->editableBillId = $billId;
@@ -75,7 +88,12 @@ class BillTable extends Component
          $this->payment_date = $bill->payment_date;  // Eğer payment_date düzenleniyorsa, mevcut değeri al
      }
 
-     // Düzenlemeyi kaydetmek için
+     /**
+      * editField fonksiyonu çalıştığında tarih girip kayıt
+      * yapabilmemiz için gerekli fonksion
+      * @param [type] $billId
+      * @return void
+      */
      public function saveField($billId)
      {
          $bill = Bill::find($billId);
@@ -92,7 +110,11 @@ class BillTable extends Component
          $this->dispatch('notify', title: 'Başarılı', text: 'Ödeme tarihi başarıyla güncellendi!', type: 'success');
      }
 
-
+     /**
+      * Tüm faturaların ödenecek ve ödendi toplamlarını
+      * hesaplamak için
+      * @return void
+      */
     public function calculateTotals()
     {
         $currentYear = now()->year;
@@ -116,6 +138,13 @@ class BillTable extends Component
             ->sum('amount');
     }
 
+    /**
+     * Faturaların tablo üzerinde statüsünü tıklayarak, düzenlemeye
+     * girmeden değiştirmek için gerekli fonksiyon
+     * @param [type] $billId
+     * @param [type] $newStatus
+     * @return void
+     */
     public function updateStatus($billId, $newStatus)
     {
         $bill = Bill::findOrFail($billId);
@@ -149,7 +178,7 @@ class BillTable extends Component
         $bills = Bill::filter($this->search, $this->deletedFilter)
             ->sortable($this->sortField, $this->sortDirection)
             ->paginate($this->pagination);
-            $this->calculateTotals(); //
+            $this->calculateTotals();
         return view('admin.finance.bill-table', [
             'bills' => $bills,
             'this_month_unpaid_total' => $this->this_month_unpaid_total,

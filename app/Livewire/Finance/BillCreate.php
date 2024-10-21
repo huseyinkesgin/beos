@@ -23,7 +23,6 @@ class BillCreate extends Component
 
     ];
 
-
     #[On('openCreateModal')]
     public function openModal()
     {

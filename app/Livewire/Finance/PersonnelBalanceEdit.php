@@ -4,31 +4,29 @@ namespace App\Livewire\Finance;
 
 use Livewire\Component;
 use App\Models\Personnel;
+use Livewire\Attributes\On;
 use App\Models\PersonnelBalance;
 
 class PersonnelBalanceEdit extends Component
 {
-
+    public  $personnel_id, $cash_in, $cash_out;
     public $balanceId;
-    public $personnel_id;
-    public $cash_in;
-    public $cash_out;
+
 
     public $open = false;
 
-    protected $listeners = ['openEditModal' => 'loadBalance'];
 
     protected function rules()
     {
         return [
-            'personnel_id' => 'required|exists:personnels,id',
+        'personnel_id' => 'required|exists:personnels,id',
         'cash_in' => 'nullable|numeric|min:0',
         'cash_out' => 'nullable|numeric|min:0',
         ];
     }
+    #[On('openEditModal')]
     public function openEditModal($id)
     {
-
         $this->loadBalance($id);
         $this->open = true;
     }
@@ -55,11 +53,8 @@ class PersonnelBalanceEdit extends Component
         ]);
 
 
-        $this->dispatch('closeModal');
         $this->dispatch('balance-edited');
-
         $this->dispatch('notify', title: 'Başarılı', text: 'Nakit Girişi başarıyla güncellendi!', type: 'success');
-        $this->dispatch('refreshTable');
         $this->reset(['balanceId', 'cash_in', 'cash_out', 'open']);
     }
 

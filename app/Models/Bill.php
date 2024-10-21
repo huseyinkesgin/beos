@@ -59,10 +59,7 @@ class Bill extends Model
         return $query;
     }
 
-    public function scopeSortable($query, $field, $direction)
-    {
-        return $query->orderBy($field, $direction);
-    }
+
 
     // // bill_date için erişimci (Accessor)
     // public function getBillDateAttribute($value)

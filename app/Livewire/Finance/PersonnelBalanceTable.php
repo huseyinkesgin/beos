@@ -3,43 +3,48 @@ namespace App\Livewire\Finance;
 
 use Livewire\Component;
 use App\Models\Personnel;
+use App\Traits\HasSortable;
+use App\Traits\SearchReset;
 use Livewire\Attributes\On;
+use Livewire\WithPagination;
+use App\Traits\PaginateReset;
 use App\Models\PersonnelBalance;
 use App\Models\PersonnelExpense;
+use App\Traits\DeleteFilterReset;
+use App\Traits\RestoreAndDeleteTrait;
 
 class PersonnelBalanceTable extends Component
 {
-    public $personnelId;  // Bu değişken dışarıdan alınacak personel ID
 
-    public $personnels;
 
+    use WithPagination;
+    use HasSortable;
+    use RestoreAndDeleteTrait;
+    use SearchReset, DeleteFilterReset, PaginateReset;
+
+    public $search = '';
+    public $activeFilter = 'all';
+    public $deletedFilter = 'without';
     public $pagination = 10;
     public $sortField = 'created_at';
     public $sortDirection = 'desc';
+    public $modelClass = PersonnelBalance::class;
 
-    // protected $listeners = ['refreshTable' => '$refresh'];
+    public $personnelId;
 
-    public function sortBy($field)
+    public $personnels;
+    public $dateRange = ''; // SelectBox'tan gelen tarih aralığı seçimi
+
+
+
+    public function calculateCurrentBalance()
     {
-        if ($this->sortField === $field) {
-            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
-        } else {
-            $this->sortField = $field;
-            $this->sortDirection = 'asc';
-        }
-    }
-
-    public function mount()
-    {
-        // Tüm personeller ve nakit giriş/çıkış ve harcama toplamlarını hesaplıyoruz
         $this->personnels = Personnel::all()->map(function ($personnel) {
             // Nakit girişleri toplamı
-            $cashInTotal = PersonnelBalance::where('personnel_id', $personnel->id)
-                ->sum('cash_in');
+            $cashInTotal = PersonnelBalance::where('personnel_id', $personnel->id)->sum('cash_in');
 
             // Nakit çıkışları toplamı
-            $cashOutTotal = PersonnelBalance::where('personnel_id', $personnel->id)
-                ->sum('cash_out');
+            $cashOutTotal = PersonnelBalance::where('personnel_id', $personnel->id)->sum('cash_out');
 
             // Nakit harcamalar toplamı (PersonnelExpense tablosunda ödeme yöntemi "Nakit" olanlar)
             $cashExpenseTotal = PersonnelExpense::where('personnel_id', $personnel->id)
@@ -51,15 +56,26 @@ class PersonnelBalanceTable extends Component
 
             return $personnel;
         });
-
-
     }
 
-    #[On('balance-edited')]
+       // Bakiyeler güncellendiğinde hesaplamaları tetikleyen olaylar
+       #[On('balance-edited')]
+       #[On('balance-created')]
+       #[On('balance-trashed')]
+       #[On('balance-deleted')]
+       public function updateBalances()
+       {
+           $this->calculateCurrentBalance();
+       }
+
+
     public function render()
     {
         // Nakit girişlerini al
-        $balanceRecords = PersonnelBalance::paginate($this->pagination);
+        $balanceRecords = PersonnelBalance::filter($this->search, $this->deletedFilter)
+        ->sortable($this->sortField, $this->sortDirection)
+        ->paginate($this->pagination);
+        $this->calculateCurrentBalance();
 
         return view('admin.finance.personnel-balance-table', [
             'balanceRecords' => $balanceRecords,

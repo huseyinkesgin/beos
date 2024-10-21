@@ -1,13 +1,5 @@
 <div>
 
-
-
-
-    <!-- Diğer tablolar -->
-
-
-
-
     <!-- Diğer Harcama ve Nakit Ödeme Yöntemleri Widget'ları -->
     <div class="grid grid-cols-8 gap-4 p-4 mb-5">
         @foreach (['Market', 'Pazar', 'Ofis', 'Araç', 'Su', 'Diğer'] as $type)
@@ -52,6 +44,7 @@
         <div class="flex space-x-4">
             <x-paginate />
             <x-filter-trashed />
+            <x-filter-date />
         </div>
         <x-search />
     </div>
@@ -75,7 +68,7 @@
             <tr>
                 <x-td>{{ $expense->personnel->first_name }} {{ $expense->personnel->last_name }}</x-td>
                 <x-td>
-                   
+
                 </x-td>
                 <x-td>{{ $expense->expense_type }}</x-td>
                 <x-td>{{ $expense->note }}</x-td>
@@ -86,24 +79,26 @@
                 <x-td>{{ $expense->expense_date }}</x-td>
                 <x-td>{{ $expense->has_receipt ? 'Evet' : 'Hayır' }}</x-td>
                 <x-td>
-                    @if ($deletedFilter === 'only')
-                    <x-secondary-button wire:click="restore('{{ $expense->id }}')" wire:loading.attr="disabled">
-                        Geri Al
-                    </x-secondary-button>
-                    <x-danger-button wire:click="forceDelete('{{ $expense->id }}')" wire:loading.attr="disabled"
-                        class="ml-2">
-                        Kalıcı Sil
-                    </x-danger-button>
-                    @else
-                    <x-secondary-button wire:click="$dispatch('openEditModal', { id: '{{ $expense->id }}' })"
-                        wire:loading.attr="disabled">
-                        Düzenle
-                    </x-danger-button>
-                    <x-danger-button wire:click="$dispatch('openDeleteModal', { id: '{{ $expense->id }}' })"
-                        wire:loading.attr="disabled" class="ml-2">
-                        Sil
-                    </x-danger-button>
-                    @endif
+                    <x-td>
+                        @if ($deletedFilter === 'only')
+                        <x-secondary-button wire:click="restore('{{ $expense->id }}')" wire:loading.attr="disabled">
+                            Geri Al
+                        </x-secondary-button>
+                        <x-danger-button wire:click="forceDelete('{{ $expense->id }}')" wire:loading.attr="disabled"
+                            class="ml-2">
+                            Kalıcı Sil
+                        </x-danger-button>
+                        @else
+                        <x-secondary-button wire:click="$dispatch('openEditModal', { id: '{{ $expense->id }}' })"
+                            wire:loading.attr="disabled">
+                            Düzenle
+                            </x-danger-button>
+                            <x-danger-button wire:click="$dispatch('openDeleteModal', { id: '{{ $expense->id }}' })"
+                                wire:loading.attr="disabled" class="ml-2">
+                                Sil
+                            </x-danger-button>
+                            @endif
+                    </x-td>
                 </x-td>
             </tr>
             @endforeach
