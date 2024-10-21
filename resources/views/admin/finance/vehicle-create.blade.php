@@ -11,6 +11,7 @@
 
         <x-slot name="content">
             <x-form>
+                <x-input-text label="Marka" id="brand" model="brand" />
                 <div class="flex flex-row py-3 space-x-3">
                     <!-- license_plate -->
                     <div class="w-full">
