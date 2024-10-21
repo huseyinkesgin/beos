@@ -28,7 +28,6 @@ return new class extends Migration
             $table->string('casco_policy_image_path')->nullable(); // Kasko poliçesi resmi
             $table->date('casco_policy_expiry')->nullable(); // Kasko poliçesi bitiş tarihi
             $table->json('additional_documents')->nullable(); // Ek belgeler (PDF gibi dosyaların yolu JSON formatında tutulacak)
-            $table->date('sell_date')->nullable();
             $table->timestamps(); // created_at ve updated_at
             $table->softDeletes();
         });

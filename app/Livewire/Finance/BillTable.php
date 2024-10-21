@@ -43,9 +43,6 @@ class BillTable extends Component
      public $payment_date = null;
 
 
-
-    // protected $listeners = ['refreshTable' => '$refresh', 'refreshTotals' => 'calculateTotals'];
-
     public function mount()
     {
         $this->calculateTotals();

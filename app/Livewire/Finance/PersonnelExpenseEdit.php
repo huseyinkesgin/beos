@@ -4,22 +4,15 @@ namespace App\Livewire\Finance;
 
 use Livewire\Component;
 use App\Models\Personnel;
+use Livewire\Attributes\On;
 use App\Models\PersonnelExpense;
 
 class PersonnelExpenseEdit extends Component
 {
+
+    public $personnel_id , $expense_type, $note ,$amount , $payment_method ,$expense_date ,$has_receipt;
     public $expenseId;
-    public $personnel_id;
-    public $expense_type;
-    public $note;
-    public $amount;
-    public $payment_method;
-    public $expense_date;
-    public $has_receipt;
     public $open = false;
-
-
-    protected $listeners = ['openEditModal' => 'loadExpense'];
 
     protected function rules()
     {
@@ -33,6 +26,7 @@ class PersonnelExpenseEdit extends Component
         'has_receipt' => 'boolean',
         ];
     }
+    #[On('openEditModal')]
     public function openEditModal($id)
     {
         $this->loadExpense($id);
@@ -68,8 +62,7 @@ class PersonnelExpenseEdit extends Component
             'has_receipt' => $this->has_receipt,
         ]);
 
-        $this->dispatch('refreshTable');
-        $this->dispatch('closeModal');
+        $this->dispatch('expense-edited');
 
         $this->dispatch('notify', title: 'Başarılı', text: 'İl başarıyla güncellendi!', type: 'success');
 

@@ -2,11 +2,14 @@
 
 namespace App\Livewire\Finance;
 
+use App\Models\Vehicle;
 use Livewire\Component;
 use Livewire\Attributes\On;
+use Livewire\WithFileUploads;
 
 class VehicleCreate extends Component
 {
+    use WithFileUploads;
 
       public  $license_plate, $brand, $model, $year, $purchase_date, $sell_date, $chassis_number, $registration_number, $isActive = true,$registration_image_path,   $insurance_policy_image_path, $insurance_policy_expiry,$casco_policy_image_path, $casco_policy_expiry, $additional_documents;
 
@@ -41,13 +44,25 @@ class VehicleCreate extends Component
     {
         $this->validate();
 
-        Bill::create([
+         // Dosya yükleme işlemleri
+         if ($this->registration_image_path) {
+            $validatedData['registration_image_path'] = $this->registration_image_path->store('vehicle-documents', 'public');
+        }
+
+        if ($this->insurance_policy_image_path) {
+            $validatedData['insurance_policy_image_path'] = $this->insurance_policy_image_path->store('vehicle-documents', 'public');
+        }
+
+        if ($this->casco_policy_image_path) {
+            $validatedData['casco_policy_image_path'] = $this->casco_policy_image_path->store('vehicle-documents', 'public');
+        }
+
+        Vehicle::create([
             'license_plate' => $this->license_plate,
             'brand' => $this->brand,
             'model' => $this->model,
             'year' => $this->year,
             'purchase_date' => $this->purchase_date,
-            'is_recurring' => $this->is_recurring,
             'chassis_number' => $this->chassis_number,
             'registration_number' => $this->registration_number,
             'isActive' => $this->isActive,

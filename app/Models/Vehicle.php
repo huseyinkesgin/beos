@@ -71,5 +71,30 @@ class Vehicle extends Model
             ? asset('storage/' . $this->casco_policy_image_path)
             : null;
     }
+
+
+    public function scopeFilter($query, $search, $activeFilter, $deletedFilter)
+{
+    // Arama
+    $query->when($search, function ($query) use ($search) {
+        $query->where('license_plate', 'like', '%' . $search . '%')
+              ->orWhere('brand', 'like', '%' . $search . '%')
+              ->orWhere('model', 'like', '%' . $search . '%');
+    });
+
+    // Aktif/Pasif filtreleme
+    $query->when($activeFilter !== 'all', function ($query) use ($activeFilter) {
+        $query->where('isActive', $activeFilter == 'active');
+    });
+
+    // Silinmiş kayıt filtreleme
+    if ($deletedFilter == 'only') {
+        $query->onlyTrashed();
+    } elseif ($deletedFilter == 'with') {
+        $query->withTrashed();
+    }
+
+    return $query;
 }
 }
+

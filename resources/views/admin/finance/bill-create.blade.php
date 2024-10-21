@@ -77,21 +77,7 @@
                 </div>
 
 
-{{--
-                <div class="flex flex-row py-3 space-x-3">
-                    <!-- status -->
-                    <div class="w-full">
-                        <x-label for="status" value="Ödeme Durumu" />
-                        <x-select id="status" wire:model.live="status" class="w-full">
-                            <option value="">Seçiniz</option>
-                            <option value="Ödenecek">Ödenecek</option>
 
-                            <option value="Otomatik Ödeme">Otomatik Ödeme</option>
-                        </x-select>
-                        <x-input-error for="status" class="mt-2" />
-                    </div>
-
-                </div> --}}
 
 
 
