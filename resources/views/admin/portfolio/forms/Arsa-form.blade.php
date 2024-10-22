@@ -3,131 +3,50 @@
     <div class="border rounded-lg shadow-lg bg-slate-50">
         <div class="flex flex-row mx-4 space-x-2">
             <!-- Portföy No -->
-            <div class="flex-1 my-4">
-                <x-label for="portfolio_no">Portföy No <x-red-star /></x-label>
-                <x-input type="text" class="w-full" wire:model.live="portfolio_no" id="portfolio_no" />
-                <x-input-error for="portfolio_no" class="mt-2" />
-            </div>
+            <x-input-text label="Portföy No" model="portfolio_no" />
 
             <!-- Area m² -->
-            <div class="flex-1 my-4">
-                <x-label for="area_m2">m² <x-red-star /></x-label>
-                <x-input type="text" class="w-full" wire:model.live="area_m2" id="area_m2" />
-                <x-input-error for="area_m2" class="mt-2" />
-            </div>
+            <x-input-text label="Arsa (m²)" model="area_m2" />
 
-            <!-- Price -->
-            <div class="flex-1 my-4">
-                <x-label for="price">Fiyat <x-red-star /></x-label>
-                <x-input type="text" class="w-full" wire:model.live="price" id="price" />
-                <x-input-error for="price" class="mt-2" />
-            </div>
+            <!-- price -->
+            <x-input-text label="Ücret" model="price" />
 
             @if ($status == 'Kiralık')
-            <div class="mt-10">
-
-                <x-select wire:model.live="additional_fees" id="additional_fees" class="w-full">
-                    <option value="">Seçiniz</option>
-                    <option value="+ KDV">+ KDV</option>
-                    <option value="+ Stopaj">+ Stopaj</option>
-                    <option value="Bilinmiyor">Bilinmiyor</option>
-                </x-select>
-                <x-input-error for="additional_fees" class="mt-2" />
-            </div>
+            <!-- additional_fees -->
+            <x-select-box label="Ek Ücret" model="additional_fees" :options="['+ KDV','+ Stopaj', 'Bilinmiyor']" />
             @endif
         </div>
 
         <div class="flex flex-row mx-4 space-x-2">
-            <div class="flex-1 my-4">
-                <x-label for="lot">Ada <x-red-star /></x-label>
-                <x-input type="text" class="w-full" wire:model.live="lot" id="lot" />
-                <x-input-error for="lot" class="mt-2" />
-            </div>
-            <div class="flex-1 my-4">
-                <x-label for="parcel">Parsel <x-red-star /></x-label>
-                <x-input type="text" class="w-full" wire:model.live="parcel" id="parcel" />
-                <x-input-error for="parcel" class="mt-2" />
-            </div>
-            <div class="flex-1 my-4">
-                <x-label for="zoning_status">İmar Durumu <x-red-star /></x-label>
-                <x-select wire:model.live="zoning_status" id="zoning_status" class="w-full">
-                    <option value="">Seçiniz</option>
-                    <option value="Konut">Konut</option>
-                    <option value="Ticari">Ticari</option>
-                    <option value="Ticari-Konut">Ticari-Konut</option>
-                    <option value="Sanayi">Sanayi</option>
-                    <option value="Depo&Antrepo">Depo&Antrepo</option>
-                    <option value="Tarla">Tarla</option>
-                    <option value="A-Lejantlı">A-Lejantlı</option>
-                    <option value="Diğer Tarım">Diğer Tarım</option>
-                </x-select>
-                <x-input-error for="zoning_status" class="mt-2" />
-            </div>
+
+             <!-- lot -->
+             <x-input-text label="Ada" model="lot" />
+            <!-- parcel -->
+            <x-input-text label="Parsel" model="parcel" />
+            <!-- zoning_status -->
+            <x-select-box label="İmar Durumu" model="zoning_status" :options="['Sanayi' ,'Ticari', 'Konut','Ticari+Konut','Diğer Tarım','Tarla']" />
         </div>
-
-
-
 
         <div class="flex flex-row mx-4 space-x-2">
             <!-- Similar (Emsal) -->
-            <div class="flex-1 my-4">
-                <x-label for="similar">Emsal</x-label>
-                <x-select wire:model.live="similar" id="similar" class="w-full">
-                    <option value="">Seçiniz</option>
-                    <option value="0,10">0,10</option>
-                    <option value="0,20">0,20</option>
-                    <option value="0,30">0,30</option>
-                    <option value="0,40">0,40</option>
-                </x-select>
-                <x-input-error for="similar" class="mt-2" />
-            </div>
+            <x-select-box label="Emsal" model="similar" :options="['0,05' ,'0,10', '0,15','0,20','0,24','0,25','0,30','0,35','0,40','0,45','0,50','0,60',
+            '0,70','0,75','0,80','0,90','0,95','1,00','1,05','1,10','1,15','1,20','1,25']" />
 
             <!-- Height Limit (Gabari) -->
-            <div class="flex-1 my-4">
-                <x-label for="height_limit">Gabari</x-label>
-                <x-select wire:model.live="height_limit" id="height_limit" class="w-full">
-                    <option value="">Seçiniz</option>
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="30">30</option>
-                    <option value="40">40</option>
-                </x-select>
-                <x-input-error for="height_limit" class="mt-2" />
-            </div>
+            <x-select-box label="Gabari" model="heigh_limit" :options="['3,5','6,5','7,5','8,50','9,50','11,50','12,50','14,50','15,50','18,50','21,50','24,50','27,50','30,50','36,50','Serbest','Bilinmiyor']" />
             <!-- isCredit (Krediye Uygunluk) -->
-            <div class="flex-1 my-4">
-                <x-label for="isCredit">Krediye Uygunluk</x-label>
-                <x-select wire:model.live="isCredit" id="isCredit" class="w-full">
-                    <option value="">Seçiniz</option>
-                    <option value="1">Uygun</option>
-                    <option value="0">Uygun Değil</option>
-                </x-select>
-                <x-input-error for="isCredit" class="mt-2" />
-            </div>
+            <x-select-box label="Krediye Uygunluk" model="heigh_limit" :options="['Uygun','Uygun Değil','Bilinmiyor']" />
         </div>
 
         <div class="flex flex-row mx-4 space-x-2">
 
             <!-- Deed Type (Tapu Durumu) -->
-            <div class="flex-1 my-4">
-                <x-label for="deed_type">Tapu Durumu <x-red-star /></x-label>
-                <x-select wire:model.live="deed_type" id="deed_type" class="w-full">
-                    <option value="">Seçiniz</option>
-                    <option value="Kat Mülkiyeti">Kat Mülkiyeti</option>
-                    <option value="Kat İrtifakı">Kat İrtifakı</option>
-                    <option value="Hisseli">Hisseli</option>
-                    <option value="Müstakil Tapulu">Müstakil Tapulu</option>
-                    <option value="Arsa Tapulu">Arsa Tapulu</option>
-                    <option value="Tahsis">Tahsis</option>
-                    <option value="Tapu Kaydı Yok">Tapu Kaydı Yok</option>
-                </x-select>
-                <x-input-error for="deed_type" class="mt-2" />
-            </div>
-
+            <x-select-box label="Tapu Durumu" model="deed_type" :options="['Kat Mülkiyeti','Kat İrtifakı','Hisseli','Müstakil Tapulu','Arsa Tapulu','Tahsis','Tapu Kaydı Yok']" />
+            
             <!-- Is Swap (Takas Durumu) -->
             <div class="flex-1 my-4">
                 <x-label for="isSwap">Takas Durumu</x-label>
-                <x-select wire:model.live="isSwap" id="isSwap" class="w-full">
+                <x-select wire:model.live="isSwap" id="isSwap" class="w-full pb-3">
                     <option value="">Seçiniz</option>
                     <option value="1">Evet</option>
                     <option value="0">Hayır</option>
@@ -136,23 +55,12 @@
             </div>
 
             <!-- Property No (Taşınmaz No) -->
-            <div class="flex-1 my-4">
-                <x-label for="property_no">Taşınmaz No <x-red-star /></x-label>
-                <x-input type="text" class="w-full" wire:model.live="property_no" id="property_no"
-                    placeholder="Taşınmaz numarasını giriniz" />
-                <x-input-error for="property_no" class="mt-2" />
-            </div>
+            <x-input-text label="Taşınmaz No" model="property_no" />
 
         </div>
 
         @if ($status == 'Kiralık')
-        <div class="flex flex-row mx-4 space-x-2">
-            <div class="flex-1 my-4">
-                <x-label for="deposit">Depozito</x-label>
-                <x-input type="text" wire:model.live="deposit" id="deposit" class="w-full" />
-                <x-input-error for="deposit" class="mt-2" />
-            </div>
-        </div>
+        <x-input-text label="Depozito" model="deposito" />
         @endif
         {{-- MAL SAHİBİ --}}
         <div class="flex flex-row justify-between mx-4">
@@ -170,7 +78,7 @@
 
             </div>
         </div>
-            <div class="flex flex-row justify-between mx-4">
+        <div class="flex flex-row justify-between mx-4">
 
             {{-- PARTNER VAR MI --}}
             <div class="flex-1 my-4">
@@ -181,22 +89,22 @@
         </div>
 
 
-    @if ($has_partner || $owner_customer_id == '0')
-    <div class="flex flex-row justify-between mx-4">
-        <div class="flex-1 my-4">
-            <x-label for="partner_customer_id">Partner Seç</x-label>
-            <x-select wire:model.live="partner_customer_id" id="partner_customer_id" class="w-full">
-                <option value="">Seçiniz</option>
-                @if (!empty($partnerList))
-                @foreach ($partnerList as $partner)
-                <option value="{{ $partner->id }}">{{ $partner->name }}</option>
-                @endforeach
-                @endif
-            </x-select>
-            <x-input-error for="partner_customer_id" class="mt-2" />
+        @if ($has_partner || $owner_customer_id == '0')
+        <div class="flex flex-row justify-between mx-4">
+            <div class="flex-1 my-4">
+                <x-label for="partner_customer_id">Partner Seç</x-label>
+                <x-select wire:model.live="partner_customer_id" id="partner_customer_id" class="w-full">
+                    <option value="">Seçiniz</option>
+                    @if (!empty($partnerList))
+                    @foreach ($partnerList as $partner)
+                    <option value="{{ $partner->id }}">{{ $partner->name }}</option>
+                    @endforeach
+                    @endif
+                </x-select>
+                <x-input-error for="partner_customer_id" class="mt-2" />
+            </div>
         </div>
+        @endif
+
+
     </div>
-    @endif
-
-
-</div>
