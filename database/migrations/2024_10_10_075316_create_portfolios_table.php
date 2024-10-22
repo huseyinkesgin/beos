@@ -27,9 +27,9 @@ return new class extends Migration
             $table->string('deposit')->nullable(); // Kiralık için depozito
             $table->string('additional_fees')->nullable(); // + KDV, + Stopaj, Bilinmiyor
             $table->string('property_no')->nullable(); // Taşınmaz No
-            $table->boolean('isCredit')->default(false); // Krediye Uygunluk
+            $table->string('isCredit')->default('Uygun Değil')->nullable(); // Krediye Uygunluk
             $table->string('deed_type'); // Tapu Durumu
-            $table->boolean('isSwap'); // Takas Durumu
+            $table->string('isSwap')->default('Hayır')->nullable(); // Takas Durumu
             $table->text('description')->nullable(); // Açıklama
             $table->string('advisor')->nullable(); // Danışman
             $table->foreignId('partner_customer_id')->nullable()->constrained('customers'); // Partner

@@ -2,10 +2,11 @@
     <x-slot name="header">
         <div class="flex justify-between">
             <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                {{ __('Kategori Listesi') }}
+                {{ __('Portföy Listesi') }}
             </h2>
 
             <livewire:portfolio.portfolio-create />
+            <livewire:portfolio.portfolio-wizard />
         </div>
     </x-slot>
 

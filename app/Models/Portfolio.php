@@ -15,29 +15,39 @@ class Portfolio extends Model
 
 
     protected $fillable = [
-        'area_m2',
-        'status',
-        'price',
-        'category_id',
-        'type_id',
+        //1.Adım
         'state_id',
         'city_id',
         'district_id',
+        'area_m2',
+        'status',
+        'category_id',
+        'type_id',
+        //3.adım
+        'portfolio_no',
+        'price', 
+        'deposit',    
         'lot',
         'parcel',
-        'description',
-        'portfolio_no',
+        'property_no',
+       
+         
+        'deed_type',
+        'isCredit',
+        'isSwap',
+        
+        //4.adım
         'advisor',
         'partner_customer_id',
         'owner_customer_id',
+       
+        
+       
+      
+        'additional_fees',
         'isActive',
+        'description',
         'note',
-        'isCredit',
-        'isSwap',
-        'deed_type',
-        'property_no',
-        'deposit',
-        'additional_fees'
     ];
 
 
