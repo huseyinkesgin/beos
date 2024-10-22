@@ -6,17 +6,20 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class InputText extends Component
+class SelectBox extends Component
 {
     public $label;
     public $model;
+    public $options;
+
     /**
      * Create a new component instance.
      */
-    public function __construct($label,  $model)
+    public function __construct($label,  $model, $options = [])
     {
         $this->label = $label;
         $this->model = $model;
+        $this->options = $options;
     }
 
     /**
@@ -24,6 +27,6 @@ class InputText extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.input-text');
+        return view('components.select-box');
     }
 }

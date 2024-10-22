@@ -6,18 +6,12 @@
     </x-slot>
 
     <x-slot name="content">
-        <span class="font-semibold flex justify-center text-lg">Bu ili silmek istediğinizden emin misiniz?</span>
+        <span class="flex justify-center text-lg font-semibold">Bu ili silmek istediğinizden emin misiniz?</span>
         <br>Bu işlem çöp kutusuna gönderir. Tamamen silmek için Silinmişlerden "KALICI SİL" yaparak silmelisiniz.
     </x-slot>
 
     <x-slot name="footer">
-        <x-secondary-button wire:click="$toggle('open')" wire:loading.attr="disabled">
-            İptal
-        </x-secondary-button>
-
-        <x-danger-button wire:click="delete" wire:loading.attr="disabled" class="ml-2">
-            Sil
-        </x-danger-button>
+        <x-modal-delete-footer />
     </x-slot>
 </x-confirmation-modal>
 

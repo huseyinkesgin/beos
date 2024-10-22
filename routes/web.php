@@ -17,7 +17,7 @@ use App\Livewire\Finance\PersonnelBalanceIndex;
 use App\Livewire\Finance\PersonnelExpenseIndex;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth/login');
 });
 
 Route::middleware([

@@ -12,11 +12,10 @@
     <div class="mx-auto">
         <div class="overflow-hidden bg-white shadow-2xl sm:rounded-lg">
 
-                @livewire('people.customer-edit')
-                @livewire('people.customer-delete')
+            @livewire('people.customer-edit')
+            @livewire('people.customer-delete')
+            @livewire('people.customer-table')
 
-                    @livewire('people.customer-table')
-
-            </div>
+        </div>
     </div>
 </div>

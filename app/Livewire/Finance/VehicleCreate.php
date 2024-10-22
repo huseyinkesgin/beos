@@ -74,7 +74,7 @@ class VehicleCreate extends Component
             'additional_documents' => $this->additional_documents,
         ]);
 
-        $this->dispatch('bill-created');
+        $this->dispatch('vehicle-created');
         $this->dispatch('notify', title: 'Başarılı', text: 'Fatura başarıyla kayıt edildi!', type: 'success');
         $this->reset();
     }

@@ -23,19 +23,18 @@
                 </x-th>
                 <x-th>
                     <button wire:click="sortBy('name')" class="flex items-center font-bold">
-                        Türü
+                        Plaka
                         <span class="ml-1">{!! $this->getSortIcon('type') !!}</span>
                     </button>
                 </x-th>
-                <x-th>Miktar</x-th>
-                <x-th>Fatura Tarihi</x-th>
-                <x-th>Son Ödeme Tarihi</x-th>
-                <x-th>FAtura No</x-th>
-                <x-th>Ödeme Yöntemi</x-th>
-
-                <x-th>Ödeme Durumu</x-th>
-                <x-th>Ödenme Tarihi</x-th>
-                <x-th>Giriş/Güncellenme Tarihi</x-th>
+                <x-th>Marka</x-th>
+                <x-th>Model</x-th>
+                <x-th>Yıl</x-th>
+                <x-th>Şase No</x-th>
+                <x-th>Tescil No</x-th>
+                <x-th>Satın Alma Tarihi</x-th>
+                <x-th>Sigorta Bitiş</x-th>
+                <x-th>Kasko Bitiş</x-th>
                 <x-th>İşlemler</x-th>
             </tr>
         </thead>
@@ -49,7 +48,14 @@
 
 
 
-                <x-td>{{ $vehicle->updated_at }}</x-td>
+                <x-td>{{ $vehicle->brand }}</x-td>
+                <x-td>{{ $vehicle->model }}</x-td>
+                <x-td>{{ $vehicle->year }}</x-td>
+                <x-td>{{ $vehicle->chassis_number }}</x-td>
+                <x-td>{{ $vehicle->registration_number }}</x-td>
+                <x-td>{{ $vehicle->purchase_date }}</x-td>
+                <x-td>{{ $vehicle->insurance_policy_expiry }}</x-td>
+                <x-td>{{ $vehicle->casco_policy_expiry }}</x-td>
                 <x-td>
                     @if ($deletedFilter === 'only')
                     <x-secondary-button wire:click="restore('{{ $vehicle->id }}')" wire:loading.attr="disabled">

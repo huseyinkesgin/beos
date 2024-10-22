@@ -49,7 +49,7 @@ class CustomerEdit extends Component
         $this->phone = $customer->phone;
         $this->email = $customer->email;
         $this->address = $customer->address;
-        $this->isActive = (bool) $customer->isActive;
+        $this->isActive = $customer->isActive;
         $this->note = $customer->note;
         $this->open = true;
     }

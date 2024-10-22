@@ -16,7 +16,7 @@ class DistrictCreate extends Component
     public $state_id , $city_id, $name, $isActive = true, $note ;
     public $states;
     public $cities = [];
-    public $selectedState;
+
 
 
     public $open = false;
@@ -33,7 +33,7 @@ class DistrictCreate extends Component
     public function openModal()
     {
         $this->open = true;
-        $this->reset('selectedState','city_id','name');
+        $this->reset('state_id','city_id','name');
 
     }
 
@@ -42,7 +42,7 @@ class DistrictCreate extends Component
         $this->states = State::active()->get();
     }
 
-    public function updatedSelectedState($value)
+    public function updatedStateId($value)
     {
         $this->state_id = $value;
         $this->cities = City::where('state_id', $value)->get();

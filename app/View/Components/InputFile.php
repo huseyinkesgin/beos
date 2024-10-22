@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class InputText extends Component
+class InputFile extends Component
 {
     public $label;
     public $model;
@@ -24,6 +24,6 @@ class InputText extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.input-text');
+        return view('components.input-file');
     }
 }
