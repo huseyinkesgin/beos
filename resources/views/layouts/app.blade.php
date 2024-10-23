@@ -51,6 +51,8 @@
     <!-- Bildirim ve Livewire Scriptleri -->
     <x-bildirim />
     {{-- <script src="https://kit.fontawesome.com/yourkitid.js" crossorigin="anonymous"></script> --}}
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
+
     @livewireScripts
 </body>
 

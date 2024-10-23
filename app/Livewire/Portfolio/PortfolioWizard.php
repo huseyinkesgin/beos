@@ -2,23 +2,34 @@
 
 namespace App\Livewire\Portfolio;
 
-use App\Models\Business;
-use App\Models\Category;
 use App\Models\City;
-use App\Models\Customer;
-use App\Models\District;
 use App\Models\Home;
 use App\Models\Land;
-use App\Models\Portfolio;
-use App\Models\State;
 use App\Models\Type;
+use App\Models\State;
 use Livewire\Component;
+use App\Models\Business;
+use App\Models\Category;
+use App\Models\Customer;
+use App\Models\District;
+use App\Models\Personnel;
+use App\Models\Portfolio;
+use Livewire\WithFileUploads;
+use App\Models\PortfolioMedia;
 
 class PortfolioWizard extends Component
 {
+
+    use WithFileUploads;
+
     public $currentStep = 1; // Başlangıç adımı
 
     public $totalSteps = 5; // Toplam adım sayısı
+
+
+
+    public $satellite_image, $feature_image, $e_imar_image, $city_image, $slope_image;
+
 
     // ~~~~~~~~~~ PORTFOLİO DATABASE ~~~~~~~~~ //
     public $portfolio_no;
@@ -131,6 +142,7 @@ class PortfolioWizard extends Component
     public $partnerList;
 
     public $ownerList;
+    public $advisorsList;
 
     // ~~~~~~~~~~ KATEGORİ VE TİPLER ~~~~~~~~~ //
     public $categories;
@@ -163,12 +175,27 @@ class PortfolioWizard extends Component
         $this->categories = Category::active()->get();
         $this->partnerList = Customer::partnerList()->get();
         $this->ownerList = Customer::ownerList()->get();
+        // Danışman listesini çekiyoruz
+        $this->advisorsList = Personnel::advisors()->get();
 
         // Kategori ID'leri burada tanımlayın
         $this->landCategoryId = Category::where('name', 'Arsa')->first()->id ?? null;
         $this->businessCategoryId = Category::where('name', 'İşyeri')->first()->id ?? null;
         $this->homeCategoryId = Category::where('name', 'Konut')->first()->id ?? null;
     }
+
+     // Resimleri kaydetme işlemi
+     private function storeImage($portfolioId, $image, $type)
+     {
+         if ($image) {
+            $path = $image->storeAs("portfolios/{$this->portfolio_no}", $image->getClientOriginalName());
+             PortfolioMedia::create([
+                 'portfolio_id' => $portfolioId,
+                 'type' => $type,
+                 'file_path' => $path,
+             ]);
+         }
+     }
 
     // ~~~~~~~ DİNAMİK İL - İLÇE SEÇİMİ ~~~~~~ //
     public function updatedStateId($value)
@@ -271,6 +298,11 @@ class PortfolioWizard extends Component
                 'partner_customer_id' => 'nullable',
 
             ]);
+        } elseif ($this->currentStep == 5) {
+            $this->validate([
+
+
+            ]);
         }
     }
 
@@ -343,7 +375,17 @@ class PortfolioWizard extends Component
             $this->createHome($portfolio->id);
         }
 
+        // Resimleri 'portfolio_no' ya göre klasörlerde sakla
+    $this->storeImage($this->portfolio_no, $this->satellite_image, 'uydu');
+    $this->storeImage($this->portfolio_no, $this->feature_image, 'nitelik');
+    $this->storeImage($this->portfolio_no, $this->e_imar_image, 'eimar');
+    $this->storeImage($this->portfolio_no, $this->city_image, 'buyuksehir');
+    $this->storeImage($this->portfolio_no, $this->slope_image, 'eğim');
+
+
+        $this->dispatch('portfolio-created');
         $this->dispatch('notify', title: 'Başarılı!', text: 'Portföy başarıyla kaydedildi.', type: 'success');
+        $this->reset('open');
     }
 
     // Arsa kaydetme
@@ -351,7 +393,7 @@ class PortfolioWizard extends Component
     {
         Land::create([
             'portfolio_id' => $portfolioId,
-           
+
             'zoning_status' => $this->zoning_status,
             'similar' => $this->similar,
             'height_limit' => $this->height_limit,
@@ -390,6 +432,7 @@ class PortfolioWizard extends Component
             'states' => $this->states,
             'cities' => City::where('state_id', $this->state_id)->get(),
             'categories' => $this->categories,
+            'advisorsList' => $this->advisorsList,
         ]);
     }
 }

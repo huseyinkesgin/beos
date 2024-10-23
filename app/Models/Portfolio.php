@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\Personnel;
 use App\Traits\UuidTrait;
 use App\Traits\ScopesTrait;
 use Illuminate\Support\Str;
+use App\Models\PortfolioMedia;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -25,25 +27,25 @@ class Portfolio extends Model
         'type_id',
         //3.adım
         'portfolio_no',
-        'price', 
-        'deposit',    
+        'price',
+        'deposit',
         'lot',
         'parcel',
         'property_no',
-       
-         
+
+
         'deed_type',
         'isCredit',
         'isSwap',
-        
+
         //4.adım
         'advisor',
         'partner_customer_id',
         'owner_customer_id',
-       
-        
-       
-      
+
+
+
+
         'additional_fees',
         'isActive',
         'description',
@@ -93,6 +95,11 @@ class Portfolio extends Model
         return $this->hasOne(Business::class, 'portfolio_id');
     }
 
+    public function media()
+    {
+        return $this->hasMany(PortfolioMedia::class);
+    }
+
     public function scopeFilter($query, $search, $deletedFilter)
     {
         // Arama
@@ -125,4 +132,10 @@ class Portfolio extends Model
     {
         return $query->where('status', $status);
     }
+
+     // Danışman personel ile ilişki
+     public function advisorPersonnel()
+     {
+         return $this->belongsTo(Personnel::class, 'advisor');
+     }
 }

@@ -151,8 +151,20 @@
                     </button>
                 </x-td>
                     <x-td>
-                        <x-button wire:click="$emit('openEditModal', {{ $portfolio->id }})">Düzenle</x-button>
-                        <x-button wire:click="$emit('openDeleteModal', {{ $portfolio->id }})">Sil</x-button>
+                        <x-button wire:click="$dispatch('openEditModal', {{ $portfolio->id }})">Düzenle</x-button>
+                        <x-danger-button wire:click="$dispatch('openDeleteModal', { id: '{{ $portfolio->id }}' })"
+                            wire:loading.attr="disabled" class="ml-2">
+                            Sil
+                        </x-danger-button>
+                        <x-danger-button wire:click="$dispatch('openMediaModal', { id: '{{ $portfolio->id }}' })"
+                            wire:loading.attr="disabled" class="ml-2">
+                            Diğer
+                        </x-danger-button>
+                        <x-danger-button wire:click="$dispatch('openGalleryModal', { id: '{{ $portfolio->id }}' })"
+                            wire:loading.attr="disabled" class="ml-2">
+                            Galeri
+                        </x-danger-button>
+
                     </x-td>
                 </tr>
             @endforeach

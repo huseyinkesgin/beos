@@ -6,6 +6,7 @@
             </h2>
 
             <livewire:portfolio.portfolio-create />
+
             <livewire:portfolio.portfolio-wizard />
         </div>
     </x-slot>
@@ -15,6 +16,8 @@
 
                 @livewire('portfolio.portfolio-edit')
                 @livewire('portfolio.portfolio-delete')
+                <livewire:portfolio.portfolio-medias />
+                <livewire:portfolio.portfolio-galleries />
 
                     @livewire('portfolio.portfolio-table')
 

@@ -5,11 +5,9 @@ namespace App\Livewire\Portfolio;
 use App\Models\Category;
 use Livewire\Component;
 use Illuminate\Support\Str;
-use Laravel\Jetstream\InteractsWithBanner;
 
 class CategoryCreate extends Component
 {
-    use InteractsWithBanner;
     public $name;
     public $isActive = true;
     public $note;
