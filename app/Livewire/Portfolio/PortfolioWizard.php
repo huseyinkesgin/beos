@@ -257,16 +257,32 @@ class PortfolioWizard extends Component
         } elseif ($this->currentStep == 2) {
             if ($this->category_id == $this->landCategoryId) {
                 $this->validate([
-                    'area_m2' => 'required|numeric',
+
                     'similar' => 'nullable',
                     'height_limit' => 'nullable',
                     'zoning_status' => 'required|string',
                 ]);
             } elseif ($this->category_id == $this->businessCategoryId) {
                 $this->validate([
+
+                    'zoning_status' => 'required',
+
                     'open_area' => 'required|numeric',
                     'closed_area' => 'required|numeric',
                     'business_area' => 'required|numeric',
+                    'office_area' => 'required|numeric',
+
+                    'height' => 'nullable|numeric',
+                    'floor_count' => 'nullable|numeric',
+                    'floor_level' => 'nullable|string',
+
+                    'electricity_power' => 'nullable|numeric',
+                    'building_year' => 'nullable|numeric',
+                    'heating_type' => 'nullable|string',
+
+                    'building_condition' => 'nullable|string',
+                    'usage_status' => 'nullable|string',
+                    'ground_analysis' => 'boolean',
                 ]);
             } elseif ($this->category_id == $this->homeCategoryId) {
                 $this->validate([
@@ -284,16 +300,16 @@ class PortfolioWizard extends Component
                 'parcel' => 'required|numeric',
                 'portfolio_no' => 'required',
                 'price' => 'required|string',
-                'additional_fees' => 'nullable|string',
+             
                 'deed_type' => 'nullable|string',
-                'isSwap' => 'boolean',
+                'isCredit' => $this->status == 'Satılık' ? 'nullable|string' : 'nullable',
                 'property_no' => 'required',
-                'deposit' => 'nullable',
-                'isCredit' => 'nullable|string',
+               'deposit' => $this->status == 'Kiralık' ? 'nullable|string' : 'nullable',
+               'isCredit' => $this->status == 'Satılık' ? 'nullable|string' : 'nullable',
             ]);
         } elseif ($this->currentStep == 4) {
             $this->validate([
-                'owner_customer_id' => 'required',
+                'owner_customer_id' => 'nullable',
                 'has_partner' => 'nullable',
                 'partner_customer_id' => 'nullable',
 
@@ -335,7 +351,7 @@ class PortfolioWizard extends Component
 
         // 4. Adımda toplanan veriler
         $this->validate([
-            'owner_customer_id' => 'required',
+            'owner_customer_id' => 'nullable',
             'has_partner' => 'nullable',
             'partner_customer_id' => 'nullable',
         ]);
@@ -358,8 +374,8 @@ class PortfolioWizard extends Component
             'isCredit' => $this->isCredit,
             'isSwap' => $this->isSwap,
             'advisor' => $this->advisor,
-            'partner_customer_id' => $this->partner_customer_id,
-            'owner_customer_id' => $this->owner_customer_id,
+            'partner_customer_id' => $this->partner_customer_id ?: null,
+            'owner_customer_id' => $this->owner_customer_id ?: null,
             'additional_fees' => $this->additional_fees,
             'advisor' => $this->advisor,
             'note' => $this->note,
@@ -375,12 +391,7 @@ class PortfolioWizard extends Component
             $this->createHome($portfolio->id);
         }
 
-        // Resimleri 'portfolio_no' ya göre klasörlerde sakla
-    $this->storeImage($this->portfolio_no, $this->satellite_image, 'uydu');
-    $this->storeImage($this->portfolio_no, $this->feature_image, 'nitelik');
-    $this->storeImage($this->portfolio_no, $this->e_imar_image, 'eimar');
-    $this->storeImage($this->portfolio_no, $this->city_image, 'buyuksehir');
-    $this->storeImage($this->portfolio_no, $this->slope_image, 'eğim');
+
 
 
         $this->dispatch('portfolio-created');
@@ -405,10 +416,21 @@ class PortfolioWizard extends Component
     {
         Business::create([
             'portfolio_id' => $portfolioId,
+            'area_m2' => $this->area_m2,
+            'zoning_status' => $this->zoning_status,
             'open_area' => $this->open_area,
             'closed_area' => $this->closed_area,
             'business_area' => $this->business_area,
             'office_area' => $this->office_area,
+            'height' => $this->height,
+            'floor_count' => $this->floor_count,
+            'floor_level' => $this->floor_level,
+            'electricity_power' => $this->electricity_power,
+            'building_year' => $this->building_year,
+            'heating_type' => $this->heating_type,
+            'building_condition' => $this->building_condition,
+            'usage_status' => $this->usage_status,
+            'ground_analysis' => $this->ground_analysis,
         ]);
     }
 

@@ -12,6 +12,8 @@ use App\Models\Category;
 use App\Models\District;
 use App\Models\Portfolio;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Excel;
+use App\Exports\PortfoliosExport;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -31,6 +33,7 @@ class PortfolioTable extends Component
     public $cities = [];
     public $districts = [];
     public $businessCategoryId;
+    public $landCategoryId;
 
      // Widget verileri
      public $totalSatilik = 0;
@@ -46,18 +49,33 @@ class PortfolioTable extends Component
      public $totalSatilikFabrikaDegeri = 0;
     public $totalSatilikDepoDegeri = 0;
 
-
+    protected $excel;
     protected $listeners = ['refreshTable' => '$refresh'];
+
+    public function __construct()
+    {
+        $this->excel = app(Excel::class);  // Bağımlılığı burada kullanıyoruz
+    }
+
+    public function export()
+    {
+        // Excel indirme işlemi bağımlılığı kullanarak yapılır
+        return $this->excel->download(new PortfoliosExport, 'portfolios.xlsx');
+    }
+
+
 
 
     public function mount()
     {
         $this->businessCategoryId = Category::where('name', 'İşyeri')->first()->id ?? null;
+        $this->landCategoryId = Category::where('name', 'Arsa')->first()->id ?? null;
         $this->cities = City::all(); // Başlangıçta boş bırakılabilir, il seçimine göre dinamik
         $this->districts = District::all(); // Başlangıçta boş bırakılabilir, ilçe seçimine göre dinamik
 
         $this->calculateWidgetTotals();
     }
+
 
     public function updatedStateFilter($stateId)
     {

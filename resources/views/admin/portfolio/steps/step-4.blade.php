@@ -1,11 +1,11 @@
- {{-- MAL SAHİBİ --}}
- <div class="flex flex-row justify-between mx-4">
+{{-- MAL SAHİBİ --}}
+<div class="flex flex-row justify-between mx-4">
 
     <div class="flex-1 my-4">
         <x-label for="owner_customer_id">Mal Sahibi Seç</x-label>
         <x-select wire:model.live="owner_customer_id" id="owner_customer_id" class="w-full">
             <option value="">Seçiniz</option>
-            <option value="0">Bilinmiyor</option>
+            <option value="">Bilinmiyor</option>
             @foreach ($ownerList as $owner)
             <option value="{{ $owner->id }}">{{ $owner->name }}</option>
             @endforeach

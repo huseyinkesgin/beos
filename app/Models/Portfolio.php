@@ -95,6 +95,11 @@ class Portfolio extends Model
         return $this->hasOne(Business::class, 'portfolio_id');
     }
 
+    public function land()
+    {
+        return $this->hasOne(Land::class, 'portfolio_id');
+    }
+
     public function media()
     {
         return $this->hasMany(PortfolioMedia::class);

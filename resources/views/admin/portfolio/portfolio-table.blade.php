@@ -104,38 +104,53 @@
         </x-select>
     </div>
     <x-search />
+    <div class="flex justify-end mb-4">
+        <button wire:click="export" class="px-4 py-2 text-white bg-green-500 rounded">Excel'e Aktar</button>
+    </div>
     </div>
 
     <x-table>
         <thead>
             <tr>
                 <x-th>Portföy No</x-th>
-                <x-th>Tip</x-th>
-                <x-th>Fiyat</x-th>
+                <x-th>Kategori/Tip</x-th>
+                <x-th>Lokasyon</x-th>
+                <x-th class="text-center">Fiyat</x-th>
                 @if ($categoryFilter == $businessCategoryId)
                 <x-th>Alanlar</x-th>
             @endif
+                <x-th class="text-center">Mal Sahibi/Partner</x-th>
                 <x-th>Durum</x-th>
-                <x-th>İşlemler</x-th>
+                <x-th class="text-center">İşlemler</x-th>
             </tr>
         </thead>
         <tbody>
             @foreach ($portfolios as $portfolio)
                 <tr>
                     <x-td>{{ $portfolio->portfolio_no }}
-                        <br>
+
+
+                    </x-td>
+                    <x-td>
                         {{ $portfolio->status }}          {{ ucfirst(optional($portfolio->type)->name) }}
                         <br>
-                        {{ $portfolio->owner->name }}
-
+                        @if ($portfolio->category_id == $landCategoryId)  <!-- Kategori 'Arsa' ise zoning_status'u göster -->
+                        ({{ $portfolio->land->zoning_status }})
+                    @endif
                     </x-td>
 
                     <x-td>
                         <br> {{ $portfolio->state->name }} > {{ $portfolio->city->name }} > {{  $portfolio->district->name }}
-                        <br>  <span class="font-extrabold text-red-500">{{ number_format($portfolio->area_m2, 0) }} m²</span> ({{ $portfolio->lot }} / {{  $portfolio->parcel }})
+                        <br> ({{ $portfolio->lot }} / {{  $portfolio->parcel }})
 
                     </x-td>
-                    <x-td>{{ number_format($portfolio->price, 0) }} ₺</x-td>
+                    <x-td class="text-center">
+                        <span class="font-bold text-black text-md">
+                        {{ number_format($portfolio->price, 0) }} ₺
+                    </span>
+                        <br>
+                        <span class="font-extrabold text-red-500">{{ number_format($portfolio->area_m2, 0) }} m²</span>
+                    </x-td>
                     @if ($categoryFilter == $businessCategoryId)
                     <x-td>
                         Açık Alan: {{ $portfolio->business->open_area ?? "Boş " }} m² <br>
@@ -144,6 +159,15 @@
                         Ofis Alanı: {{ $portfolio->business->office_area ?? "Boş" }} m²
                     </x-td>
                 @endif
+                <x-td class="text-center">
+                    @if($portfolio->owner)
+                    {{ $portfolio->owner->name }}
+                    @endif
+                    <br>
+                      @if  ($portfolio->partner)
+                     <span class="text-red-600">{{ $portfolio->partner->name }}</span>
+                     @endif
+                </x-td>
                 <x-td>
                     <button wire:click="toggleActive('{{ $portfolio->id }}')"
                         class="text-xs {{ $portfolio->isActive ? 'text-green-600' : 'text-red-600' }}">
