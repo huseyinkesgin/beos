@@ -66,7 +66,7 @@ class Personnel extends Model
     // Danışmanları getirmek için bir scope tanımlıyoruz
     public function scopeAdvisors($query)
     {
-        return $query->where('job_title', 'Danışman')->where('isActive', true);
+        return $query->whereIn('job_title', ['Danışman','Şirket Sahibi'])->where('isActive', true);
     }
     // Ad soyad birleştirici
     public function getNameAttribute()

@@ -56,11 +56,11 @@ class PortfolioWizard extends Component
 
     public $property_no;
 
-    public $isCredit = false;
+    public $isCredit;
 
     public $deed_type;
 
-    public $isSwap = false;
+    public $isSwap;
 
     public $description;
 
@@ -300,12 +300,12 @@ class PortfolioWizard extends Component
                 'parcel' => 'required|numeric',
                 'portfolio_no' => 'required',
                 'price' => 'required|string',
-             
                 'deed_type' => 'nullable|string',
-                'isCredit' => $this->status == 'Satılık' ? 'nullable|string' : 'nullable',
+                'isCredit' => 'nullable|string',
+                'isSwap' => 'nullable|string',
                 'property_no' => 'required',
-               'deposit' => $this->status == 'Kiralık' ? 'nullable|string' : 'nullable',
-               'isCredit' => $this->status == 'Satılık' ? 'nullable|string' : 'nullable',
+                'deposit' => $this->status == 'Kiralık' ? 'nullable|string' : 'nullable',
+
             ]);
         } elseif ($this->currentStep == 4) {
             $this->validate([
@@ -343,10 +343,10 @@ class PortfolioWizard extends Component
             'price' => 'required|string',
             'additional_fees' => 'nullable|string',
             'deed_type' => 'nullable|string',
-            'isSwap' => 'boolean',
-            'property_no' => 'required',
-            'deposit' => 'nullable',
+            'property_no' => 'nullable|numeric',
+            'deposit' => 'nullable|string',
             'isCredit' => 'nullable|string',
+            'isSwap' => 'nullable|string',
         ]);
 
         // 4. Adımda toplanan veriler
@@ -382,6 +382,8 @@ class PortfolioWizard extends Component
             'description' => $this->description,
         ]);
 
+
+
         // Kategoriye göre ilgili modele kayıt yap
         if ($this->category_id == $this->landCategoryId) {
             $this->createLand($portfolio->id);
@@ -414,9 +416,8 @@ class PortfolioWizard extends Component
     // İşyeri kaydetme
     protected function createBusiness($portfolioId)
     {
-        Business::create([
+       $data= Business::create([
             'portfolio_id' => $portfolioId,
-            'area_m2' => $this->area_m2,
             'zoning_status' => $this->zoning_status,
             'open_area' => $this->open_area,
             'closed_area' => $this->closed_area,
@@ -432,6 +433,8 @@ class PortfolioWizard extends Component
             'usage_status' => $this->usage_status,
             'ground_analysis' => $this->ground_analysis,
         ]);
+
+    
     }
 
     // Konut kaydetme

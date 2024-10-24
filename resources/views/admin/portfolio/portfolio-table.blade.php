@@ -188,6 +188,10 @@
                             wire:loading.attr="disabled" class="ml-2">
                             Galeri
                         </x-danger-button>
+                        <x-danger-button wire:click="$dispatch('openAdsModal', { id: '{{ $portfolio->id }}' })"
+                            wire:loading.attr="disabled" class="ml-2">
+                            İlan
+                        </x-danger-button>
 
                     </x-td>
                 </tr>

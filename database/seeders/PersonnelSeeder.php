@@ -18,6 +18,20 @@ class PersonnelSeeder extends Seeder
         DB::table('personnels')->insert([
             [
                 'id' => 1,
+                'first_name' => 'Nedim',
+                'last_name' => 'Akbacak',
+                'email' => 'nedim@buradayapi.com.tr',
+                'phone' => '05073000000',
+                'job_title' => 'Şirket Sahibi',
+                'hire_date' => '2003-04-10',
+                'termination_date' => null,
+                'isActive' => 1,
+                'created_at' => Carbon::parse('2024-10-16 04:28:23'),
+                'updated_at' => Carbon::parse('2024-10-16 04:29:12'),
+                'deleted_at' => null,
+            ],
+            [
+                'id' => 2,
                 'first_name' => 'Ömer Bahadır',
                 'last_name' => 'Gülseren',
                 'email' => 'omer@buradayapi.com.tr',
@@ -33,7 +47,7 @@ class PersonnelSeeder extends Seeder
 
 
             [
-                'id' => 2,
+                'id' => 3,
                 'first_name' => 'Necla',
                 'last_name' => 'Küplüce',
                 'email' => 'necla@buradayapi.com.tr',
@@ -47,7 +61,7 @@ class PersonnelSeeder extends Seeder
                 'deleted_at' => null,
             ],
             [
-                'id' => 3,
+                'id' => 4,
                 'first_name' => 'Abdurrahman',
                 'last_name' => 'Kılıç',
                 'email' => 'kilic@buradayapi.com.tr',
@@ -61,7 +75,7 @@ class PersonnelSeeder extends Seeder
                 'deleted_at' => null,
             ],
             [
-                'id' => 4,
+                'id' => 5,
                 'first_name' => 'Hüseyin',
                 'last_name' => 'Kesgin',
                 'email' => 'info@buradayapi.com.tr',
@@ -74,6 +88,8 @@ class PersonnelSeeder extends Seeder
                 'updated_at' => Carbon::parse('2024-10-16 04:29:12'),
                 'deleted_at' => null,
             ],
+
+
         ]);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Personnel;
 use App\Traits\UuidTrait;
+use App\Models\PortfolioAd;
 use App\Traits\ScopesTrait;
 use Illuminate\Support\Str;
 use App\Models\PortfolioMedia;
@@ -103,6 +104,11 @@ class Portfolio extends Model
     public function media()
     {
         return $this->hasMany(PortfolioMedia::class);
+    }
+
+    public function ads()
+    {
+        return $this->hasMany(PortfolioAd::class);
     }
 
     public function scopeFilter($query, $search, $deletedFilter)

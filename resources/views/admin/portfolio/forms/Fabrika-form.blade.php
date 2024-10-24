@@ -23,7 +23,8 @@
             <x-input-text label="İşletme Alanı (m²)" model="business_area" />
 
             <!-- Ofis Alanı -->
-            <x-input-text label="Ofis Alanı(m²)" model="office_area" />
+          
+            <x-input-text label="Ofis Alanı (m²)" model="office_area" />
         </div>
 
         <!-- Building and Facility Fields -->

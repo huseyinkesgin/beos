@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('business_area')->nullable();
             $table->string('office_area')->nullable();
             $table->unsignedInteger('floor_count')->nullable(); // Kat Sayısı
-            $table->unsignedInteger('floor_level')->nullable(); // Kat Seviyesi
+            $table->string('floor_level')->nullable(); // Kat Seviyesi
             $table->string('electricity_power')->nullable(); //
             $table->unsignedInteger('building_year')->nullable(); // Yapım Yılı
             $table->string('heating_type')->nullable(); //ısıtma tipi

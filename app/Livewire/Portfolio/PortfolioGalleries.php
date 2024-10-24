@@ -98,6 +98,12 @@ class PortfolioGalleries extends Component
         // Başarı bildirimi
         $this->dispatch('notify', title: 'Başarılı!', text: 'Resim başarıyla silindi.', type: 'success');
     }
+// Yeni resimlerin listesinden belirtilen resmi kaldırma
+    public function removeNewImage($index)
+    {
+        array_splice($this->newImages, $index, 1);
+    }
+
 
     // PortfolioGallery resimlerini kaydetme fonksiyonu
     private function storeGalleryImage($portfolioId, $image)

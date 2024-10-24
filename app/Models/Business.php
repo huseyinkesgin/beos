@@ -22,7 +22,7 @@ class Business extends Model
         'open_area',
         'closed_area',
         'business_area',
-        'office_area ',
+        'office_area',
         'floor_count',
         'floor_level',
         'electricity_power',
