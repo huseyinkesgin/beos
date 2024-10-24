@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('type'); // Resim türü (uydu, nitelik, e-imar, vb.)
             $table->string('file_path'); // Dosya yolu
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

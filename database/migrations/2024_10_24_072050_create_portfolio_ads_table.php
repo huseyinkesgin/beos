@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('ads_link')->nullable(); // İlanın URL'si
             $table->string('status');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

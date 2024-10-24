@@ -55,6 +55,7 @@
         </x-slot>
 
         <x-slot name="footer">
+          <div class="space-x-1">
             <x-secondary-button wire:click="$toggle('open')">Vazgeç</x-secondary-button>
             @if ($currentStep > 1)
             <x-secondary-button wire:click="previousStep">Geri</x-secondary-button>
@@ -63,6 +64,7 @@
                 @else
                 <x-dark-button wire:click="save">Kaydet</x-dark-button>
                 @endif
+          </div>
         </x-slot>
     </x-dialog-modal>
 </div>

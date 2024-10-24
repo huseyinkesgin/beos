@@ -57,7 +57,7 @@
                     @endif
                 </x-td>
 
-              
+
 
                 <x-td>
                     @if ($deletedFilter === 'only')
@@ -82,10 +82,9 @@
 
 
                         <!-- wire:click ile Show Butonu -->
-                        <button wire:click="showDetails({{ $personnel->id }})"
-                            class="px-3 py-1 text-white bg-blue-500 rounded hover:bg-blue-700">
+                        <x-button wire:click="showDetails({{ $personnel->id }})">
                             Detay
-                        </button>
+                        </x-button>
 
                         @endif
                 </x-td>

@@ -3,53 +3,72 @@
 namespace App\Livewire\Portfolio;
 
 use App\Models\City;
-use App\Models\Home;
-use App\Models\Land;
 use App\Models\State;
 use Livewire\Component;
-use App\Models\Business;
 use App\Models\Category;
 use App\Models\District;
 use App\Models\Portfolio;
+use App\Traits\HasSortable;
+use App\Traits\SearchReset;
+use Livewire\Attributes\On;
 use Livewire\WithPagination;
 use Maatwebsite\Excel\Excel;
+use App\Traits\PaginateReset;
 use App\Exports\PortfoliosExport;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Pagination\LengthAwarePaginator;
+use App\Traits\ActiveFilterReset;
+use App\Traits\DeleteFilterReset;
+use App\Traits\ToggleActiveTrait;
+use App\Traits\PortfolioRestoreAndDeleteTrait;
 
 class PortfolioTable extends Component
 {
     use WithPagination;
+    use HasSortable;
+    use ToggleActiveTrait,PortfolioRestoreAndDeleteTrait;
+    use SearchReset, DeleteFilterReset, ActiveFilterReset, PaginateReset;
 
+    /* -------------------------------- FİLTRELER ------------------------------- */
     public $search = '';
     public $statusFilter = '';
     public $categoryFilter = '';
     public $stateFilter = '';
     public $cityFilter = '';
     public $districtFilter = '';
-    public $isActiveFilter = '';
-    public $pagination = 10;
+    public $typeFilter = '';
+    public $activeFilter = 'all';
+    public $deletedFilter = 'without';
 
+    /* ----------------------------- TABLO DETAYLARI ---------------------------- */
+    public $sortField = 'created_at';
+    public $sortDirection = 'asc';
+    public $pagination = 10;
+    public $modelClass = Portfolio::class;
+
+    /* --------------------------- İL-İLÇE-BÖLGE İÇİN --------------------------- */
     public $cities = [];
     public $districts = [];
+
+    /* ------------------- TABLODA KATEGORİ ÇEŞİDİ YAPMAK İÇİN ------------------ */
     public $businessCategoryId;
     public $landCategoryId;
 
-     // Widget verileri
-     public $totalSatilik = 0;
-     public $totalKiralik = 0;
-     public $totalAktif = 0;
-     public $totalPasif = 0;
-     public $totalSatilikArsaDegeri = 0;
-     public $totalKiraDegeri = 0;
-
-
-     public $totalSatilikArsa = 0;
-     public $totalSatilikFabrika = 0;
-     public $totalSatilikFabrikaDegeri = 0;
+    /* ----------------------------- WİDGET VERİLERİ ---------------------------- */
+    public $totalSatilik = 0;
+    public $totalKiralik = 0;
+    public $totalAktif = 0;
+    public $totalPasif = 0;
+    public $totalSatilikArsaDegeri = 0;
+    public $totalKiraDegeri = 0;
+    public $totalSatilikArsa = 0;
+    public $totalSatilikFabrika = 0;
+    public $totalSatilikFabrikaDegeri = 0;
     public $totalSatilikDepoDegeri = 0;
 
+    /* -------------------------- EXPORT VE IMPORT İÇİN ------------------------- */
     protected $excel;
+
+
+
     protected $listeners = ['refreshTable' => '$refresh'];
 
     public function __construct()
@@ -63,20 +82,17 @@ class PortfolioTable extends Component
         return $this->excel->download(new PortfoliosExport, 'portfolios.xlsx');
     }
 
-
-
-
     public function mount()
     {
         $this->businessCategoryId = Category::where('name', 'İşyeri')->first()->id ?? null;
         $this->landCategoryId = Category::where('name', 'Arsa')->first()->id ?? null;
-        $this->cities = City::all(); // Başlangıçta boş bırakılabilir, il seçimine göre dinamik
-        $this->districts = District::all(); // Başlangıçta boş bırakılabilir, ilçe seçimine göre dinamik
+        $this->cities = City::all();
+        $this->districts = District::all();
 
         $this->calculateWidgetTotals();
     }
 
-
+    /* ------------------------- İL-İLÇE- BÖLGE DİNAMİK ------------------------- */
     public function updatedStateFilter($stateId)
     {
         $this->cities = City::where('state_id', $stateId)->get();
@@ -91,63 +107,65 @@ class PortfolioTable extends Component
         $this->districtFilter = '';
     }
 
-    public function toggleActive($portfolioId)
+
+
+    /* ----------------------- WIDGET VERİLERİNİ HESAPLAMA ---------------------- */
+    public function calculateWidgetTotals()
     {
-        $portfolio = Portfolio::find($portfolioId);
-        if ($portfolio) {
-            $portfolio->isActive = ! $portfolio->isActive;
-            $portfolio->save();
-            $this->dispatch('notify', title: 'Başarılı', text: 'Portföy durumu başarlı bir şekilde güncellendi!', type: 'success');
-        }
+        $this->totalSatilikArsa = Portfolio::filter(null, null, null, 'Arsa', null, 'Satılık')->count();
+        $this->totalSatilikFabrika = Portfolio::filter(null, null, null, 'Fabrika', null, 'Satılık')->count();
+        $this->totalSatilik = Portfolio::where('status', 'Satılık')->count();
+        $this->totalKiralik = Portfolio::where('status', 'Kiralık')->count();
+        $this->totalAktif = Portfolio::where('isActive', true)->count();
+        $this->totalPasif = Portfolio::where('isActive', false)->count();
+        $this->totalSatilikArsaDegeri = Portfolio::filter(null, null, null, 'Arsa', null, 'Satılık')->sum('price');
+        $this->totalSatilikFabrikaDegeri = Portfolio::filter(null, null, null, 'Fabrika', null, 'Satılık')->sum('price');
+        $this->totalSatilikDepoDegeri = Portfolio::filter(null, null, null, 'Depo', null, 'Satılık')->sum('price');
+        $this->totalKiraDegeri = Portfolio::where('status', 'Kiralık')->sum('price');
     }
 
-     // Widget verilerini hesapla
-     public function calculateWidgetTotals()
-     {
-        $this->totalSatilikArsa = Portfolio::ofStatus('Satılık')->ofType('Arsa')->count();
-        $this->totalSatilikFabrika = Portfolio::ofStatus('Satılık')->ofType('Fabrika')->count();
+    // public function restore($id)
+    // {
+    //     $this->restorePortfolio($id);  // Trait'teki restore metodunu kullanıyoruz
+    // }
 
-         $this->totalSatilik = Portfolio::where('status', 'Satılık')->count();
-         $this->totalKiralik = Portfolio::where('status', 'Kiralık')->count();
-         $this->totalAktif = Portfolio::where('isActive', true)->count();
-         $this->totalPasif = Portfolio::where('isActive', false)->count();
-         $this->totalSatilikArsaDegeri = Portfolio::ofStatus('Satılık')->ofType('Arsa')->sum('price');
-         $this->totalSatilikFabrikaDegeri = Portfolio::ofStatus('Satılık')->ofType('Fabrika')->sum('price');
-         $this->totalSatilikDepoDegeri = Portfolio::ofStatus('Satılık')->ofType('Depo')->sum('price');
-         $this->totalKiraDegeri = Portfolio::where('status', 'Kiralık')->sum('price');
-     }
+    // public function forceDelete($id)
+    // {
+    //     $this->forceDeletePortfolio($id);  // Trait'teki forceDelete metodunu kullanıyoruz
+    // }
 
-     public function render()
-     {
-         $portfolios = Portfolio::query()
-             ->when($this->search, fn($query) => $query->where('portfolio_no', 'like', "%{$this->search}%"))
-             ->when($this->categoryFilter, fn($query) => $query->where('category_id', $this->categoryFilter))
-             ->when($this->stateFilter, fn($query) => $query->where('state_id', $this->stateFilter))
-             ->when($this->cityFilter, fn($query) => $query->where('city_id', $this->cityFilter))
-             ->when($this->districtFilter, fn($query) => $query->where('district_id', $this->districtFilter))
-             ->when($this->statusFilter, fn($query) => $query->where('status', $this->statusFilter))
-             ->when($this->isActiveFilter !== '', fn($query) => $query->where('isActive', $this->isActiveFilter))
-             ->paginate($this->pagination);
+    #[On('portfolio-created')]
+    #[On('portfolio-edited')]
+    #[On('portfolio-trashed')]
+    #[On('portfolio-deleted')]
+    #[On('portfolio-restored')]
+    public function render()
+    {
+        $portfolios = Portfolio::filter(
+            $this->search,
+            $this->activeFilter,
+            $this->deletedFilter,
+            $this->typeFilter,
+            $this->categoryFilter,
+            $this->statusFilter
+        )
+            ->sortable($this->sortField, $this->sortDirection)
+            ->paginate($this->pagination);
 
-         $categories = Category::active()->get();
-         $states = State::all();
-
-         return view('admin.portfolio.portfolio-table', [
-             'portfolios' => $portfolios,
-             'categories' => $categories,
-             'states' => $states,
-             'cities' => $this->cities,
-             'districts' => $this->districts,
-             'totalSatilik' => $this->totalSatilik,
-             'totalKiralik' => $this->totalKiralik,
-             'totalAktif' => $this->totalAktif,
-             'totalPasif' => $this->totalPasif,
-             'totalSatilikArsaDegeri' => $this->totalSatilikArsaDegeri,
-             'totalKiraDegeri' => $this->totalKiraDegeri,
-             'totalSatilikArsa' => $this->totalSatilikArsa,
-             'totalSatilikFabrikaDegeri' => $this->totalSatilikFabrikaDegeri,
-             'totalSatilikDepoDegeri' => $this->totalSatilikDepoDegeri,
-             'totalSatilikFabrika' => $this->totalSatilikFabrika,
-         ]);
-     }
+        return view('admin.portfolio.portfolio-table', [
+            'portfolios' => $portfolios,
+            'categories' => Category::active()->get(),
+            'states' => State::all(),
+            'totalSatilik' => $this->totalSatilik,
+            'totalKiralik' => $this->totalKiralik,
+            'totalAktif' => $this->totalAktif,
+            'totalPasif' => $this->totalPasif,
+            'totalSatilikArsaDegeri' => $this->totalSatilikArsaDegeri,
+            'totalKiraDegeri' => $this->totalKiraDegeri,
+            'totalSatilikArsa' => $this->totalSatilikArsa,
+            'totalSatilikFabrikaDegeri' => $this->totalSatilikFabrikaDegeri,
+            'totalSatilikDepoDegeri' => $this->totalSatilikDepoDegeri,
+            'totalSatilikFabrika' => $this->totalSatilikFabrika,
+        ]);
+    }
 }

@@ -11,10 +11,14 @@
                 @foreach ($galleryImages as $index => $image)
                     <div class="relative group" data-id="{{ $image['id'] }}" wire:key="gallery-image-{{ $image['id'] }}">
                         <!-- Resim Önizleme -->
-                        <img src="{{ $image['url'] }}" alt="Galeri Resmi" class="object-cover w-32 h-32 transition duration-300 ease-in-out transform rounded-md shadow-md hover:scale-105">
+                        <div class="overflow-hidden rounded-md shadow-md">
+                            <img src="{{ $image['url'] }}" alt="Galeri Resmi"
+                                 class="object-cover w-32 h-32 transition-transform duration-300 transform group-hover:scale-150">
+                        </div>
 
                         <!-- Silme Butonu -->
-                        <button wire:click="removeImage({{ $image['id'] }})" class="absolute p-1 text-white transition duration-300 bg-red-600 rounded-full opacity-0 top-2 right-2 group-hover:opacity-100">
+                        <button wire:click="removeImage({{ $image['id'] }})"
+                                class="absolute p-1 text-white transition duration-300 bg-red-600 rounded-full opacity-0 top-2 right-2 group-hover:opacity-100">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                             </svg>
@@ -46,13 +50,27 @@
                     </div>
                 @endif
             </div>
+
+            <!-- Yükleme İlerlemesi -->
+            <div class="mt-6">
+                <div wire:loading wire:target="newImages">
+                    <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: {{ $uploadProgress }}%"></div>
+                    </div>
+                    <p class="mt-2 text-sm text-gray-500">{{ $uploadProgress }}% Yükleniyor...</p>
+                </div>
+            </div>
+
         </x-slot>
 
         <x-slot name="footer">
+            <i wire:click="$dispatch('openSlideShowModal', { id: '{{ $portfolioId }}' })"
+   class="text-lg text-blue-500 cursor-pointer fa-solid fa-eye"></i>
             <x-secondary-button wire:click="$toggle('open')">Vazgeç</x-secondary-button>
             <x-button wire:click="save">Kaydet</x-button>
         </x-slot>
     </x-dialog-modal>
+    <livewire:portfolio.portfolio-slide-show :portfolioId="$portfolioId" />
 
     <!-- Sortable.js ve Livewire ile entegre ediyoruz -->
     <script>

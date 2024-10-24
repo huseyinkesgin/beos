@@ -21,10 +21,14 @@ class PortfolioGalleries extends Component
     public $newImages = [];
     public $open = false;
 
+
+    public $uploadProgress = 0;
+
     protected $listeners = ['openGalleryModal' => 'openModal', 'updateImageOrder'];
 
     public function openModal($id)
     {
+        $this->reset();
         $this->portfolioId = $id;
         $this->loadExistingImages();
 
@@ -32,6 +36,37 @@ class PortfolioGalleries extends Component
         $this->lot = $portfolio->lot;
         $this->parcel = $portfolio->parcel;
         $this->open = true;
+    }
+
+    public function updatedNewImages()
+    {
+        $this->resetUploadProgress(); // Yükleme yüzdesini sıfırlar.
+
+        foreach ($this->newImages as $image) {
+            $this->uploadImage($image);
+        }
+    }
+
+    public function uploadImage($image)
+    {
+        $portfolio = Portfolio::find($this->portfolioId); // Portföyü bulalım
+        $portfolioNo = $portfolio->portfolio_no; // Portföy numarasını alalım
+
+        // Resmi doğru klasöre kaydediyoruz: portfolios/{portfolio_no}/gallery
+        $filePath = $image->storeAs("portfolios/{$portfolioNo}/gallery", $image->getClientOriginalName(), 'public');
+
+        PortfolioGallery::create([
+            'portfolio_id' => $this->portfolioId,
+            'file_path' => $filePath,
+        ]);
+
+        $this->reset('newImages');
+        $this->loadExistingImages();
+    }
+
+    public function resetUploadProgress()
+    {
+        $this->uploadProgress = 0;
     }
 
     // Mevcut resimleri yükle
@@ -54,13 +89,7 @@ class PortfolioGalleries extends Component
     public function save()
     {
         foreach ($this->newImages as $image) {
-            $filePath = $image->store('portfolio_gallery', 'public');
-
-            PortfolioGallery::create([
-                'portfolio_id' => $this->portfolioId,
-                'file_path' => $filePath,
-                'order' => PortfolioGallery::where('portfolio_id', $this->portfolioId)->max('order') + 1,
-            ]);
+            $this->uploadImage($image); // Klasör ve dosya adı düzeltildi
         }
 
         $this->reset('newImages');
@@ -109,18 +138,18 @@ class PortfolioGalleries extends Component
     private function storeGalleryImage($portfolioId, $image)
     {
         if ($image) {
-            // Dosya adını oluşturuyoruz
-            $fileName = "{$this->lot}_{$this->parcel}_{$image->getClientOriginalName()}";
+            $portfolio = Portfolio::find($portfolioId);
+            $portfolioNo = $portfolio->portfolio_no;
 
-            // Resmi 'portfolios/portfolio_no/gallery' klasörüne kaydediyoruz
-            $portfolioNo = Portfolio::find($portfolioId)->portfolio_no;
+            // Dosya adını oluşturuyoruz ve kaydediyoruz
+            $fileName = "{$this->lot}_{$this->parcel}_{$image->getClientOriginalName()}";
             $path = $image->storeAs("portfolios/{$portfolioNo}/gallery", $fileName, 'public');
 
             // Veritabanına kaydetme işlemi
             PortfolioGallery::create([
                 'portfolio_id' => $portfolioId,
                 'file_path' => $path,
-                'order' => PortfolioGallery::where('portfolio_id', $portfolioId)->max('order') + 1, // Sıralama
+                'order' => PortfolioGallery::where('portfolio_id', $portfolioId)->max('order') + 1,
             ]);
         }
     }

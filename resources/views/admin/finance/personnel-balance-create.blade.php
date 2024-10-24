@@ -27,13 +27,12 @@
                     <x-input-error for="cash_in" />
                 </div>
 
-               
+
             </x-form>
         </x-slot>
 
         <x-slot name="footer">
-            <x-secondary-button wire:click="$set('open', false)">İptal</x-secondary-button>
-            <x-button wire:click="save">Kaydet</x-button>
+           <x-modal-footer />
         </x-slot>
     </x-dialog-modal>
 </div>

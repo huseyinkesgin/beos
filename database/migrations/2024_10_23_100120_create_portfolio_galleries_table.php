@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('portfolio_id')->constrained()->onDelete('cascade');
             $table->string('file_path');
-            $table->integer('order')->default(0); 
+            $table->integer('order')->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
