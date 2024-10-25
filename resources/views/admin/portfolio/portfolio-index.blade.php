@@ -16,6 +16,7 @@
             @livewire('portfolio.portfolio-delete')
             <livewire:portfolio.portfolio-medias />
             <livewire:portfolio.portfolio-galleries />
+            @livewire('portfolio.portfolio-extras')
             <livewire:portfolio.portfolio-ads />
 
             @livewire('portfolio.portfolio-table')

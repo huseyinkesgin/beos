@@ -6,6 +6,7 @@ use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
+use Database\Seeders\VehicleSeeder;
 use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
@@ -26,6 +27,7 @@ class DatabaseSeeder extends Seeder
             CustomerSeeder::class,
             PersonnelSeeder::class,
             PersonnelExpenseSeeder::class,
+            VehicleSeeder::class,
         ]);
 
         User::factory()->create([

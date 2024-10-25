@@ -186,6 +186,8 @@
                             class="text-lg text-blue-500 cursor-pointer fa-solid fa-image"></i>
                         <i wire:click="$dispatch('openAdsModal', { id: '{{ $portfolio->id }}' })"
                             class="text-lg text-orange-500 cursor-pointer fa-solid fa-list"></i>
+                            <i wire:click="$dispatch('openExtraModal', { id: '{{ $portfolio->id }}' })"
+                                class="text-lg text-orange-500 cursor-pointer fa-solid fa-folder-open"></i>
                     </div>
                     @endif
                 </x-td>
