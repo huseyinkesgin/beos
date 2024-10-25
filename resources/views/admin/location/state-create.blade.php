@@ -1,9 +1,8 @@
 {{-- resources/views/livewire/location/state-create.blade.php --}}
 <div>
 
-    <x-dark-button  wire:click="$dispatch('openCreateModal')">
-        Yeni İl Ekle
-    </x-dark-button>
+    <x-button-orange wire:click="$dispatch('openCreateStateModal')"> <i class="mr-2 font-bold text-white cursor-pointer fa-solid fa-plus"></i>İl</x-button-oran>
+
     <x-dialog-modal wire:model="open" maxWidth="sm">
         <x-slot name="title">
             Yeni State Oluştur

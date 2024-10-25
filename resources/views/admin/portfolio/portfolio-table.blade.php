@@ -181,9 +181,9 @@
                         <i wire:click="$dispatch('openDeleteModal', { id: '{{ $portfolio->id }}' })"
                             class="text-lg text-red-600 cursor-pointer fa-solid fa-trash"></i>
                         <i wire:click="$dispatch('openMediaModal', { id: '{{ $portfolio->id }}' })"
-                            class="text-lg text-indigo-600 cursor-pointer fa-solid fa-feather"></i>
+                            class="text-lg text-indigo-600 cursor-pointer fa-solid fa-file-image"></i>
                         <i wire:click="$dispatch('openGalleryModal', { id: '{{ $portfolio->id }}' })"
-                            class="text-lg text-blue-500 cursor-pointer fa-solid fa-eye"></i>
+                            class="text-lg text-blue-500 cursor-pointer fa-solid fa-image"></i>
                         <i wire:click="$dispatch('openAdsModal', { id: '{{ $portfolio->id }}' })"
                             class="text-lg text-orange-500 cursor-pointer fa-solid fa-list"></i>
                     </div>

@@ -1,9 +1,7 @@
 {{-- resources/views/livewire/location/state-create.blade.php --}}
 <div>
 
-    <x-dark-button wire:click="$dispatch('openCreateModal')">
-        Yeni Bölge Ekle
-    </x-dark-button>
+    <x-button-orange wire:click="$dispatch('openCreateDistrictModal')"> <i class="mr-2 font-bold text-white cursor-pointer fa-solid fa-plus"></i>Bölge </x-button-orange>
     <x-dialog-modal wire:model="open" maxWidth="sm">
         <x-slot name="title">
             Yeni Bölge Oluştur

@@ -27,7 +27,7 @@ class CustomerCreate extends Component
         'isActive' => 'boolean',
         'note' => 'nullable|string'
     ];
-    #[On('openCreateModal')]
+    #[On('openCreateCustomerModal')]
     public function openModal()
     {
        $this->open = true; // Modal'ı aç
@@ -54,7 +54,7 @@ class CustomerCreate extends Component
 
         $this->dispatch('customer-created');
         $this->dispatch('notify', title: 'Tebrikler!', text: 'Müşteri başarıyla kayıt edildi!', type: 'success');
-        $this->reset();
+        $this->reset('open');
     }
 
 

@@ -1,9 +1,7 @@
 {{-- resources/views/livewire/location/state-create.blade.php --}}
 <div>
 
-    <x-dark-button  wire:click="$dispatch('openCreateModal')" >
-        Yeni İlçe Ekle
-    </x-dark-button>
+    <x-button-orange wire:click="$dispatch('openCreateCityModal')"> <i class="mr-2 font-bold text-white cursor-pointer fa-solid fa-plus"></i>İlçe</x-button-orange>
     <x-dialog-modal wire:model="open" maxWidth="sm">
         <x-slot name="title">
             Yeni İlçe Oluştur

@@ -29,7 +29,7 @@ class DistrictCreate extends Component
         'note' => 'nullable|string',
     ];
 
-    #[On('openCreateModal')]
+    #[On('openCreateDistrictModal')]
     public function openModal()
     {
         $this->open = true;
@@ -56,7 +56,7 @@ class DistrictCreate extends Component
         $this->validate();
 
         District::create([
-            'state_id' => $this->selectedState,
+            'state_id' => $this->state_id,
             'city_id' => $this->city_id,
             'name' => $this->name,
             'isActive' => $this->isActive,
@@ -65,7 +65,7 @@ class DistrictCreate extends Component
 
         $this->dispatch('district-created');
         $this->dispatch('notify', title: 'Başarılı', text: 'Bölge başarıyla kayıt edildi!', type: 'success');
-        $this->reset(['selectedState', 'city_id', 'name', 'isActive', 'note', 'open']);
+        $this->reset(['state_id', 'city_id', 'name', 'isActive', 'note', 'open']);
     }
 
 

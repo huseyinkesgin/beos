@@ -1,41 +1,34 @@
 <?php
 
-
 namespace App\Livewire\Portfolio;
 
 use Livewire\Component;
+use App\Models\Portfolio;
 use App\Models\PortfolioGallery;
 
 class PortfolioSlideShow extends Component
 {
     public $portfolioId;
+
     public $galleryImages = [];
+
     public $currentImageIndex = 0;
+
     public $showSlideshow = false;
-
-
-
 
     protected $listeners = ['openSlideShowModal' => 'openModal'];
 
-    public function mount($portfolioId = null)
-    {
-        if ($portfolioId) {
-            $this->portfolioId = $portfolioId;
-            $this->loadGalleryImages();
-        }
-    }
-
     // Modalı açmak ve resim listesini yüklemek için işlev
-    public function openModal($portfolioId)
-{
-    $this->portfolioId = $portfolioId;
-    $this->loadGalleryImages();
-    $this->showSlideshow = true; // Modalı aç
-}
+    public function openModal($id)
+    {
+        $this->portfolioId = $id;
 
+        // Portföy verilerini yükleyerek lot, parcel ve district_name değerlerini alıyoruz
+        $portfolio = Portfolio::findOrFail($id);
 
-
+        $this->loadGalleryImages();
+        $this->showSlideshow = true; // Modalı aç
+    }
 
     // Mevcut resimleri portföy ID'sine göre yükleme
     public function loadGalleryImages()
@@ -46,7 +39,7 @@ class PortfolioSlideShow extends Component
             ->map(function ($image) {
                 return [
                     'id' => $image->id,
-                    'url' => asset('storage/' . $image->file_path),
+                    'url' => asset('storage/'.$image->file_path),
                 ];
             })
             ->toArray();

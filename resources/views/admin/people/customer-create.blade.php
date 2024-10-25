@@ -1,9 +1,7 @@
 <!-- resources/views/livewire/people/customer-create.blade.php -->
 <div>
     <!-- Yeni Müşteri Ekle Butonu -->
-    <x-dark-button wire:click="$dispatch('openCreateModal')">
-        Yeni Müşteri Ekle
-    </x-dark-button>
+    <x-button-orange wire:click="$dispatch('openCreateCustomerModal')"> <i class="mr-2 font-bold text-white cursor-pointer fa-solid fa-plus"></i>Müşteri Ekle</x-button-oran>
 
     <!-- Modal -->
     <x-dialog-modal wire:model="open" maxWidth="md">

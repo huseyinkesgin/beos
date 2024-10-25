@@ -78,8 +78,10 @@ class PortfolioTable extends Component
 
     public function export()
     {
-        // Excel indirme işlemi bağımlılığı kullanarak yapılır
-        return $this->excel->download(new PortfoliosExport, 'portfolios.xlsx');
+        return $this->excel->download(
+            new PortfoliosExport($this->categoryFilter, $this->businessCategoryId, $this->landCategoryId),
+            'portfolios.xlsx'
+        );
     }
 
     public function mount()

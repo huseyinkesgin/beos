@@ -14,6 +14,7 @@ use App\Models\Customer;
 use App\Models\District;
 use App\Models\Personnel;
 use App\Models\Portfolio;
+use Livewire\Attributes\On;
 use Livewire\WithFileUploads;
 use App\Models\PortfolioMedia;
 
@@ -161,14 +162,18 @@ class PortfolioWizard extends Component
     // ~~~~~~~~~~~~~~~~MODAL İÇİN~~~~~~~~~~~~~~~~~~~~~~~ //
     public $open = false;
 
-    protected $listeners = ['openWizardModal' => 'openModal']; // Dispatch event ile dinliyoruz
 
+    #[On('openWizardModal')]
     public function openModal()
     {
         $this->open = true; // Modalı aç
         $this->currentStep = 1; // Adımları sıfırla
     }
 
+    #[On('state-created')]
+    #[On('city-created')]
+    #[On('district-created')]
+    #[On('customer-created')]
     public function mount()
     {
         $this->states = State::active()->get();
@@ -198,6 +203,7 @@ class PortfolioWizard extends Component
      }
 
     // ~~~~~~~ DİNAMİK İL - İLÇE SEÇİMİ ~~~~~~ //
+
     public function updatedStateId($value)
     {
         $this->cities = City::where('state_id', $value)->get();
@@ -434,7 +440,7 @@ class PortfolioWizard extends Component
             'ground_analysis' => $this->ground_analysis,
         ]);
 
-    
+
     }
 
     // Konut kaydetme
@@ -450,7 +456,6 @@ class PortfolioWizard extends Component
             'isElevator' => $this->isElevator,
         ]);
     }
-
     public function render()
     {
         return view('admin.portfolio.portfolio-wizard', [

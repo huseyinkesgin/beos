@@ -18,7 +18,7 @@ class StateCreate extends Component
         'note' => 'nullable|string',
     ];
 
-    #[On('openCreateModal')]
+    #[On('openCreateStateModal')]
     public function openModal()
     {
         $this->open = true;

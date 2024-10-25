@@ -4,7 +4,6 @@
             <h2 class="text-xl font-semibold leading-tight text-gray-800">
                 {{ __('İl Listesi') }}
             </h2>
-
             @livewire('location.state-create')
         </div>
     </x-slot>
@@ -14,8 +13,7 @@
 
                 @livewire('location.state-edit')
                 @livewire('location.state-delete')
-
-                    @livewire('location.state-table')
+                @livewire('location.state-table')
 
             </div>
     </div>

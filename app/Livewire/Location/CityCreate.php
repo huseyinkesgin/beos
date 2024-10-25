@@ -21,7 +21,7 @@ class CityCreate extends Component
     ];
 
 
-    #[On('openCreateModal')]
+    #[On('openCreateCityModal')]
     public function openModal()
     {
         $this->open = true;

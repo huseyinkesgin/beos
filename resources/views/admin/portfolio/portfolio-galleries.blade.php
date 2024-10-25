@@ -64,10 +64,19 @@
         </x-slot>
 
         <x-slot name="footer">
-            <i wire:click="$dispatch('openSlideShowModal', { id: '{{ $portfolioId }}' })"
-   class="text-lg text-blue-500 cursor-pointer fa-solid fa-eye"></i>
-            <x-secondary-button wire:click="$toggle('open')">Vazgeç</x-secondary-button>
-            <x-button wire:click="save">Kaydet</x-button>
+
+            <div class="flex justify-between items-center w-full">
+                <!-- Sol tarafa yerleşen buton -->
+                <div class="flex pl-3">
+                    <i wire:click="$dispatch('openSlideShowModal', { id: '{{ $portfolioId }}' })"
+                       class="text-lg text-blue-500 cursor-pointer fa-solid fa-sliders font-2xl"></i>
+                </div>
+
+                <!-- Sağ tarafa yerleşen modal footer butonları -->
+                <div>
+                    <x-modal-footer />
+                </div>
+            </div>
         </x-slot>
     </x-dialog-modal>
     <livewire:portfolio.portfolio-slide-show :portfolioId="$portfolioId" />

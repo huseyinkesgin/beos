@@ -115,8 +115,7 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-secondary-button wire:click="$toggle('open')">Vazgeç</x-secondary-button>
-            <x-button wire:click="save">Kaydet</x-button>
+          <x-modal-footer />
         </x-slot>
     </x-dialog-modal>
 </div>
