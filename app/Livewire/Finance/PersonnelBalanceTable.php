@@ -57,13 +57,22 @@ class PersonnelBalanceTable extends Component
 
     #[On('balance-edited')]
     public function render()
-    {
-        // Nakit girişlerini al
-        $balanceRecords = PersonnelBalance::paginate($this->pagination);
+{
+    $balanceRecords = PersonnelBalance::paginate($this->pagination);
 
-        return view('admin.finance.personnel-balance-table', [
-            'balanceRecords' => $balanceRecords,
-            'personnels' => $this->personnels
-        ]);
-    }
+
+    // Nakit harcamaları al
+    $expenses = PersonnelExpense::where('personnel_id', $this->personnelId)
+        ->where('payment_method', 'Nakit')
+        ->get();
+
+    $pers = Personnel::active()->get();
+
+
+    return view('admin.finance.personnel-balance-table', [
+        'balanceRecords' => $balanceRecords,
+        'pers' => $pers,
+        'expenses' => $expenses
+    ]);
+}
 }

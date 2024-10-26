@@ -48,27 +48,23 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($balanceRecords as $record)
-                <tr>
-                    <x-td>{{ $record->personnel->first_name }} {{ $record->personnel->last_name }}</x-td>
-                    <x-td>{{ number_format($record->amount, 2) }} ₺</x-td>
-                    <x-td>{{ $record->type }}</x-td>
-                    <x-td>{{ $record->created_at->format('d.m.Y') }}</x-td>
-                    <x-td>
-                        @if($record->type !== 'Harcama')
-                            <x-secondary-button wire:click="$dispatch('openEditModal', { id: '{{ $record->id }}' })">
-                                Düzenle
-                            </x-secondary-button>
-                            <x-danger-button wire:click="$dispatch('openDeleteModal', { id: '{{ $record->id }}' })" class="ml-2">
-                                Sil
-                            </x-danger-button>
-                        @endif
-                    </x-td>
-                </tr>
+            @foreach($balanceRecords as $balance)
+            <tr>
+                <x-td>{{ $balance->personnel->first_name }} {{ $balance->personnel->last_name }}</x-td>
+                <x-td>{{ number_format($balance->cash_in ?? $balance->cash_out, 2) }} ₺</x-td>
+                <x-td>{{ $balance->cash_in ? 'Giriş' : 'Çıkış' }}</x-td>
+                <x-td>{{ $balance->created_at->format('d.m.Y') }}</x-td>
+                <x-td>
+                    @if ($balance->cash_in)
+                    <x-secondary-button wire:click="$dispatch('openEditModal', { id: '{{ $balance->id }}' })" wire:loading.attr="disabled">
+                        Düzenle
+                    </x-danger-button>
+                    @endif
+                </x-td>
+            </tr>
             @endforeach
         </tbody>
     </x-table>
-
     {{ $balanceRecords->links() }}
 
     </div>
