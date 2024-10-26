@@ -47,25 +47,27 @@
     </div>
 </div>
     <!-- Gallery Images (if available) -->
+  <div class="py-1">
     @if($portfolio->gallery && $portfolio->gallery->isNotEmpty())
-        <div class="mt-8 space-y-6">
-            <h3 class="mb-4 font-bold text-center text-gray-700">Gallery Görselleri</h3>
-            <div class="relative w-[800px] h-[500px] mx-auto overflow-hidden border border-gray-300 rounded-md" x-data="{ galleryIndex: 0 }">
-                @foreach ($portfolio->gallery as $index => $galleryImage)
-                    <div x-show="galleryIndex === {{ $index }}" class="absolute top-0 left-0 flex flex-col items-center justify-center w-full h-full transition-all duration-300">
-                        <p class="py-2 font-bold text-center uppercase">Gallery</p>
-                        <img src="{{ Storage::url($galleryImage->file_path) }}" alt="Gallery Image"
-                             class="object-cover w-full h-full rounded-md">
-                    </div>
-                @endforeach
-                <!-- Slideshow Controls for gallery -->
-                <button @click="galleryIndex = (galleryIndex - 1 + {{ $portfolio->gallery->count() }}) % {{ $portfolio->gallery->count() }}"
-                        class="absolute px-4 py-2 text-white transform -translate-y-1/2 bg-gray-700 rounded-full top-1/2 left-2">❮</button>
-                <button @click="galleryIndex = (galleryIndex + 1) % {{ $portfolio->gallery->count() }}"
-                        class="absolute px-4 py-2 text-white transform -translate-y-1/2 bg-gray-700 rounded-full top-1/2 right-2">❯</button>
-            </div>
+    <div class="mt-8 space-y-6">
+        <h3 class="font-bold text-center text-gray-700">Gallery Görselleri</h3>
+        <div class="relative w-[800px] h-[500px] mx-auto overflow-hidden " x-data="{ galleryIndex: 0 }">
+            @foreach ($portfolio->gallery as $index => $galleryImage)
+                <div x-show="galleryIndex === {{ $index }}" class="absolute top-0 left-0 flex flex-col items-center justify-center w-full h-full transition-all duration-300">
+                  
+                    <img src="{{ Storage::url($galleryImage->file_path) }}" alt="Gallery Image"
+                         class="object-cover w-full h-full rounded-md">
+                </div>
+            @endforeach
+            <!-- Slideshow Controls for gallery -->
+            <button @click="galleryIndex = (galleryIndex - 1 + {{ $portfolio->gallery->count() }}) % {{ $portfolio->gallery->count() }}"
+                    class="absolute px-4 py-2 text-white transform -translate-y-1/2 bg-gray-700 rounded-full top-1/2 left-2">❮</button>
+            <button @click="galleryIndex = (galleryIndex + 1) % {{ $portfolio->gallery->count() }}"
+                    class="absolute px-4 py-2 text-white transform -translate-y-1/2 bg-gray-700 rounded-full top-1/2 right-2">❯</button>
         </div>
-    @endif
+    </div>
+@endif
+  </div>
 
     <!-- Back Button -->
     <div class="mt-6">
