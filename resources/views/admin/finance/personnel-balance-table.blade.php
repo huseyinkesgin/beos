@@ -62,6 +62,19 @@
                     @endif
                 </x-td>
             </tr>
+              <!-- Personelin nakit harcamalarını kontrol edip ekleme -->
+              @foreach ($pers->find($balance->personnel_id)?->expenses ?? [] as $expense)
+
+              @if ($expense->payment_method === 'Nakit')
+                  <tr class="text-red-600">
+                      <x-td>{{ $balance->personnel->first_name }} {{ $balance->personnel->last_name }}</x-td>
+                      <x-td>{{ number_format(-$expense->amount, 2) }} ₺</x-td>
+                      <x-td>Harcama</x-td>
+                      <x-td>{{ \Carbon\Carbon::parse($expense->expense_date)->format('d.m.Y') }}</x-td>
+                      <x-td></x-td>
+                  </tr>
+              @endif
+          @endforeach
             @endforeach
         </tbody>
     </x-table>

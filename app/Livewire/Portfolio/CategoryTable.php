@@ -5,7 +5,6 @@ namespace App\Livewire\Portfolio;
 use App\Models\Category;
 use App\Models\Portfolio;
 use App\Traits\HasSortable;
-use Laravel\Jetstream\InteractsWithBanner;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -13,7 +12,6 @@ class CategoryTable extends Component
 {
 
     use WithPagination;
-    use InteractsWithBanner;
     use HasSortable;
 
     public $search = '';

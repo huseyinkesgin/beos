@@ -3,19 +3,36 @@ namespace App\Livewire\Finance;
 
 use Livewire\Component;
 use App\Models\Personnel;
+use App\Traits\HasSortable;
+use App\Traits\SearchReset;
 use Livewire\Attributes\On;
+use Livewire\WithPagination;
+use App\Traits\PaginateReset;
 use App\Models\PersonnelBalance;
 use App\Models\PersonnelExpense;
+use App\Traits\ActiveFilterReset;
+use App\Traits\DeleteFilterReset;
+use App\Traits\ToggleActiveTrait;
+use App\Traits\RestoreAndDeleteTrait;
 
 class PersonnelBalanceTable extends Component
 {
+    use WithPagination;
+    use HasSortable;
+    use RestoreAndDeleteTrait;
+    use SearchReset, DeleteFilterReset,  PaginateReset;
+
     public $personnelId;  // Bu değişken dışarıdan alınacak personel ID
 
     public $personnels;
 
-    public $pagination = 10;
-    public $sortField = 'created_at';
-    public $sortDirection = 'desc';
+     /* ------------------------- Tablo Dışı Özellikler ------------------------- */
+     public $search = '';
+     public $deletedFilter = 'without';
+     public $pagination = 10;
+     public $sortField = 'created_at';
+     public $sortDirection = 'desc';
+     public $modelClass = City::class;
 
     // protected $listeners = ['refreshTable' => '$refresh'];
 
@@ -66,7 +83,9 @@ class PersonnelBalanceTable extends Component
         ->where('payment_method', 'Nakit')
         ->get();
 
-    $pers = Personnel::active()->get();
+        $pers = Personnel::with(['expenses' => function ($query) {
+            $query->orderBy('expense_date', 'desc');
+        }])->get();
 
 
     return view('admin.finance.personnel-balance-table', [
