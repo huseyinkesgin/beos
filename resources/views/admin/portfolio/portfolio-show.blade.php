@@ -1,4 +1,4 @@
-<div class="p-4 space-y-6 text-center bg-white rounded-lg shadow-md">
+<div class="p-4 space-y-6 bg-white rounded-lg shadow-md">
     <!-- Portfolio Details Header -->
     <div class="flex justify-between">
         <h2 class="text-2xl font-bold">Portföy Detayları: {{ $portfolio->portfolio_no }}</h2>
@@ -8,25 +8,74 @@
     </div>
 
     <!-- Portfolio Information -->
-    <div class="flex justify-center pb-5">
-        <img src="{{ asset('banner.png') }}" alt="Banner">
+
+    <div class="grid grid-cols-1 gap-4 p-6 bg-white rounded-lg shadow-md md:grid-cols-3">
+        <!-- Column 1: General Portfolio Information -->
+        <div class="space-y-4">
+            <h3 class="text-xl font-bold text-gray-800">Genel Bilgiler</h3>
+            <div>
+                <span class="text-lg font-bold uppercase">{{ optional($portfolio->city)->name }} - {{ optional($portfolio->district)->name }}</span>
+            </div>
+            <div>
+                <span class="text-lg font-bold uppercase">{{ $portfolio->lot }} ADA - {{ $portfolio->parcel }} PARSEL</span>
+            </div>
+            <div>
+                <span class="text-lg font-bold uppercase">{{ number_format($portfolio->area_m2 ,0,',','.')}} m²</span>
+            </div>
+            <div>
+                <span class="text-lg font-bold uppercase">{{ $portfolio->status }} {{ $portfolio->type->name }}</span>
+            </div>
+            <div>
+                <span class="text-lg font-bold uppercase">{{ number_format($portfolio->price, 0,',', '.') }} ₺</span>
+            </div>
+        </div>
+
+        <!-- Column 2 and 3: Business-Specific Information (Only visible if category is 'İşyeri') -->
+        @if($portfolio->category->name === 'İşyeri')
+            <!-- Column 2 -->
+            <div class="space-y-4">
+                <h3 class="text-xl font-bold text-gray-800">İşyeri Detayları</h3>
+                <div>
+                    <span class="text-lg font-bold">Kapalı Alan:</span>
+                    <span class="text-lg">{{ number_format($portfolio->business->closed_area, 0, ',', '.') }} m²</span>
+                </div>
+                <div>
+                    <span class="text-lg font-bold">Açık Alan:</span>
+                    <span class="text-lg">{{ number_format($portfolio->business->open_area, 0, ',', '.') }} m²</span>
+                </div>
+                <div>
+                    <span class="text-lg font-bold">İşletme Alanı:</span>
+                    <span class="text-lg">{{ number_format($portfolio->business->business_area, 0, ',', '.') }} m²</span>
+                </div>
+                <div>
+                    <span class="text-lg font-bold">Ofis Alanı:</span>
+                    <span class="text-lg">{{ number_format($portfolio->business->office_area, 0, ',', '.') }} m²</span>
+                </div>
+            </div>
+
+            <!-- Column 3 -->
+            <div class="space-y-4">
+                <h3 class="text-xl font-bold text-gray-800">Ek Bilgiler</h3>
+                <div>
+                    <span class="text-lg font-bold">Yükseklik:</span>
+                    <span class="text-lg">{{ $portfolio->business->height }}cm</span>
+                </div>
+                <div>
+                    <span class="text-lg font-bold">Kat Sayısı:</span>
+                    <span class="text-lg">{{ $portfolio->business->floor_count }}</span>
+                </div>
+                <div>
+                    <span class="text-lg font-bold">Isıtma:</span>
+                    <span class="text-lg">{{ $portfolio->business->heating_type }}</span>
+                </div>
+                <div>
+                    <span class="text-lg font-bold">Bina Durumu:</span>
+                    <span class="text-lg">{{ $portfolio->business->building_condition }}</span>
+                </div>
+            </div>
+        @endif
     </div>
 
-    <div>
-        <span class="text-3xl font-bold uppercase">{{ optional($portfolio->city)->name }} - {{ optional($portfolio->district)->name }}</span>
-    </div>
-    <div>
-        <span class="text-3xl font-bold uppercase">{{ $portfolio->lot }} ADA - {{ $portfolio->parcel }} PARSEL</span>
-    </div>
-    <div>
-        <span class="text-3xl font-bold uppercase">{{ number_format($portfolio->area_m2 ,0,',','.')}} m²</span>
-    </div>
-    <div>
-        <span class="text-3xl font-bold uppercase">{{ $portfolio->status }} {{ $portfolio->type->name }}</span>
-    </div>
-    <div>
-        <span class="text-3xl font-bold uppercase">{{ number_format($portfolio->price, 0,',', '.') }} ₺</span>
-    </div>
 
    <!-- Media Gallery with Zoom on Hover -->
    <div class="space-y-6">
@@ -53,8 +102,8 @@
         <h3 class="font-bold text-center text-gray-700">Gallery Görselleri</h3>
         <div class="relative w-[800px] h-[500px] mx-auto overflow-hidden " x-data="{ galleryIndex: 0 }">
             @foreach ($portfolio->gallery as $index => $galleryImage)
-                <div x-show="galleryIndex === {{ $index }}" class="absolute top-0 left-0 flex flex-col items-center justify-center w-full h-full transition-all duration-300">
-                  
+                <div x-show="galleryIndex == {{ $index }}" class="absolute top-0 left-0 flex flex-col items-center justify-center w-full h-full transition-all duration-300">
+
                     <img src="{{ Storage::url($galleryImage->file_path) }}" alt="Gallery Image"
                          class="object-cover w-full h-full rounded-md">
                 </div>

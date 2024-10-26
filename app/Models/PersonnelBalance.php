@@ -50,17 +50,27 @@ class PersonnelBalance extends Model
             ->first()
             ->update(['balance' => $balance]);
     }
-    public function scopeFilter($query, $search, $deletedFilter)
+    public function scopeFilter($query, $search, $deletedFilter, $personnelId = null)
     {
-        // Arama
         $query->when($search, function ($query) use ($search) {
-            $query->where('personnel_id', 'like', '%'.$search.'%');
+            $query->whereHas('personnel', function ($q) use ($search) {
+                $q->where('first_name', 'like', '%'.$search.'%')
+                  ->orWhere('last_name', 'like', '%'.$search.'%');
+            });
         });
 
-        // Silinmiş kayıt filtreleme
-        $query->trashed($deletedFilter);
+        $query->when($personnelId, function ($query) use ($personnelId) {
+            $query->where('personnel_id', $personnelId);
+        });
+
+        $query->when($deletedFilter === 'only', function ($query) {
+            $query->onlyTrashed();
+        })->when($deletedFilter === 'with', function ($query) {
+            $query->withTrashed();
+        });
 
         return $query;
     }
+
 
 }

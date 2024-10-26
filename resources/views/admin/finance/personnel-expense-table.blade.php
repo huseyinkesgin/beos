@@ -1,41 +1,40 @@
 <div>
 
-    <!-- Diğer Harcama ve Nakit Ödeme Yöntemleri Widget'ları -->
-    <div class="grid grid-cols-8 gap-4 p-4 mb-5">
-        @foreach (['Market', 'Pazar', 'Ofis', 'Araç', 'Su', 'Diğer'] as $type)
-            <!-- Bu Ay Toplamı Widget -->
-            <div class="p-4 bg-green-500 rounded-lg shadow-md">
-                <h3 class="text-lg font-bold">{{ $type }} - Bu Ay</h3>
-                <p class="text-2xl">{{ number_format($thisMonthTotals[$type] ?? 0, 2) }} ₺</p>
+    <div class="grid grid-cols-1 gap-6 p-4 mb-5 md:grid-cols-4">
+        <!-- Nakit - Bu Ay -->
+        <div class="p-6 text-white transition duration-300 transform rounded-lg shadow-lg bg-gradient-to-br from-yellow-500 to-yellow-600 hover:scale-105">
+            <div class="flex items-center justify-between">
+                <h3 class="text-lg font-bold">Nakit - Bu Ay</h3>
+                <i class="text-2xl fas fa-wallet"></i>
             </div>
+            <p class="mt-4 text-3xl font-extrabold">{{ number_format($paymentMethodMonthTotals['Nakit'] ?? 0, 2) }} ₺</p>
+        </div>
 
-            <!-- Bu Yıl Toplamı Widget -->
-            <div class="p-4 bg-blue-500 rounded-lg shadow-md">
-                <h3 class="text-lg font-bold">{{ $type }} - Bu Yıl</h3>
-                <p class="text-2xl">{{ number_format($thisYearTotals[$type] ?? 0, 2) }} ₺</p>
+        <!-- Nakit - Bu Yıl -->
+        <div class="p-6 text-white transition duration-300 transform rounded-lg shadow-lg bg-gradient-to-br from-purple-700 to-purple-800 hover:scale-105">
+            <div class="flex items-center justify-between">
+                <h3 class="text-lg font-bold">Nakit - Bu Yıl</h3>
+                <i class="text-2xl fas fa-coins"></i>
             </div>
-        @endforeach
-
-        <!-- Nakit Ödeme Yöntemi -->
-        <div class="p-4 bg-yellow-500 rounded-lg shadow-md">
-            <h3 class="text-lg font-bold">Nakit - Bu Ay</h3>
-            <p class="text-2xl">{{ number_format($paymentMethodMonthTotals['Nakit'] ?? 0, 2) }} ₺</p>
+            <p class="mt-4 text-3xl font-extrabold">{{ number_format($paymentMethodYearTotals['Nakit'] ?? 0, 2) }} ₺</p>
         </div>
 
-        <div class="p-4 bg-purple-700 rounded-lg shadow-md">
-            <h3 class="text-lg font-bold">Nakit - Bu Yıl</h3>
-            <p class="text-2xl">{{ number_format($paymentMethodYearTotals['Nakit'] ?? 0, 2) }} ₺</p>
+        <!-- Kredi Kartı - Bu Ay -->
+        <div class="p-6 text-white transition duration-300 transform rounded-lg shadow-lg bg-gradient-to-br from-red-500 to-red-600 hover:scale-105">
+            <div class="flex items-center justify-between">
+                <h3 class="text-lg font-bold">Kredi Kartı - Bu Ay</h3>
+                <i class="text-2xl fas fa-credit-card"></i>
+            </div>
+            <p class="mt-4 text-3xl font-extrabold">{{ number_format($paymentMethodMonthTotals['Kredi Kartı'] ?? 0, 2) }} ₺</p>
         </div>
 
-        <!-- Kredi Kartı Ödeme Yöntemi -->
-        <div class="p-4 bg-red-500 rounded-lg shadow-md">
-            <h3 class="text-lg font-bold">Kredi Kartı - Bu Ay</h3>
-            <p class="text-2xl">{{ number_format($paymentMethodMonthTotals['Kredi Kartı'] ?? 0, 2) }} ₺</p>
-        </div>
-
-        <div class="p-4 bg-orange-700 rounded-lg shadow-md">
-            <h3 class="text-lg font-bold">Kredi Kartı - Bu Yıl</h3>
-            <p class="text-2xl">{{ number_format($paymentMethodYearTotals['Kredi Kartı'] ?? 0, 2) }} ₺</p>
+        <!-- Kredi Kartı - Bu Yıl -->
+        <div class="p-6 text-white transition duration-300 transform rounded-lg shadow-lg bg-gradient-to-br from-orange-500 to-orange-600 hover:scale-105">
+            <div class="flex items-center justify-between">
+                <h3 class="text-lg font-bold">Kredi Kartı - Bu Yıl</h3>
+                <i class="text-2xl fas fa-calendar-alt"></i>
+            </div>
+            <p class="mt-4 text-3xl font-extrabold">{{ number_format($paymentMethodYearTotals['Kredi Kartı'] ?? 0, 2) }} ₺</p>
         </div>
     </div>
 
@@ -45,6 +44,7 @@
             <x-paginate />
             <x-filter-trashed />
             <x-filter-date />
+            
         </div>
         <x-search />
     </div>
