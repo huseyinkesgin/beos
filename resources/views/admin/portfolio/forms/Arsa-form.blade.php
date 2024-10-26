@@ -2,15 +2,15 @@
 <div class="mt-10">
     <div class="border rounded-lg shadow-lg bg-slate-50">
         <div class="flex flex-row mx-4 space-x-2">
-           
+
             <!-- Area m² -->
             <x-input-text label="Arsa (m²)" model="area_m2" />
 
           <!-- zoning_status -->
-          <x-select-box label="İmar Durumu" model="zoning_status" :options="['Sanayi' ,'Ticari', 'Konut','Ticari+Konut','Diğer Tarım','Tarla']" />
+          <x-select-box label="İmar Durumu" model="zoning_status" :options="['Sanayi' ,'Ticari', 'Konut','Ticari+Konut','Depolama','Diğer Tarım','Tarla']" />
         </div>
 
-       
+
 
         <div class="flex flex-row mx-4 space-x-2">
             <!-- Similar (Emsal) -->
@@ -20,10 +20,10 @@
             <!-- Height Limit (Gabari) -->
             <x-select-box label="Gabari" model="height_limit" :options="['3,5','6,5','7,5','8,50','9,50','11,50','12,50','14,50','15,50','18,50','21,50','24,50','27,50','30,50','36,50','Serbest','Bilinmiyor']" />
             <!-- isCredit (Krediye Uygunluk) -->
-           
+
         </div>
 
-       
+
 
 
 

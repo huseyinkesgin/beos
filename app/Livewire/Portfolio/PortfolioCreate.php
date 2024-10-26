@@ -137,7 +137,7 @@ class PortfolioCreate extends Component
             'district_id' => 'required',
             'category_id' => 'required',
             'type_id' => 'required',
-            'portfolio_no' => 'required|string',
+            'portfolio_no' => 'required|string|unique:portfolios',
             'area_m2' => 'required|numeric',
             'lot' => 'required|numeric',
             'parcel' => 'required|numeric',

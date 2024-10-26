@@ -7,6 +7,7 @@ use App\Models\Portfolio;
 use Livewire\Attributes\On;
 use Livewire\WithFileUploads;
 use App\Models\PortfolioExtra;
+use Illuminate\Support\Facades\Storage;
 
 class PortfolioExtras extends Component
 {
@@ -65,6 +66,22 @@ class PortfolioExtras extends Component
 
         $this->loadExistingExtras();
         $this->reset('file', 'file_name');
+    }
+
+    public function deleteFile($extraId)
+    {
+        $extra = PortfolioExtra::findOrFail($extraId);
+
+        // Dosya var ise fiziksel olarak sil
+        if (Storage::exists($extra->file_path)) {
+            Storage::delete($extra->file_path);
+        }
+
+        // Veritabanından kaydı sil
+        $extra->delete();
+
+        // Güncel listeyi yükleyin
+        $this->loadExistingExtras();
     }
 
     public function render()

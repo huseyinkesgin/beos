@@ -34,7 +34,14 @@
                                 </svg>
                                 <span class="text-gray-700">{{ $extra->file_name }}</span>
                             </div>
-                            <a href="{{ Storage::url($extra->file_path) }}" target="_blank" class="text-blue-500 hover:underline">İndir</a>
+                            <div class="flex items-center space-x-3">
+                                <a href="{{ Storage::url($extra->file_path) }}" target="_blank" class="text-blue-500 hover:underline">İndir</a>
+                                <button wire:click="deleteFile({{ $extra->id }})" class="text-red-500 hover:text-red-700">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                    </svg>
+                                </button>
+                            </div>
                         </li>
                     @endforeach
                 </ul>

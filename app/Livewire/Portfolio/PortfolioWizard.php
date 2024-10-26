@@ -189,18 +189,6 @@ class PortfolioWizard extends Component
         $this->homeCategoryId = Category::where('name', 'Konut')->first()->id ?? null;
     }
 
-     // Resimleri kaydetme işlemi
-     private function storeImage($portfolioId, $image, $type)
-     {
-         if ($image) {
-            $path = $image->storeAs("portfolios/{$this->portfolio_no}", $image->getClientOriginalName());
-             PortfolioMedia::create([
-                 'portfolio_id' => $portfolioId,
-                 'type' => $type,
-                 'file_path' => $path,
-             ]);
-         }
-     }
 
     // ~~~~~~~ DİNAMİK İL - İLÇE SEÇİMİ ~~~~~~ //
 

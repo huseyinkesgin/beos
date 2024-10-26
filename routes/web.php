@@ -11,14 +11,21 @@ use App\Livewire\People\PersonnelShow;
 use App\Livewire\People\PersonnelIndex;
 use App\Livewire\Location\DistrictIndex;
 use App\Livewire\Portfolio\CategoryIndex;
+use App\Livewire\Portfolio\PortfolioShow;
 use App\Livewire\Portfolio\PortfolioIndex;
 use App\Livewire\Finance\PersonelExpenceIndex;
 use App\Livewire\Finance\PersonnelBalanceIndex;
 use App\Livewire\Finance\PersonnelExpenseIndex;
+use App\Http\Controllers\PortfolioPDFController;
 
 Route::get('/', function () {
     return view('auth/login');
 });
+
+Route::get('/welcome', function () {
+    return view('welcome');
+});
+
 
 Route::middleware([
     'auth:sanctum',
@@ -51,3 +58,7 @@ Route::get('personel-expenses',PersonnelExpenseIndex::class)->name('personel.exp
 
 Route::get('balances', PersonnelBalanceIndex::class)->name('personel.balance');
 Route::get('vehicles', VehicleIndex::class)->name('vehicles');
+
+
+Route::get('/portfolio/{id}/pdf', [PortfolioPDFController::class, 'generate'])->name('portfolio.pdf');
+Route::get('/portfolio/{portfolioId}', PortfolioShow::class)->name('portfolio.show');

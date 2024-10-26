@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\ScopesTrait;
+use App\Models\PortfolioExtra;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -73,7 +74,7 @@ class Portfolio extends Model
         return $this->hasMany(PortfolioAd::class);
     }
 
-    public function galleries()
+    public function gallery()
     {
         return $this->hasMany(PortfolioGallery::class);
     }
@@ -81,6 +82,11 @@ class Portfolio extends Model
     public function home()
     {
         return $this->hasOne(Home::class);
+    }
+
+    public function extras()
+    {
+        return $this->hasMany(PortfolioExtra::class);
     }
 
     public function advisorPersonnel()

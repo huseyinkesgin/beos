@@ -3,48 +3,57 @@
     <!-- Widgetlar -->
     <div class="grid grid-cols-6 gap-4 p-4 mb-5">
         <!-- Toplam Satılık Portföy Sayısı -->
-        <div class="p-6 text-center text-white transition duration-300 transform rounded-lg shadow-lg bg-gradient-to-r from-purple-500 to-indigo-600 hover:scale-105 hover:shadow-2xl">
+        <div
+            class="p-6 text-center text-white transition duration-300 transform rounded-lg shadow-lg bg-gradient-to-r from-purple-500 to-indigo-600 hover:scale-105 hover:shadow-2xl">
             <h3 class="mb-4 text-2xl font-bold"> Satılık Arsa</h3>
             <p class="text-2xl font-extrabold">{{ $totalSatilikArsa }}</p>
         </div>
         <!-- Toplam Satılık Portföy Sayısı -->
-        <div class="p-6 text-center text-white transition duration-300 transform rounded-lg shadow-lg bg-gradient-to-r from-purple-500 to-indigo-600 hover:scale-105 hover:shadow-2xl">
+        <div
+            class="p-6 text-center text-white transition duration-300 transform rounded-lg shadow-lg bg-gradient-to-r from-purple-500 to-indigo-600 hover:scale-105 hover:shadow-2xl">
             <h3 class="mb-4 text-2xl font-bold"> Satılık Fabrika</h3>
             <p class="text-2xl font-extrabold">{{ $totalSatilikFabrika }}</p>
         </div>
         <!-- Toplam Satılık Portföy Sayısı -->
-        <div class="p-6 text-center text-white transition duration-300 transform rounded-lg shadow-lg bg-gradient-to-r from-purple-500 to-indigo-600 hover:scale-105 hover:shadow-2xl">
+        <div
+            class="p-6 text-center text-white transition duration-300 transform rounded-lg shadow-lg bg-gradient-to-r from-purple-500 to-indigo-600 hover:scale-105 hover:shadow-2xl">
             <h3 class="mb-4 text-2xl font-bold">Satılık Portföy</h3>
             <p class="text-2xl font-extrabold">{{ $totalSatilik }}</p>
         </div>
 
         <!-- Toplam Kiralık Portföy Sayısı -->
-        <div class="p-6 text-center text-white transition duration-300 transform rounded-lg shadow-lg bg-gradient-to-r from-purple-500 to-indigo-600 hover:scale-105 hover:shadow-2xl">
+        <div
+            class="p-6 text-center text-white transition duration-300 transform rounded-lg shadow-lg bg-gradient-to-r from-purple-500 to-indigo-600 hover:scale-105 hover:shadow-2xl">
             <h3 class="mb-4 text-2xl font-bold">Kiralık Portföy</h3>
             <p class="text-2xl font-extrabold">{{ $totalKiralik }}</p>
         </div>
 
-        {{-- <!-- Aktif Portföy Sayısı -->
-        <div class="p-6 text-center text-white transition duration-300 transform rounded-lg shadow-lg bg-gradient-to-r from-purple-500 to-indigo-600 hover:scale-105 hover:shadow-2xl">
+        {{--
+        <!-- Aktif Portföy Sayısı -->
+        <div
+            class="p-6 text-center text-white transition duration-300 transform rounded-lg shadow-lg bg-gradient-to-r from-purple-500 to-indigo-600 hover:scale-105 hover:shadow-2xl">
             <h3 class="text-2xl font-bold">Aktif Portföyler</h3>
             <p class="text-2xl">{{ $totalAktif }}</p>
         </div>
 
         <!-- Pasif Portföy Sayısı -->
-        <div class="p-6 text-center text-white transition duration-300 transform rounded-lg shadow-lg bg-gradient-to-r from-purple-500 to-indigo-600 hover:scale-105 hover:shadow-2xl">
+        <div
+            class="p-6 text-center text-white transition duration-300 transform rounded-lg shadow-lg bg-gradient-to-r from-purple-500 to-indigo-600 hover:scale-105 hover:shadow-2xl">
             <h3 class="text-2xl font-bold">Pasif Portföyler</h3>
             <p class="text-2xl">{{ $totalPasif }}</p>
         </div> --}}
 
         <!-- Toplam Satılık Portföy Değeri -->
-        <div class="p-6 text-center text-white transition duration-300 transform rounded-lg shadow-lg bg-gradient-to-r from-purple-500 to-indigo-600 hover:scale-105 hover:shadow-2xl">
+        <div
+            class="p-6 text-center text-white transition duration-300 transform rounded-lg shadow-lg bg-gradient-to-r from-purple-500 to-indigo-600 hover:scale-105 hover:shadow-2xl">
             <h3 class="mb-4 text-2xl font-bold">Arsa Satılık </h3>
             <p class="text-2xl font-extrabold">{{ number_format($totalSatilikArsaDegeri, 0) }} ₺</p>
         </div>
 
 
         <!-- Toplam Satılık Portföy Değeri -->
-        <div class="p-6 text-center text-white transition duration-300 transform rounded-lg shadow-lg bg-gradient-to-r from-purple-500 to-indigo-600 hover:scale-105 hover:shadow-2xl">
+        <div
+            class="p-6 text-center text-white transition duration-300 transform rounded-lg shadow-lg bg-gradient-to-r from-purple-500 to-indigo-600 hover:scale-105 hover:shadow-2xl">
             <h3 class="mb-4 text-2xl font-bold">Fabrika Satılık</h3>
             <p class="text-2xl font-extrabold">{{ number_format($totalSatilikFabrikaDegeri, 0) }} ₺</p>
         </div>
@@ -117,7 +126,11 @@
         <tbody>
             @foreach ($portfolios as $portfolio)
             <tr class="relative group">
-                <x-td>{{ $portfolio->portfolio_no }}</x-td>
+                <x-td>
+                    <a wire:navigate href="{{ route('portfolio.show', ['portfolioId' => $portfolio->id]) }}" class="text-blue-600 hover:underline">
+                        {{ $portfolio->portfolio_no }}
+                    </a>
+                </x-td>
                 <x-td>
                     {{ $portfolio->status }} {{ ucfirst(optional($portfolio->type)->name) }}
                     <br>
@@ -165,15 +178,14 @@
                 <x-td class="relative">
 
                     @if ($deletedFilter === 'only')
-                    <x-secondary-button wire:click="restore('{{ $portfolio->id }}')"
-                        wire:loading.attr="disabled">
+                    <x-secondary-button wire:click="restore('{{ $portfolio->id }}')" wire:loading.attr="disabled">
                         Geri Al
                     </x-secondary-button>
-                    <x-danger-button wire:click="forceDelete('{{ $portfolio->id }}')"
-                        wire:loading.attr="disabled" class="ml-2">
+                    <x-danger-button wire:click="forceDelete('{{ $portfolio->id }}')" wire:loading.attr="disabled"
+                        class="ml-2">
                         Kalıcı Sil
                     </x-danger-button>
-                @else
+                    @else
                     <div
                         class="absolute space-x-2 transition-opacity duration-300 transform -translate-y-1/2 opacity-0 top-1/2 right-2 group-hover:opacity-100">
                         <i wire:click="$dispatch('openEditModal', { id: '{{ $portfolio->id }}' })"
@@ -186,8 +198,10 @@
                             class="text-lg text-blue-500 cursor-pointer fa-solid fa-image"></i>
                         <i wire:click="$dispatch('openAdsModal', { id: '{{ $portfolio->id }}' })"
                             class="text-lg text-orange-500 cursor-pointer fa-solid fa-list"></i>
-                            <i wire:click="$dispatch('openExtraModal', { id: '{{ $portfolio->id }}' })"
-                                class="text-lg text-orange-500 cursor-pointer fa-solid fa-folder-open"></i>
+                        <i wire:click="$dispatch('openExtraModal', { id: '{{ $portfolio->id }}' })"
+                            class="text-lg text-orange-500 cursor-pointer fa-solid fa-folder-open"></i>
+                        {{-- <a href="{{ route('portfolio.pdf', ['id' => $portfolio->id]) }}" target="_blank"
+                            class="btn btn-primary">PDF Olarak İndir</a> --}}
                     </div>
                     @endif
                 </x-td>
