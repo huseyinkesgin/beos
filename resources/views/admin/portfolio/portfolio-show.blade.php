@@ -30,50 +30,75 @@
             </div>
         </div>
 
-        <!-- Column 2 and 3: Business-Specific Information (Only visible if category is 'İşyeri') -->
-        @if($portfolio->category->name === 'İşyeri')
-            <!-- Column 2 -->
-            <div class="space-y-4">
-                <h3 class="text-xl font-bold text-gray-800">İşyeri Detayları</h3>
-                <div>
-                    <span class="text-lg font-bold">Kapalı Alan:</span>
-                    <span class="text-lg">{{ number_format($portfolio->business->closed_area, 0, ',', '.') }} m²</span>
-                </div>
-                <div>
-                    <span class="text-lg font-bold">Açık Alan:</span>
-                    <span class="text-lg">{{ number_format($portfolio->business->open_area, 0, ',', '.') }} m²</span>
-                </div>
-                <div>
-                    <span class="text-lg font-bold">İşletme Alanı:</span>
-                    <span class="text-lg">{{ number_format($portfolio->business->business_area, 0, ',', '.') }} m²</span>
-                </div>
-                <div>
-                    <span class="text-lg font-bold">Ofis Alanı:</span>
-                    <span class="text-lg">{{ number_format($portfolio->business->office_area, 0, ',', '.') }} m²</span>
-                </div>
-            </div>
+        <div class="grid grid-cols-2 gap-4">
+            <!-- Column 1: Common Portfolio Information -->
 
-            <!-- Column 3 -->
-            <div class="space-y-4">
-                <h3 class="text-xl font-bold text-gray-800">Ek Bilgiler</h3>
-                <div>
-                    <span class="text-lg font-bold">Yükseklik:</span>
-                    <span class="text-lg">{{ $portfolio->business->height }}cm</span>
+                <!-- Diğer genel bilgiler buraya eklenebilir -->
+
+
+            @if($portfolio->category->name === 'İşyeri')
+                <!-- Column 2: Business-Specific Information (İşyeri) -->
+                <div class="space-y-4">
+                    <h3 class="text-xl font-bold text-gray-800">İşyeri Detayları</h3>
+                    <div>
+                        <span class="text-lg font-bold">Kapalı Alan:</span>
+                        <span class="text-lg">{{ number_format($portfolio->business->closed_area, 0, ',', '.') }} m²</span>
+                    </div>
+                    <div>
+                        <span class="text-lg font-bold">Açık Alan:</span>
+                        <span class="text-lg">{{ number_format($portfolio->business->open_area, 0, ',', '.') }} m²</span>
+                    </div>
+                    <div>
+                        <span class="text-lg font-bold">İşletme Alanı:</span>
+                        <span class="text-lg">{{ number_format($portfolio->business->business_area, 0, ',', '.') }} m²</span>
+                    </div>
+                    <div>
+                        <span class="text-lg font-bold">Ofis Alanı:</span>
+                        <span class="text-lg">{{ number_format($portfolio->business->office_area, 0, ',', '.') }} m²</span>
+                    </div>
                 </div>
-                <div>
-                    <span class="text-lg font-bold">Kat Sayısı:</span>
-                    <span class="text-lg">{{ $portfolio->business->floor_count }}</span>
+
+                <!-- Column 3: Additional Business Information -->
+                <div class="space-y-4">
+                    <h3 class="text-xl font-bold text-gray-800">Ek Bilgiler</h3>
+                    <div>
+                        <span class="text-lg font-bold">Yükseklik:</span>
+                        <span class="text-lg">{{ $portfolio->business->height }} cm</span>
+                    </div>
+                    <div>
+                        <span class="text-lg font-bold">Kat Sayısı:</span>
+                        <span class="text-lg">{{ $portfolio->business->floor_count }}</span>
+                    </div>
+                    <div>
+                        <span class="text-lg font-bold">Isıtma:</span>
+                        <span class="text-lg">{{ $portfolio->business->heating_type }}</span>
+                    </div>
+                    <div>
+                        <span class="text-lg font-bold">Bina Durumu:</span>
+                        <span class="text-lg">{{ $portfolio->business->building_condition }}</span>
+                    </div>
                 </div>
-                <div>
-                    <span class="text-lg font-bold">Isıtma:</span>
-                    <span class="text-lg">{{ $portfolio->business->heating_type }}</span>
+            @else
+                <!-- Column 2: Land-Specific Information (Arsa) -->
+                <div class="space-y-4">
+                    <h3 class="text-xl font-bold text-gray-800">Arsa Detayları</h3>
+                    <div>
+                        <span class="text-lg font-bold">İmar Durumu:</span>
+                        <span class="text-lg">{{ $portfolio->land->zoning_status }}</span>
+                    </div>
+                    <div>
+                        <span class="text-lg font-bold">Emsal:</span>
+                        <span class="text-lg">{{ $portfolio->land->similar }}</span>
+                    </div>
+                    <div>
+                        <span class="text-lg font-bold">Gabari:</span>
+                        <span class="text-lg">{{ $portfolio->land->height_limit }}</span>
+                    </div>
+
                 </div>
-                <div>
-                    <span class="text-lg font-bold">Bina Durumu:</span>
-                    <span class="text-lg">{{ $portfolio->business->building_condition }}</span>
-                </div>
-            </div>
-        @endif
+            @endif
+        </div>
+
     </div>
 
 

@@ -1,25 +1,35 @@
 {{-- resources/views/admin/location/state-table.blade.php --}}
 <div>
     <!-- Bu Ayın Ödenecek Faturaları -->
-    <div class="grid grid-cols-3 gap-4 p-4 mb-5">
+    <div class="grid grid-cols-1 gap-6 p-4 mb-5 md:grid-cols-3">
         <!-- Bu Ayın Ödenecek Faturaları -->
-        <div class="p-4 text-white bg-red-500 rounded-lg shadow-md">
-            <h3 class="text-xl font-bold">Bu Ayın Ödenecek Faturaları</h3>
-            <p class="text-2xl">{{ number_format($this_month_unpaid_total, 2) }} TL</p>
+        <div class="p-6 text-white transition duration-300 transform rounded-lg shadow-lg bg-gradient-to-br from-red-500 to-red-600 hover:scale-105">
+            <div class="flex items-center justify-between">
+                <h3 class="text-lg font-bold">Bu Ayın Ödenecek Faturaları</h3>
+                <i class="text-2xl fas fa-exclamation-circle"></i>
+            </div>
+            <p class="mt-4 text-3xl font-extrabold">{{ number_format($this_month_unpaid_total, 2) }} TL</p>
         </div>
 
         <!-- Bu Ay Ödenmiş Faturalar -->
-        <div class="p-4 text-white bg-green-500 rounded-lg shadow-md">
-            <h3 class="text-xl font-bold">Bu Ay Ödenmiş Faturalar</h3>
-            <p class="text-2xl">{{ number_format($this_month_paid_total, 2) }} TL</p>
+        <div class="p-6 text-white transition duration-300 transform rounded-lg shadow-lg bg-gradient-to-br from-green-500 to-green-600 hover:scale-105">
+            <div class="flex items-center justify-between">
+                <h3 class="text-lg font-bold">Bu Ay Ödenmiş Faturalar</h3>
+                <i class="text-2xl fas fa-check-circle"></i>
+            </div>
+            <p class="mt-4 text-3xl font-extrabold">{{ number_format($this_month_paid_total, 2) }} TL</p>
         </div>
 
         <!-- Bu Yıl Ödenmiş Faturalar -->
-        <div class="p-4 text-white bg-blue-500 rounded-lg shadow-md">
-            <h3 class="text-xl font-bold">Bu Yıl Ödenmiş Faturalar</h3>
-            <p class="text-2xl">{{ number_format($this_year_paid_total, 2) }} TL</p>
+        <div class="p-6 text-white transition duration-300 transform rounded-lg shadow-lg bg-gradient-to-br from-blue-500 to-blue-600 hover:scale-105">
+            <div class="flex items-center justify-between">
+                <h3 class="text-lg font-bold">Bu Yıl Ödenmiş Faturalar</h3>
+                <i class="text-2xl fas fa-calendar-check"></i>
+            </div>
+            <p class="mt-4 text-3xl font-extrabold">{{ number_format($this_year_paid_total, 2) }} TL</p>
         </div>
     </div>
+
 
 
 
