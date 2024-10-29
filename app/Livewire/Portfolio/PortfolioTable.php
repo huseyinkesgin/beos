@@ -87,14 +87,23 @@ public $newPrice = null;
     }
 
     public function editPrice($portfolioId, $currentPrice)
-{
-    $this->priceEditing = $portfolioId;
-    $this->newPrice = $currentPrice;
-}
+    {
+        $this->priceEditing = $portfolioId;
+        $this->newPrice = $currentPrice;
+    }
 
+// Yeni fiyatı kaydetme
 // Yeni fiyatı kaydetme
 public function savePrice($portfolioId)
 {
+    // `newPrice` alanının boş veya negatif olup olmadığını kontrol et
+    if (is_null($this->newPrice) || $this->newPrice < 0) {
+        // Eğer `newPrice` geçerli değilse düzenleme modundan çık
+        $this->priceEditing = null;
+        $this->newPrice = null;
+        return;
+    }
+
     $portfolio = Portfolio::find($portfolioId);
     if ($portfolio) {
         $portfolio->price = $this->newPrice;
@@ -105,7 +114,7 @@ public function savePrice($portfolioId)
     $this->priceEditing = null;
     $this->newPrice = null;
 
-    // Tabloyu yenile
+    // Widget verilerini güncelle
     $this->calculateWidgetTotals();
 }
 

@@ -161,6 +161,13 @@
                         <span class="font-bold text-black cursor-pointer text-md" wire:click="editPrice({{ $portfolio->id }}, {{ $portfolio->price }})">
                             {{ number_format($portfolio->price, 0) }} ₺
                         </span>
+
+                        <!-- Eğer status "Kiralık" ise additional_fees'i göster -->
+                        @if ($portfolio->status === 'Kiralık' && $portfolio->additional_fees)
+                            <div class="mt-1 text-sm text-gray-600">
+                                {{ $portfolio->additional_fees }}
+                            </div>
+                        @endif
                     @endif
                     <br>
                     <span class="font-extrabold text-red-500">{{ number_format($portfolio->area_m2, 0) }} m²</span>
