@@ -32,6 +32,8 @@ class Business extends Model
         'usage_status',
         'ground_analysis',
         'height',
+        'isCrane',
+        'crane_description'
     ];
 
     public function portfolio()

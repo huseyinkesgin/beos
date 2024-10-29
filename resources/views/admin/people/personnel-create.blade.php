@@ -1,6 +1,6 @@
 <div>
     <x-dark-button class="" wire:click="$dispatch('openCreateModal')">
-        Yeni Personel Ekle
+        Yeni Personel
     </x-dark-button>
     <x-dialog-modal wire:model="open" maxWidth="md">
         <x-slot name="title">
@@ -19,7 +19,7 @@
                     <x-input-email label="Eposta" model="email" />
 
                     <!-- phone -->
-                    <x-input-text label="Telefon" model="phone" />
+                    <x-input-phone phone="Telefon" model="phone" />
                 </div>
 
 

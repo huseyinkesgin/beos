@@ -1,7 +1,7 @@
 <div>
 
     <x-dark-button wire:click="$dispatch('openCreateModal')">
-        Yeni Fatura Ekle
+        Yeni Fatura
     </x-dark-button>
     <x-dialog-modal wire:model="open" maxWidth="md">
         <x-slot name="title">

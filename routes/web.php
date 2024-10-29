@@ -5,9 +5,11 @@ use App\Livewire\Location\CityIndex;
 use App\Livewire\Location\StateIndex;
 use App\Livewire\Portfolio\TypeIndex;
 use Illuminate\Support\Facades\Route;
+use App\Livewire\Finance\InvoiceIndex;
 use App\Livewire\Finance\VehicleIndex;
 use App\Livewire\People\CustomerIndex;
 use App\Livewire\People\PersonnelShow;
+use App\Livewire\Finance\InvoiceDetail;
 use App\Livewire\People\PersonnelIndex;
 use App\Livewire\Location\DistrictIndex;
 use App\Livewire\Portfolio\CategoryIndex;
@@ -62,3 +64,6 @@ Route::get('vehicles', VehicleIndex::class)->name('vehicles');
 
 Route::get('/portfolio/{id}/pdf', [PortfolioPDFController::class, 'generate'])->name('portfolio.pdf');
 Route::get('/portfolio/{portfolioId}', PortfolioShow::class)->name('portfolio.show');
+
+Route::get('/invoices', InvoiceIndex::class)->name('invoices.index');
+Route::get('/invoices/{id}', InvoiceDetail::class)->name('invoices.detail');

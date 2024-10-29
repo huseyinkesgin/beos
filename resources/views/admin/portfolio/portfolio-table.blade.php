@@ -105,7 +105,7 @@
         </div>
         <x-search />
         <div class="flex justify-end mb-4">
-            <button wire:click="export" class="px-4 py-2 text-white bg-green-500 rounded">Excel'e Aktar</button>
+            <button wire:click="export" class="px-3 py-1 text-white bg-green-700 rounded">Excel'e Aktar</button>
         </div>
     </div>
 
@@ -127,7 +127,8 @@
             @foreach ($portfolios as $portfolio)
             <tr class="relative group">
                 <x-td>
-                    <a wire:navigate href="{{ route('portfolio.show', ['portfolioId' => $portfolio->id]) }}" class="text-blue-600 hover:underline">
+                    <a wire:navigate href="{{ route('portfolio.show', ['portfolioId' => $portfolio->id]) }}"
+                        class="text-blue-600 hover:underline">
                         {{ $portfolio->portfolio_no }}
                     </a>
                 </x-td>
@@ -146,18 +147,79 @@
 
                 </x-td>
                 <x-td class="text-center">
-                    <span class="font-bold text-black text-md">
-                        {{ number_format($portfolio->price, 0) }} ₺
-                    </span>
+                    @if ($priceEditing === $portfolio->id)
+                        <!-- Fiyat düzenleme modundaysa input göster -->
+                        <input
+                            type="number"
+                            wire:model.lazy="newPrice"
+                            wire:keydown.enter="savePrice({{ $portfolio->id }})"
+                            wire:blur="savePrice({{ $portfolio->id }})"
+                            class="w-full px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+                        />
+                    @else
+                        <!-- Düzenleme modunda değilse fiyatı göster -->
+                        <span class="font-bold text-black cursor-pointer text-md" wire:click="editPrice({{ $portfolio->id }}, {{ $portfolio->price }})">
+                            {{ number_format($portfolio->price, 0) }} ₺
+                        </span>
+                    @endif
                     <br>
                     <span class="font-extrabold text-red-500">{{ number_format($portfolio->area_m2, 0) }} m²</span>
                 </x-td>
+
                 @if ($categoryFilter == $businessCategoryId)
                 <x-td>
-                    Açık Alan: {{ $portfolio->business->open_area ?? "Boş " }} m² <br>
-                    Kapalı Alan: {{ $portfolio->business->closed_area ?? "Boş" }} m² <br>
-                    İşletme Alanı: {{ $portfolio->business->business_area ?? "Boş "}} m² <br>
-                    Ofis Alanı: {{ $portfolio->business->office_area ?? "Boş" }} m²
+                    <div class="grid grid-cols-2 gap-x-4">
+                        <div class="font-bold text-black">Açık Alan</div>
+                        <div class="font-semibold text-black">: {{ $portfolio->business->open_area ?? "Boş" }} m²</div>
+
+                        <div class="font-bold text-black">Kapalı Alan</div>
+                        <div class="font-semibold text-black">: {{ $portfolio->business->closed_area ?? "Boş" }} m²
+                        </div>
+
+                        <div class="font-bold text-black">İşletme Alanı</div>
+                        <div class="font-semibold text-black">: {{ $portfolio->business->business_area ?? "Boş" }} m²
+                        </div>
+
+                        <div class="font-bold text-black">Ofis Alanı</div>
+                        <div class="font-semibold text-black">: {{ $portfolio->business->office_area ?? "Boş" }} m²
+                        </div>
+                        <div class="font-bold text-black">Vinç</div>
+                        <div class="font-semibold text-black">:
+                            @if($portfolio->business->isCrane)
+
+                                <span class="mt-1 text-black">
+                                    {{ $portfolio->business->crane_description ?? "Açıklama mevcut değil." }}
+                                </span>
+                            @else
+                                <span class="text-red-500">Yok</span>
+                            @endif
+                        </div>
+                    </div>
+                </x-td>
+                @endif
+                @if ($categoryFilter == $businessCategoryId)
+                <x-td>
+                    <div class="grid grid-cols-2 gap-x-4">
+
+
+                        <div class="font-bold text-black">Kaç Katlı</div>
+                        <div class="font-semibold text-black">: {{ $portfolio->business->floor_count ?? "Boş" }}
+                        </div>
+
+                        <div class="font-bold text-black">Elektrik</div>
+                        <div class="font-semibold text-black">: {{ $portfolio->business->electricity_power ?? "Boş" }} KWA
+                        </div>
+
+                        <div class="font-bold text-black">Durumu</div>
+                        <div class="font-semibold text-black">: {{ $portfolio->business->usage_status ?? "Boş" }}
+                        </div>
+                        <div class="font-bold text-black">Yükseklik</div>
+                        <div class="font-semibold text-black">: {{ $portfolio->business->height ?? "Boş" }}
+                        </div>
+                        <div class="font-bold text-black">Yapım Yılı</div>
+                        <div class="font-semibold text-black">: {{ $portfolio->business->building_year ?? "Boş" }}
+                        </div>
+                    </div>
                 </x-td>
                 @endif
                 <x-td class="text-center">

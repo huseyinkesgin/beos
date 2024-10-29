@@ -27,6 +27,8 @@ return new class extends Migration
             $table->string('usage_status')->nullable(); //kullanım durumu
             $table->boolean('ground_analysis')->default(true); //zemin edütü
             $table->string('height')->nullable(); // Yükseklik
+            $table->boolean('isCrane')->default('false');
+            $table->string('crane_description')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

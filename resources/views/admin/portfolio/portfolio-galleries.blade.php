@@ -1,19 +1,19 @@
 <div>
     <!-- Galeri Modalı -->
-    <x-dialog-modal wire:model="open">
+    <x-dialog-modal wire:model="open" maxWidth="2xl">
         <x-slot name="title">
             Galeri Yönetimi
         </x-slot>
 
         <x-slot name="content">
             <!-- Mevcut Resimler -->
-            <div id="sortable-gallery" class="grid grid-cols-4 gap-4">
+            <div id="sortable-gallery" class="grid grid-cols-4 gap-4" x-data x-init="initSortable()">
                 @foreach ($galleryImages as $index => $image)
                     <div class="relative group" data-id="{{ $image['id'] }}" wire:key="gallery-image-{{ $image['id'] }}">
                         <!-- Resim Önizleme -->
                         <div class="overflow-hidden rounded-md shadow-md">
                             <img src="{{ $image['url'] }}" alt="Galeri Resmi"
-                                 class="object-cover w-32 h-32 transition-transform duration-300 transform group-hover:scale-150">
+                                 class="object-cover w-48 h-32 transition-transform duration-300 transform rounded-md group-hover:scale-105">
                         </div>
 
                         <!-- Silme Butonu -->
@@ -37,7 +37,7 @@
                         @foreach ($newImages as $index => $image)
                             <div class="relative group">
                                 <!-- Yeni Yüklenen Resim Önizleme -->
-                                <img src="{{ $image->temporaryUrl() }}" alt="Yüklenen Resim" class="object-cover w-32 h-32 transition duration-300 ease-in-out transform rounded-md shadow-md hover:scale-105">
+                                <img src="{{ $image->temporaryUrl() }}" alt="Yüklenen Resim" class="object-cover w-48 h-32 transition duration-300 ease-in-out transform rounded-md shadow-md hover:scale-105">
 
                                 <!-- Yüklenmekte Olan Resmi Kaldırma Butonu -->
                                 <button wire:click="removeNewImage({{ $index }})" class="absolute p-1 text-white transition duration-300 bg-red-600 rounded-full opacity-0 top-2 right-2 group-hover:opacity-100">
@@ -60,12 +60,10 @@
                     <p class="mt-2 text-sm text-gray-500">{{ $uploadProgress }}% Yükleniyor...</p>
                 </div>
             </div>
-
         </x-slot>
 
         <x-slot name="footer">
-
-            <div class="flex justify-between items-center w-full">
+            <div class="flex items-center justify-between w-full">
                 <!-- Sol tarafa yerleşen buton -->
                 <div class="flex pl-3">
                     <i wire:click="$dispatch('openSlideShowModal', { id: '{{ $portfolioId }}' })"
@@ -81,18 +79,27 @@
     </x-dialog-modal>
     <livewire:portfolio.portfolio-slide-show :portfolioId="$portfolioId" />
 
-    <!-- Sortable.js ve Livewire ile entegre ediyoruz -->
-    <script>
-        document.addEventListener('livewire:load', function () {
-            var el = document.getElementById('sortable-gallery');
-            var sortable = new Sortable(el, {
-                animation: 150,
-                ghostClass: 'sortable-drag',
-                onEnd: function (evt) {
-                    let orderedIds = Array.from(el.children).map(item => item.getAttribute('data-id'));
-                    Livewire.dispatch('updateImageOrder', orderedIds);
-                }
-            });
-        });
-    </script>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+<script>
+    function initSortable() {
+        var sortableGallery = document.getElementById('sortable-gallery');
+        Sortable.create(sortableGallery, {
+            animation: 150,
+            onEnd: function (evt) {
+                // Sürükle bırak sonrası sıralama verilerini Livewire'a gönder
+                let order = [];
+                sortableGallery.querySelectorAll('.group').forEach((element, index) => {
+                    order.push({
+                        id: element.getAttribute('data-id'),
+                        position: index + 1
+                    });
+                });
+
+                // Livewire metodunu çağırarak sıralamayı kaydet
+                @this.call('updateImageOrder', order);
+            }
+        });
+    }
+</script>

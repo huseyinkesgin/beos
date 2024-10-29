@@ -2,7 +2,7 @@
 <div>
 
     <x-dark-button class="" wire:click="$dispatch('openCreateModal')">
-        Yeni Emlak Tipi Ekle
+        Yeni Emlak Tipi
     </x-dark-button>
     <x-dialog-modal wire:model="open">
         <x-slot name="title">

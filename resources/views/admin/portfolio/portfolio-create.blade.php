@@ -3,7 +3,7 @@
 
     <x-dialog-modal wire:model.live="open">
         <x-slot name="title">
-            Yeni Portföy Oluştur
+            Yeni Portföy
         </x-slot>
 
         <x-slot name="content">

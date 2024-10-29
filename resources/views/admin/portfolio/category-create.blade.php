@@ -2,7 +2,7 @@
 <div>
 
     <x-dark-button class="" wire:click="$dispatch('openCreateModal')">
-        Yeni Kategori Ekle
+        Yeni Kategori
     </x-dark-button>
     <x-dialog-modal wire:model="open" maxWidth="sm">
         <x-slot name="title">

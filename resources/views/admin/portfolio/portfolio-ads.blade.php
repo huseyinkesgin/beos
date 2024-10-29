@@ -2,7 +2,7 @@
     <!-- Medya Ekle Modalı -->
     <x-dialog-modal wire:model="open">
         <x-slot name="title">
-            İlan Ekle
+            Yeni İlan
         </x-slot>
 
         <x-slot name="content">

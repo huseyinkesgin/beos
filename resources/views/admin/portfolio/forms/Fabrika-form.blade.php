@@ -75,9 +75,10 @@
                 </x-select>
                 <x-input-error for="usage_status" class="mt-2" />
             </div>
-
-            <!-- Zemin Etüdü -->
-            <div class="flex-1 my-4">
+        </div>
+        <div class="flex flex-row mx-4 space-x-2">
+             <!-- Zemin Etüdü -->
+             <div class="flex-1 my-4">
                 <x-label for="ground_analysis">Zemin Etüdü</x-label>
                 <x-select wire:model.live="ground_analysis" id="ground_analysis" class="w-full">
                     <option value="Seçiniz">Seçiniz</option>
@@ -87,7 +88,24 @@
                 <x-input-error for="ground_analysis" class="mt-2" />
             </div>
 
+            <div class="flex-1 my-4">
+                <x-label for="isCrane">Vinç Var Mı?</x-label>
+                <x-select wire:model.live="isCrane" id="isCrane" class="w-full">
+                    <option value="Seçiniz">Seçiniz</option>
+                    <option value="1">Evet</option>
+                    <option value="0">Hayır</option>
+                </x-select>
+                <x-input-error for="isCrane" class="mt-2" />
+            </div>
 
+            <!-- Vinç Açıklaması (Eğer Vinç Var İse) -->
+            @if($isCrane == '1')
+                <div class="flex-1 my-4">
+                    <x-label for="crane_description">Vinç Açıklaması</x-label>
+                    <x-input wire:model.live="crane_description" id="crane_description" type="text" class="w-full" />
+                    <x-input-error for="crane_description" class="mt-2" />
+                </div>
+            @endif
         </div>
     </div>
 </div>

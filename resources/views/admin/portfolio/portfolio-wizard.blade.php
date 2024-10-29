@@ -1,5 +1,5 @@
 <div>
-    <x-dark-button class="" wire:click="$dispatch('openWizardModal')">Yeni Sihirbaz Ekle</x-dark-button>
+    <x-dark-button class="" wire:click="$dispatch('openWizardModal')">Yeni Portföy</x-dark-button>
     <x-dialog-modal wire:model.live="open" maxWidth="2xl">
         <x-slot name="title">
             Yeni Portföy Oluştur

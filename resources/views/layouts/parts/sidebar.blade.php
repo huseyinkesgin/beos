@@ -1,5 +1,5 @@
 <div class="w-64 h-full px-4 py-5 text-gray-300 transition-all duration-300 bg-gradient-to-b from-blue-900 to-blue-950 md:w-48 lg:w-56">
-    <div class="mb-3">
+    <div class="mb-3 text-center">
         <span class="text-2xl font-extrabold text-orange-500">BEOS</span>
     </div>
     <hr class="mb-3 border-gray-700">

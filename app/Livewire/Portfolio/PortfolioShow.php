@@ -9,6 +9,7 @@ class PortfolioShow extends Component
 {
     public $portfolio;
     public $portfolioId;
+    
 
     public function mount($portfolioId)
     {

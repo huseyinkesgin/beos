@@ -64,6 +64,8 @@ class PortfolioTable extends Component
     public $totalSatilikFabrikaDegeri = 0;
     public $totalSatilikDepoDegeri = 0;
 
+    public $priceEditing = null; // Düzenlenen portföyün ID’sini saklayacak
+public $newPrice = null;
     /* -------------------------- EXPORT VE IMPORT İÇİN ------------------------- */
     protected $excel;
 
@@ -83,6 +85,29 @@ class PortfolioTable extends Component
             'portfolios.xlsx'
         );
     }
+
+    public function editPrice($portfolioId, $currentPrice)
+{
+    $this->priceEditing = $portfolioId;
+    $this->newPrice = $currentPrice;
+}
+
+// Yeni fiyatı kaydetme
+public function savePrice($portfolioId)
+{
+    $portfolio = Portfolio::find($portfolioId);
+    if ($portfolio) {
+        $portfolio->price = $this->newPrice;
+        $portfolio->save();
+    }
+
+    // Düzenleme modundan çık
+    $this->priceEditing = null;
+    $this->newPrice = null;
+
+    // Tabloyu yenile
+    $this->calculateWidgetTotals();
+}
 
     public function mount()
     {

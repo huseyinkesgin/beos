@@ -34,129 +34,80 @@ class PortfolioWizard extends Component
 
     // ~~~~~~~~~~ PORTFOLİO DATABASE ~~~~~~~~~ //
     public $portfolio_no;
-
     public $state_id;
-
     public $city_id;
-
     public $district_id;
-
     public $category_id;
-
     public $type_id;
-
     public $lot;
-
     public $parcel;
-
     public $price;
-
     public $status = 'Satılık';
-
     public $deposit;
-
     public $property_no;
-
     public $isCredit;
-
     public $deed_type;
-
     public $isSwap;
-
     public $description;
-
     public $advisor;
-
     public $partner_customer_id;
-
     public $owner_customer_id;
-
     public $isActive = true;
-
     public $note;
-
     public $additional_fees;
 
     // ~~~~~~~~~~~~ ORTAK DATABASE ~~~~~~~~~~~ //
     public $area_m2;
-
     public $portfolio_id;
-
     public $floor_level;
-
     public $heating_type;
-
     public $building_year;
-
     public $usage_status;
-
     public $zoning_status;
-
     public $similar;
-
     public $height_limit;
 
     // ~~~~~~~~~~~ İŞYERİ DATABASE ~~~~~~~~~~~ //
     public $open_area;
-
     public $closed_area;
-
     public $business_area;
-
     public $office_area;
-
     public $floor_count;
-
     public $electricity_power;
-
     public $building_condition;
-
     public $ground_analysis;
-
     public $height;
+    public $isCrane = false;
+    public $crane_description;
 
     // ~~~~~~~~~~~~ KONUT DATABASE ~~~~~~~~~~~ //
     public $room_count;
-
     public $total_floors;
-
     public $bathroom_count;
-
     public $isFurnished;
-
     public $isBalcon;
-
     public $isElevator;
-
     public $parking;
 
     // ~~~~~~~~~~~ İL - İLÇE- BÖLGE ~~~~~~~~~~ //
     public $states;
-
     public $cities;
-
     public $districts;
 
     // ~~~~~~~~ PARTNER VE MAL SAHİBİ ~~~~~~~~ //
     public $has_partner = false;
-
     public $partnerList;
-
     public $ownerList;
     public $advisorsList;
 
     // ~~~~~~~~~~ KATEGORİ VE TİPLER ~~~~~~~~~ //
     public $categories;
-
     public $types = [];
-
     public $form_path;
 
     //  ARSA, İŞTERİ VE KONUT DATABASE ULAŞMA  //
     public $landCategoryId;
-
     public $businessCategoryId;
-
     public $homeCategoryId;
 
     // ~~~~~~~~~~~~~~~~MODAL İÇİN~~~~~~~~~~~~~~~~~~~~~~~ //
@@ -277,6 +228,8 @@ class PortfolioWizard extends Component
                     'building_condition' => 'nullable|string',
                     'usage_status' => 'nullable|string',
                     'ground_analysis' => 'boolean',
+                    'isCrane' => "boolean",
+                    'crane_description' => "nullable|string"
                 ]);
             } elseif ($this->category_id == $this->homeCategoryId) {
                 $this->validate([
@@ -341,6 +294,8 @@ class PortfolioWizard extends Component
             'deposit' => 'nullable|string',
             'isCredit' => 'nullable|string',
             'isSwap' => 'nullable|string',
+            'isCrane' => "boolean",
+            'crane_description' => "nullable|string"
         ]);
 
         // 4. Adımda toplanan veriler
@@ -426,6 +381,9 @@ class PortfolioWizard extends Component
             'building_condition' => $this->building_condition,
             'usage_status' => $this->usage_status,
             'ground_analysis' => $this->ground_analysis,
+            'isCrane' => $this->isCrane,
+            'crane_description' => $this->crane_description,
+
         ]);
 
 
