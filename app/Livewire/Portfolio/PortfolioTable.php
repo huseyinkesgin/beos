@@ -37,6 +37,7 @@ class PortfolioTable extends Component
     public $typeFilter = '';
     public $activeFilter = 'all';
     public $deletedFilter = 'without';
+    public $adStatusFilter = 'all';
 
     /* ----------------------------- TABLO DETAYLARI ---------------------------- */
     public $sortField = 'created_at';
@@ -63,6 +64,10 @@ class PortfolioTable extends Component
     public $totalSatilikFabrika = 0;
     public $totalSatilikFabrikaDegeri = 0;
     public $totalSatilikDepoDegeri = 0;
+    public $totalKiralikArsa = 0;
+    public $totalKiralikFabrika = 0;
+    public $totalKiralikArsaDegeri = 0;
+    public $totalKiralikFabrikaDegeri = 0;
 
     public $priceEditing = null; // Düzenlenen portföyün ID’sini saklayacak
 public $newPrice = null;
@@ -143,22 +148,68 @@ public function savePrice($portfolioId)
         $this->districtFilter = '';
     }
 
-
+    public function updated($propertyName)
+    {
+        if (in_array($propertyName, [
+            'search', 'activeFilter', 'deletedFilter', 'typeFilter', 
+            'categoryFilter', 'statusFilter', 'adStatusFilter',
+            'stateFilter', 'cityFilter', 'districtFilter'
+        ])) {
+            $this->calculateWidgetTotals();
+        }
+    }
 
     /* ----------------------- WIDGET VERİLERİNİ HESAPLAMA ---------------------- */
     public function calculateWidgetTotals()
-    {
-        $this->totalSatilikArsa = Portfolio::filter(null, null, null, 'Arsa', null, 'Satılık')->count();
-        $this->totalSatilikFabrika = Portfolio::filter(null, null, null, 'Fabrika', null, 'Satılık')->count();
-        $this->totalSatilik = Portfolio::where('status', 'Satılık')->count();
-        $this->totalKiralik = Portfolio::where('status', 'Kiralık')->count();
-        $this->totalAktif = Portfolio::where('isActive', true)->count();
-        $this->totalPasif = Portfolio::where('isActive', false)->count();
-        $this->totalSatilikArsaDegeri = Portfolio::filter(null, null, null, 'Arsa', null, 'Satılık')->sum('price');
-        $this->totalSatilikFabrikaDegeri = Portfolio::filter(null, null, null, 'Fabrika', null, 'Satılık')->sum('price');
-        $this->totalSatilikDepoDegeri = Portfolio::filter(null, null, null, 'Depo', null, 'Satılık')->sum('price');
-        $this->totalKiraDegeri = Portfolio::where('status', 'Kiralık')->sum('price');
-    }
+{
+    $filteredQuery = Portfolio::filter(
+        $this->search,
+        $this->activeFilter,
+        $this->deletedFilter,
+        $this->typeFilter,
+        $this->categoryFilter,
+        $this->statusFilter,
+        $this->adStatusFilter,
+        $this->stateFilter,
+        $this->cityFilter,
+        $this->districtFilter
+    );
+
+    // Satılık ve Kiralık Arsa ve Fabrika Sayısı ve Toplam Değerleri
+    $this->totalSatilikArsa = $filteredQuery->where('category_id', $this->landCategoryId)
+                                            ->where('status', 'Satılık')
+                                            ->count();
+
+    $this->totalSatilikFabrika = $filteredQuery->where('category_id', $this->businessCategoryId)
+                                               ->where('status', 'Satılık')
+                                               ->count();
+
+    $this->totalKiralikArsa = $filteredQuery->where('category_id', $this->landCategoryId)
+                                            ->where('status', 'Kiralık')
+                                            ->count();
+
+    $this->totalKiralikFabrika = $filteredQuery->where('category_id', $this->businessCategoryId)
+                                               ->where('status', 'Kiralık')
+                                               ->count();
+
+    // Satılık ve Kiralık Arsa ve Fabrika Değerleri
+    $this->totalSatilikArsaDegeri = $filteredQuery->where('category_id', $this->landCategoryId)
+                                                  ->where('status', 'Satılık')
+                                                  ->sum('price');
+
+    $this->totalSatilikFabrikaDegeri = $filteredQuery->where('category_id', $this->businessCategoryId)
+                                                     ->where('status', 'Satılık')
+                                                     ->sum('price');
+
+    $this->totalKiralikArsaDegeri = $filteredQuery->where('category_id', $this->landCategoryId)
+                                                  ->where('status', 'Kiralık')
+                                                  ->sum('price');
+
+    $this->totalKiralikFabrikaDegeri = $filteredQuery->where('category_id', $this->businessCategoryId)
+                                                     ->where('status', 'Kiralık')
+                                                     ->sum('price');
+}
+
 
     // public function restore($id)
     // {
@@ -183,7 +234,8 @@ public function savePrice($portfolioId)
             $this->deletedFilter,
             $this->typeFilter,
             $this->categoryFilter,
-            $this->statusFilter
+            $this->statusFilter,
+            $this->adStatusFilter
         )
             ->sortable($this->sortField, $this->sortDirection)
             ->paginate($this->pagination);

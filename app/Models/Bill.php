@@ -2,14 +2,18 @@
 
 namespace App\Models;
 
-use App\Traits\ScopesTrait;
 use Carbon\Carbon;
+use App\Traits\ScopesTrait;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Bill extends Model
 {
     use ScopesTrait,SoftDeletes;
+
+
+    protected $dates = ['due_date'];
 
     protected $fillable = [
         'type',
@@ -61,28 +65,13 @@ class Bill extends Model
 
 
 
-    // // bill_date için erişimci (Accessor)
-    // public function getBillDateAttribute($value)
-    // {
-    //     return Carbon::parse($value)->format('d.m.Y');
-    // }
-
-    // // last_date için erişimci (Accessor)
-    // public function getLastDateAttribute($value)
-    // {
-    //     return Carbon::parse($value)->format('d.m.Y');
-    // }
-
-    // // payment_date için erişimci (Accessor)
-    // public function getPaymentDateAttribute($value)
-    // {
-    //     return Carbon::parse($value)->format('d.m.Y');
-    // }
 
     public function setBillNoAttribute($value)
     {
         $this->attributes['bill_no'] = strtoupper($value);
     }
+
+
 
 
 

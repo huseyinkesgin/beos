@@ -13,8 +13,8 @@ class BillCreate extends Component
     public $open = false;
 
     protected $rules = [
-        'type' => 'required|string',
-        'amount' => 'required|numeric',
+        'type' =>  ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
+        'amount' => 'required',
         'payment_method' => 'required|string',
         'bill_no' => 'required|string',
         'last_date' => 'required|date',

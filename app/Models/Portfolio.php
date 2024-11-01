@@ -108,7 +108,7 @@ class Portfolio extends Model
     }
 
     // Filtreleme işlemlerini tek bir metod altında toplama
-    public function scopeFilter($query, $search, $activeFilter, $deletedFilter, $typeFilter, $categoryFilter,$statusFilter)
+    public function scopeFilter($query, $search, $activeFilter, $deletedFilter, $typeFilter, $categoryFilter, $statusFilter, $adStatusFilter = 'all', $stateFilter = null, $cityFilter = null, $districtFilter = null)
     {
         return $query
             ->when($search, function ($q, $search) {
@@ -125,28 +125,20 @@ class Portfolio extends Model
                       ->orWhereHas('partner', fn($q) => $q->where('name', 'like', "%{$search}%"));
                 });
             })
-            ->when($activeFilter === 'active', function ($q) {
-                $q->where('isActive', true); // Aktif filtre
-            })
-            ->when($activeFilter === 'inactive', function ($q) {
-                $q->where('isActive', false); // Pasif filtre
-            })
-            ->when($deletedFilter === 'with', function ($q) {
-                $q->withTrashed(); // Soft delete olan kayıtlar da dahil edilir
-            })
-            ->when($deletedFilter === 'only', function ($q) {
-                $q->onlyTrashed(); // Sadece soft delete kayıtları dahil edilir
-            })
-            ->when($typeFilter, function ($q, $typeId) {
-                $q->where('type_id', $typeId); // Tip filtresi
-            })
-            ->when($categoryFilter, function ($q, $categoryId) {
-                $q->where('category_id', $categoryId); // Kategori filtresi
-            })
-            ->when($statusFilter, function ($q, $status) {
-                $q->where('status', $status); // Status filtresi
-            });
+            ->when($activeFilter === 'active', fn($q) => $q->where('isActive', true))
+            ->when($activeFilter === 'inactive', fn($q) => $q->where('isActive', false))
+            ->when($deletedFilter === 'with', fn($q) => $q->withTrashed())
+            ->when($deletedFilter === 'only', fn($q) => $q->onlyTrashed())
+            ->when($typeFilter, fn($q, $typeId) => $q->where('type_id', $typeId))
+            ->when($categoryFilter, fn($q, $categoryId) => $q->where('category_id', $categoryId))
+            ->when($statusFilter, fn($q, $status) => $q->where('status', $status))
+            ->when($adStatusFilter === 'with_ads', fn($q) => $q->whereHas('ads'))
+            ->when($adStatusFilter === 'without_ads', fn($q) => $q->whereDoesntHave('ads'))
+            ->when($stateFilter, fn($q, $stateId) => $q->where('state_id', $stateId))
+            ->when($cityFilter, fn($q, $cityId) => $q->where('city_id', $cityId))
+            ->when($districtFilter, fn($q, $districtId) => $q->where('district_id', $districtId));
     }
+    
 
 
     public function scopeOfType($query, $typeName)
@@ -154,6 +146,11 @@ class Portfolio extends Model
         return $query->whereHas('type', function ($query) use ($typeName) {
             $query->where('name', $typeName);
         });
+    }
+
+    public function getAdStatusAttribute()
+    {
+        return $this->ads->isNotEmpty() ? 'İlanlı' : 'İlansız';
     }
 
 //     public function scopeOfStatus($query, $status)

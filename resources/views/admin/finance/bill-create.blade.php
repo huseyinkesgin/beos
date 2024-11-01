@@ -15,7 +15,7 @@
                         :options="['İnternet Faturası', 'Doğalgaz Faturası', 'Elektrik Faturası', 'Su Faturası', 'Cep Telefonu Faturası', 'Sabit Telefon Faturası', 'Kira Ödemesi', 'Aidat Ödemesi', 'Diğer']" />
 
                     <!-- amount -->
-                    <x-input-text label="Fatura Tutarı" model="amount" />
+                    <x-input-number label="Fatura Tutarı" model="amount" />
                 </div>
 
                 <div class="flex flex-row py-3 space-x-3">
@@ -27,7 +27,7 @@
 
                 <div class="flex flex-row py-3 space-x-3">
                     <!-- bill_no -->
-                    <x-input-text label="Fatura No" model="bill_no" />
+                    <x-input-text label="Fatura No" model="bill_no" class="uppercase" />
                     <!-- payment_method -->
                     <x-select-box label="Ödeme Türü" model="payment_method"
                         :options="['Nakit','Kredi Kartı','Havale','Otomatik Ödeme']" />

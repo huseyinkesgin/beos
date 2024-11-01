@@ -2,15 +2,16 @@
 
 namespace App\Livewire\Portfolio;
 
-use Livewire\Component;
-use App\Models\Portfolio;
 use App\Models\City;
-use App\Models\State;
-use App\Models\District;
-use App\Models\Category;
 use App\Models\Type;
+use App\Models\State;
+use Livewire\Component;
+use App\Models\Category;
 use App\Models\Customer;
+use App\Models\District;
 use App\Models\Personnel;
+use App\Models\Portfolio;
+use Illuminate\Http\File;
 use Livewire\Attributes\On;
 use Livewire\WithFileUploads;
 
@@ -55,6 +56,8 @@ class PortfolioEdit extends Component
         $this->businessCategoryId = Category::where('name', 'İşyeri')->first()->id ?? null;
         $this->homeCategoryId = Category::where('name', 'Konut')->first()->id ?? null;
     }
+
+
 
     public function updatedStateId($value)
     {

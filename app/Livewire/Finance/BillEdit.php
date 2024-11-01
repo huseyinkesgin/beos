@@ -21,8 +21,9 @@ class BillEdit extends Component
         'amount' => 'required|numeric',
         'payment_method' => 'required|string',
         'bill_no' => 'required|string',
-        'last_date' => 'required|date',
-        'bill_date' => 'required|date',
+        'last_date' => 'required|date_format:Y-m-d',
+    'bill_date' => 'required|date_format:Y-m-d',
+    'payment_date' => 'nullable|date_format:Y-m-d',
         'is_recurring' => 'boolean',
 
     ];

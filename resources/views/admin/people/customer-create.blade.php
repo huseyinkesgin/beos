@@ -51,7 +51,7 @@
 
                 <div class="flex flex-row space-x-3">
                     <!-- Phone -->
-                    <x-input-text label="Telefon" model="phone" />
+                    <x-input-phone label="Telefon" model="phone" />
 
                     <!-- Email -->
                     <x-input-email label="Eposta" model="email" />
