@@ -216,6 +216,7 @@ class PortfolioWizard extends Component
                     'closed_area' => 'required|numeric',
                     'business_area' => 'required|numeric',
                     'office_area' => 'required|numeric',
+                    'zooning_status' => 'required|string',
 
                     'height' => 'nullable|numeric',
                     'floor_count' => 'nullable|numeric',
@@ -294,6 +295,7 @@ class PortfolioWizard extends Component
             'deposit' => 'nullable|string',
             'isCredit' => 'nullable|string',
             'isSwap' => 'nullable|string',
+            'ground_analysis' => 'boolean',
             'isCrane' => "boolean",
             'crane_description' => "nullable|string"
         ]);
@@ -383,6 +385,7 @@ class PortfolioWizard extends Component
             'ground_analysis' => $this->ground_analysis,
             'isCrane' => $this->isCrane,
             'crane_description' => $this->crane_description,
+            'zoning_status' => $this->zoning_status,
 
         ]);
 

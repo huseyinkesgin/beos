@@ -99,7 +99,7 @@
             </div>
 
             <!-- Vinç Açıklaması (Eğer Vinç Var İse) -->
-            @if($isCrane == '1')
+            @if($isCrane === '1')
                 <div class="flex-1 my-4">
                     <x-label for="crane_description">Vinç Açıklaması</x-label>
                     <x-input wire:model.live="crane_description" id="crane_description" type="text" class="w-full" />

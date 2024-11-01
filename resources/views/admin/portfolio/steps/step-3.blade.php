@@ -31,7 +31,7 @@
     <!-- Is Swap (Takas Durumu) -->
     <div class="w-full">
         <x-label for="isSwap">Takas Durumu</x-label>
-        <x-select wire:model.live="isSwap" id="isSwap" class="">
+        <x-select wire:model.live="isSwap" id="isSwap" >
             <option value="">Seçiniz</option>
             <option value="1">Evet</option>
             <option value="0">Hayır</option>

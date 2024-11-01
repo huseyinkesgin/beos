@@ -1,4 +1,4 @@
-<!-- resources/views/admin/location/personnel-table.blade.php -->
+<!-- resources/views/admin/location/personnel-cards.blade.php -->
 <div>
     <div class="flex items-center justify-between mx-5">
         <div class="flex space-x-4">
@@ -6,101 +6,84 @@
             <x-filter-isactive />
             <x-filter-trashed />
         </div>
-       <x-search />
+        <x-search />
     </div>
 
-    <x-table>
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-                <x-th>Sıra No</x-th>
+    <!-- Cards Container -->
+    <div class="grid grid-cols-1 gap-4 mt-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        @forelse($personnels as $personnel)
+            <div class="p-4 bg-white border rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
+                <div class="flex flex-col items-center">
+                    <!-- Name and Job Title -->
+                    <h3 class="text-xl font-bold text-gray-800 dark:text-white">
+                        {{ $personnel->first_name }} {{ $personnel->last_name }}
+                    </h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">
+                        {{ $personnel->job_title }}
+                    </p>
+                </div>
 
-                <x-th>
-                    <button wire:click="sortBy('name')" class="flex items-center font-bold">
-                        İsim
-                        <span class="ml-1">{!! $this->getSortIcon('name') !!}</span>
-                    </button>
-                </x-th>
-
-                <x-th>Soyisim</x-th>
-                <x-th>Durum</x-th>
-                <x-th>Tarihler</x-th>
-                <x-th>İşlemler</x-th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($personnels as $index => $personnel)
-            <tr>
-                <x-td>{{ $index + 1 }}</x-td>
-                <x-td>
-                    {{ $personnel->first_name }}
-                </x-td>
-                <x-td>{{ $personnel->last_name }}</x-td>
-
-                <!-- Customer Type Badge -->
-
-
-
-                <x-td>
-                    <button wire:click="toggleActive('{{ $personnel->id }}')"
-                        class="text-xs {{ $personnel->isActive ? 'text-green-600' : 'text-red-600' }}">
+                <!-- Status -->
+                <div class="mt-2 text-center">
+                    <span class="text-xs {{ $personnel->isActive ? 'text-green-500' : 'text-red-500' }}">
                         {{ $personnel->isActive ? 'Aktif' : 'Pasif' }}
+                    </span>
+                    <button wire:click="toggleActive('{{ $personnel->id }}')" class="text-xs ml-2">
+                        <i class="fas fa-toggle-{{ $personnel->isActive ? 'on text-green-500' : 'off text-red-500' }}"></i>
                     </button>
-                </x-td>
+                </div>
 
+                <!-- Contact Information -->
+                <div class="mt-4 text-center">
+                    <p class="flex items-center justify-center text-gray-600 dark:text-gray-300">
+                        <i class="fas fa-phone-alt mr-2 text-blue-500"></i> {{ $personnel->phone }}
+                    </p>
+                    <p class="flex items-center justify-center text-gray-600 dark:text-gray-300">
+                        <i class="fas fa-envelope mr-2 text-blue-500"></i> {{ $personnel->email }}
+                    </p>
+                </div>
 
-
-                <x-td class="italic">
-                    {{ $personnel->hire_date_for_humans }} <br>
-
+                <!-- Dates Section -->
+                <div class="mt-4 text-center text-gray-600 dark:text-gray-300">
+                    <p>Başlama Tarihi: {{ $personnel->hire_date_for_humans }}</p>
                     @if ($personnel->deleted_at)
-                    <br><span class="text-red-600">{{ $personnel->deleted_at }}</span>
+                        <p class="text-red-500">Silindi: {{ $personnel->deleted_at }}</p>
                     @endif
-                </x-td>
+                </div>
 
-
-
-                <x-td>
+                <!-- Actions with Icons -->
+                <div class="flex items-center mt-4 space-x-4 justify-center text-gray-500">
                     @if ($deletedFilter === 'only')
-                    <x-secondary-button wire:click="restore('{{ $personnel->id }}')" wire:loading.attr="disabled">
-                        Geri Al
-                    </x-secondary-button>
-                    <x-danger-button wire:click="forceDelete('{{ $personnel->id }}')" wire:loading.attr="disabled"
-                        class="ml-2">
-                        Kalıcı Sil
-                    </x-danger-button>
-
-
+                        <button wire:click="restore('{{ $personnel->id }}')" wire:loading.attr="disabled">
+                            <i class="fas fa-undo text-blue-500"></i>
+                        </button>
+                        <button wire:click="forceDelete('{{ $personnel->id }}')" wire:loading.attr="disabled">
+                            <i class="fas fa-trash-alt text-red-500"></i>
+                        </button>
                     @else
-                    <x-secondary-button wire:click="$dispatch('openEditModal', { id: '{{ $personnel->id }}' })"
-                        wire:loading.attr="disabled">
-                        Düzenle
-                        </x-danger-button>
-                        <x-danger-button wire:click="$dispatch('openDeleteModal', { id: '{{ $personnel->id }}' })"
-                            wire:loading.attr="disabled" class="ml-2">
-                            Sil
-                        </x-danger-button>
+                        <button wire:click="$dispatch('openEditModal', { id: '{{ $personnel->id }}' })"
+                            wire:loading.attr="disabled">
+                            <i class="fas fa-edit text-yellow-500"></i>
+                        </button>
+                        <button wire:click="$dispatch('openDeleteModal', { id: '{{ $personnel->id }}' })"
+                            wire:loading.attr="disabled">
+                            <i class="fas fa-trash-alt text-red-500"></i>
+                        </button>
+                        <button wire:click="showDetails({{ $personnel->id }})">
+                            <i class="fas fa-info-circle text-blue-500"></i>
+                        </button>
+                    @endif
+                </div>
+            </div>
+        @empty
+            <div class="col-span-full text-center">
+                <p class="font-semibold text-red-500">Üzgünüm, herhangi bir veri bulunamadı.</p>
+            </div>
+        @endforelse
+    </div>
 
-
-                        <!-- wire:click ile Show Butonu -->
-                        <x-button wire:click="showDetails({{ $personnel->id }})">
-                            Detay
-                        </x-button>
-
-                        @endif
-                </x-td>
-            </tr>
-            @empty
-            <tr>
-                <td colspan="8" class="py-8 text-center">
-                    <p class="font-semibold text-red-500">Üzgünüm, herhangi bir veri bulunamadı.</p>
-                </td>
-            </tr>
-            @endforelse
-        </tbody>
-    </x-table>
-
-
-        <div class="m-3">
-            {{ $personnels->links() }}
-        </div>
+    <!-- Pagination Links -->
+    <div class="m-3">
+        {{ $personnels->links() }}
+    </div>
 </div>

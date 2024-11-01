@@ -21,9 +21,9 @@ class BillEdit extends Component
         'amount' => 'required|numeric',
         'payment_method' => 'required|string',
         'bill_no' => 'required|string',
-        'last_date' => 'required|date_format:Y-m-d',
-    'bill_date' => 'required|date_format:Y-m-d',
-    'payment_date' => 'nullable|date_format:Y-m-d',
+        'last_date' => 'required',
+    'bill_date' => 'required',
+    'payment_date' => 'nullable',
         'is_recurring' => 'boolean',
 
     ];
@@ -34,6 +34,7 @@ class BillEdit extends Component
     {
         $this->loadBill($id);
         $this->open = true;
+     
     }
 
     public function loadBill($id)
@@ -44,11 +45,11 @@ class BillEdit extends Component
         $this->amount = $bill->amount;
         $this->payment_method = $bill->payment_method;
         $this->bill_no = $bill->bill_no;
-        $this->last_date = optional($bill->last_date)->format('Y-m-d');  // Tarihi Y-m-d formatında al
-        $this->bill_date = optional($bill->bill_date)->format('Y-m-d');
+        $this->last_date = $bill->last_date ? \Carbon\Carbon::parse($bill->last_date)->format('Y-m-d') : null;
+        $this->bill_date = $bill->bill_date ? \Carbon\Carbon::parse($bill->bill_date)->format('Y-m-d') : null;
         $this->is_recurring = $bill->is_recurring;
         $this->status = $bill->status;
-        $this->payment_date = optional($bill->payment_date)->format('Y-m-d');
+        $this->payment_date = $bill->payment_date ? \Carbon\Carbon::parse($bill->payment_date)->format('Y-m-d') : null;
         $this->open = true;
     }
 
@@ -57,7 +58,7 @@ class BillEdit extends Component
         $this->validate();
 
         $bill = Bill::findOrFail($this->billId);
-        $bill::update([
+        $bill->update([
             'type' => $this->type,
             'amount' => $this->amount,
             'payment_method' => $this->payment_method,

@@ -19,25 +19,45 @@ class PortfolioEdit extends Component
 {
     use WithFileUploads;
 
-    public $currentStep = 1;
-    public $totalSteps = 5;
+    // Step Navigation Properties
+    public int $currentStep = 1, $totalSteps = 5;
 
-    public $portfolio_no, $state_id, $city_id, $district_id, $category_id, $type_id;
-    public $lot, $parcel, $price, $status, $deposit, $property_no,$zooning_status;
-    public $isCredit, $deed_type, $isSwap, $description, $advisor;
-    public $partner_customer_id, $owner_customer_id, $isActive, $note;
-    public $additional_fees, $area_m2, $portfolio_id, $open = false;
-    public $form_path;
-    // Veritabanı tablolarından gelen dropdown seçenekler
-    public $states, $cities, $districts, $categories, $types;
-    public $partnerList, $ownerList, $advisorsList;
+    // General Portfolio Properties
+    public int $portfolio_id, $state_id, $city_id, $district_id, $category_id, $type_id;
+    public string $portfolio_no, $status, $property_no;
+    public $deposit, $deed_type, $description, $advisor, $note, $form_path;
+    public $price, $additional_fees, $area_m2;
+    public $isCredit, $isSwap, $isActive = true, $open = false;
+    public $partner_customer_id, $owner_customer_id;
+    public $lot, $parcel;
+    public $has_partner;
 
-    public $landCategoryId, $businessCategoryId, $homeCategoryId;
+    // Land-specific Properties
+    public string $zoning_status, $height_limit, $similar;
+    // Business-specific Properties
+    public  $open_area, $closed_area, $business_area, $office_area, $height, $electricity_power;
+    public  $floor_count, $building_year;
+    public  $floor_level, $heating_type, $building_condition, $usage_status, $isCrane, $crane_description;
+    public $ground_analysis = false;
+
+
+    // Home-specific Properties
+    public int $room_count, $total_floors;
+    public bool $isFurnished = false, $isBalcon = false, $isElevator = false;
+
+    // Dropdown Options
+    public $states, $cities, $districts, $categories, $types, $partnerList, $ownerList, $advisorsList;
+
+    // Category ID Constants
+    public int $landCategoryId, $businessCategoryId, $homeCategoryId;
+
 
     #[On('openEditModal')]
     public function openModal($id)
     {
-        $this->portfolio_id = $id;
+        
+   
+       $this->portfolio_id = $id;
         $this->loadPortfolioData();
         $this->open = true;
     }
@@ -93,7 +113,7 @@ class PortfolioEdit extends Component
         $this->validateCurrentStep();
         $this->currentStep++;
         // Log ekleyerek kontrol edelim
-        info('İleri adım tıklandı, currentStep: '.$this->currentStep);
+        info('İleri adım tıklandı, currentStep: ' . $this->currentStep);
     }
 
     // Geri adım
@@ -104,10 +124,11 @@ class PortfolioEdit extends Component
 
     public function loadPortfolioData()
     {
-        // Verileri yüklüyoruz
-        $portfolio = Portfolio::with(['category', 'type', 'state', 'city', 'district', 'owner', 'partner'])
+        // Kategoriye özgü ilişkili modelleri yükleyin
+        $portfolio = Portfolio::with(['category', 'type', 'state', 'city', 'district', 'owner', 'partner', 'land', 'business', 'home'])
             ->findOrFail($this->portfolio_id);
 
+        // Genel alanları doldurun
         $this->portfolio_no = $portfolio->portfolio_no;
         $this->state_id = $portfolio->state_id;
         $this->city_id = $portfolio->city_id;
@@ -131,6 +152,37 @@ class PortfolioEdit extends Component
         $this->note = $portfolio->note;
         $this->additional_fees = $portfolio->additional_fees;
         $this->area_m2 = $portfolio->area_m2;
+
+        // Kategoriye özel alanları doldurun
+        if ($portfolio->category_id == $this->landCategoryId && $portfolio->land) {
+            $this->zoning_status = $portfolio->land->zoning_status;
+            $this->height_limit = $portfolio->land->height_limit;
+            $this->similar = $portfolio->land->similar;
+        } elseif ($portfolio->category_id == $this->businessCategoryId && $portfolio->business) {
+            $this->open_area = $portfolio->business->open_area;
+            $this->closed_area = $portfolio->business->closed_area;
+            $this->business_area = $portfolio->business->business_area;
+            $this->office_area = $portfolio->business->office_area;
+            $this->height = $portfolio->business->height;
+            $this->floor_count = $portfolio->business->floor_count;
+            $this->floor_level = $portfolio->business->floor_level;
+            $this->electricity_power = $portfolio->business->electricity_power;
+            $this->building_year = $portfolio->business->building_year;
+            $this->heating_type = $portfolio->business->heating_type;
+            $this->building_condition = $portfolio->business->building_condition;
+            $this->usage_status = $portfolio->business->usage_status;
+            $this->ground_analysis = $portfolio->business->ground_analysis;
+            $this->isCrane = $portfolio->business->isCrane ?? false;
+            $this->crane_description = $portfolio->business->crane_description;
+            $this->zoning_status = $portfolio->business->zoning_status ?? '';
+        } elseif ($portfolio->category_id == $this->homeCategoryId && $portfolio->home) {
+            $this->room_count = $portfolio->home->room_count;
+            $this->total_floors = $portfolio->home->total_floors;
+            $this->floor_level = $portfolio->home->floor_level;
+            $this->isFurnished = $portfolio->home->isFurnished;
+            $this->isBalcon = $portfolio->home->isBalcon;
+            $this->isElevator = $portfolio->home->isElevator;
+        }
 
         // Form yolunu ayarla
         $this->form_path = $portfolio->type ? $portfolio->type->form_path : null;
@@ -188,6 +240,7 @@ class PortfolioEdit extends Component
                 'building_condition' => 'nullable|string',
                 'usage_status' => 'nullable|string',
                 'ground_analysis' => 'boolean',
+                'zoning_status' => 'required|string'
             ]);
         } elseif ($this->category_id == $this->homeCategoryId) {
             $rules = array_merge($rules, [
@@ -232,7 +285,7 @@ class PortfolioEdit extends Component
                     'closed_area' => 'required|numeric',
                     'business_area' => 'required|numeric',
                     'office_area' => 'required|numeric',
-                    'zoning_status' => 'nullable|string',
+                    'zoning_status' => 'required|string',
                     'height' => 'nullable|numeric',
                     'floor_count' => 'nullable|numeric',
                     'electricity_power' => 'nullable|numeric',
@@ -255,11 +308,15 @@ class PortfolioEdit extends Component
         // 3. Adım: Finansal ve İdari Bilgiler
         elseif ($this->currentStep == 3) {
             $this->validate([
-                'deposit' => 'nullable|string',
+                'lot' => 'required|numeric',
+                'parcel' => 'required|numeric',
+                'portfolio_no' => 'required',
+                'price' => 'required|string',
+                'deed_type' => 'nullable|string',
+                'isCredit' => 'nullable|string',
+                'isSwap' => 'nullable|string',
                 'property_no' => 'required',
-                'isCredit' => 'nullable|boolean',
-                'isSwap' => 'nullable|boolean',
-                'additional_fees' => 'nullable|numeric',
+                'deposit' => $this->status == 'Kiralık' ? 'nullable|string' : 'nullable',
             ]);
         }
         // 4. Adım: Müşteri ve Ortak Bilgileri
@@ -374,7 +431,19 @@ class PortfolioEdit extends Component
         }
 
         $this->dispatch('portfolio-edited');
+        $this->dispatch('notify', title: 'Başarılı!', text: 'Portföy başarıyla kaydedildi.', type: 'success');
         $this->reset('open');
+        $this->reset([
+            'portfolio_id', 'state_id', 'city_id', 'district_id', 'category_id', 'type_id',
+            'lot', 'parcel', 'price', 'status', 'deposit', 'property_no', 'isCredit', 'deed_type',
+            'isSwap', 'description', 'advisor', 'partner_customer_id', 'owner_customer_id', 'isActive',
+            'note', 'additional_fees', 'area_m2', 'zoning_status', 'height_limit', 'similar',
+            'open_area', 'closed_area', 'business_area', 'office_area', 'height', 'floor_count', 
+            'floor_level', 'electricity_power', 'building_year', 'heating_type', 'building_condition', 
+            'usage_status', 'ground_analysis', 'room_count', 'total_floors', 'isFurnished', 'isBalcon', 
+            'isElevator', 'isCrane', 'crane_description'
+        ]);
+        
     }
 
 

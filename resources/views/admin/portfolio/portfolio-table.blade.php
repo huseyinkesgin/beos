@@ -1,64 +1,43 @@
 <div>
 
-    <!-- Widgetlar -->
-    <div class="grid grid-cols-6 gap-4 p-4 mb-5">
-        <!-- Toplam Satılık Portföy Sayısı -->
-
-        <div class="p-6 text-center text-white bg-gradient-to-r from-purple-500 to-indigo-600">
-    <h3 class="mb-4 text-2xl font-bold">Kiralık Arsa</h3>
-    <p class="text-2xl font-extrabold">{{ $totalKiralikArsa }}</p>
-</div>
-<div class="p-6 text-center text-white bg-gradient-to-r from-purple-500 to-indigo-600">
-    <h3 class="mb-4 text-2xl font-bold">Kiralık Fabrika</h3>
-    <p class="text-2xl font-extrabold">{{ $totalKiralikFabrika }}</p>
-</div>
-
-
-        <!-- Toplam Satılık Portföy Sayısı -->
-        <div
-            class="p-6 text-center text-white transition duration-300 transform rounded-lg shadow-lg bg-gradient-to-r from-purple-500 to-indigo-600 hover:scale-105 hover:shadow-2xl">
-            <h3 class="mb-4 text-2xl font-bold">Satılık Portföy</h3>
-            <p class="text-2xl font-extrabold">{{ $totalSatilik }}</p>
-        </div>
-
-        <!-- Toplam Kiralık Portföy Sayısı -->
-        <div
-            class="p-6 text-center text-white transition duration-300 transform rounded-lg shadow-lg bg-gradient-to-r from-purple-500 to-indigo-600 hover:scale-105 hover:shadow-2xl">
-            <h3 class="mb-4 text-2xl font-bold">Kiralık Portföy</h3>
-            <p class="text-2xl font-extrabold">{{ $totalKiralik }}</p>
-        </div>
-
-        {{--
-        <!-- Aktif Portföy Sayısı -->
-        <div
-            class="p-6 text-center text-white transition duration-300 transform rounded-lg shadow-lg bg-gradient-to-r from-purple-500 to-indigo-600 hover:scale-105 hover:shadow-2xl">
-            <h3 class="text-2xl font-bold">Aktif Portföyler</h3>
-            <p class="text-2xl">{{ $totalAktif }}</p>
-        </div>
-
-        <!-- Pasif Portföy Sayısı -->
-        <div
-            class="p-6 text-center text-white transition duration-300 transform rounded-lg shadow-lg bg-gradient-to-r from-purple-500 to-indigo-600 hover:scale-105 hover:shadow-2xl">
-            <h3 class="text-2xl font-bold">Pasif Portföyler</h3>
-            <p class="text-2xl">{{ $totalPasif }}</p>
-        </div> --}}
-
-        <!-- Toplam Satılık Portföy Değeri -->
-        <div
-            class="p-6 text-center text-white transition duration-300 transform rounded-lg shadow-lg bg-gradient-to-r from-purple-500 to-indigo-600 hover:scale-105 hover:shadow-2xl">
-            <h3 class="mb-4 text-2xl font-bold">Arsa Satılık </h3>
-            <p class="text-2xl font-extrabold">{{ number_format($totalSatilikArsaDegeri, 0) }} ₺</p>
-        </div>
-
-
-        <!-- Toplam Satılık Portföy Değeri -->
-        <div
-            class="p-6 text-center text-white transition duration-300 transform rounded-lg shadow-lg bg-gradient-to-r from-purple-500 to-indigo-600 hover:scale-105 hover:shadow-2xl">
-            <h3 class="mb-4 text-2xl font-bold">Fabrika Satılık</h3>
-            <p class="text-2xl font-extrabold">{{ number_format($totalSatilikFabrikaDegeri, 0) }} ₺</p>
-        </div>
-
+  <div class="grid grid-cols-6 gap-4 p-4 mb-5">
+    <!-- Satılık Arsa Sayısı -->
+    <div class="p-6 text-center text-white bg-gradient-to-r from-purple-500 to-indigo-600">
+        <h3 class="mb-4 text-2xl font-bold">Satılık Arsa</h3>
+        <p class="text-2xl font-extrabold">{{ $totalSatilikArsa }}</p>
     </div>
+
+    <!-- Satılık Fabrika Sayısı -->
+    <div class="p-6 text-center text-white bg-gradient-to-r from-purple-500 to-indigo-600">
+        <h3 class="mb-4 text-2xl font-bold">Satılık Fabrika</h3>
+        <p class="text-2xl font-extrabold">{{ $totalSatilikFabrika }}</p>
+    </div>
+
+    <!-- Kiralık Arsa Sayısı -->
+    <div class="p-6 text-center text-white bg-gradient-to-r from-purple-500 to-indigo-600">
+        <h3 class="mb-4 text-2xl font-bold">Kiralık Arsa</h3>
+        <p class="text-2xl font-extrabold">{{ $totalKiralikArsa }}</p>
+    </div>
+
+    <!-- Kiralık Fabrika Sayısı -->
+    <div class="p-6 text-center text-white bg-gradient-to-r from-purple-500 to-indigo-600">
+        <h3 class="mb-4 text-2xl font-bold">Kiralık Fabrika</h3>
+        <p class="text-2xl font-extrabold">{{ $totalKiralikFabrika }}</p>
+    </div>
+
+    <!-- Satılık Arsa Değeri -->
+    <div class="p-6 text-center text-white bg-gradient-to-r from-purple-500 to-indigo-600">
+        <h3 class="mb-4 text-2xl font-bold">Satılık Arsa Değeri</h3>
+        <p class="text-2xl font-extrabold">{{ number_format($totalSatilikArsaDegeri, 0) }} ₺</p>
+    </div>
+
+    <!-- Satılık Fabrika Değeri -->
+    <div class="p-6 text-center text-white bg-gradient-to-r from-purple-500 to-indigo-600">
+        <h3 class="mb-4 text-2xl font-bold">Satılık Fabrika Değeri</h3>
+        <p class="text-2xl font-extrabold">{{ number_format($totalSatilikFabrikaDegeri, 0) }} ₺</p>
+    </div>
+</div>
+
     <div class="flex items-center justify-between mx-5">
         <div class="flex space-x-4">
             <x-paginate />
@@ -110,9 +89,10 @@
             </x-select>
         </div>
         <x-search />
-        <div class="flex justify-end mb-4">
-            <button wire:click="export" class="px-3 py-1 text-white bg-green-700 rounded">Excel'e Aktar</button>
-        </div>
+       <div class="flex justify-end mb-4">
+    <button wire:click="export" class="px-3 py-1 text-white bg-green-700 rounded">Excel'e Aktar</button>
+    <button wire:click="resetComponent" class="px-3 py-1 ml-2 text-white bg-blue-600 rounded">Yenile</button>
+</div>  
     </div>
 
     <x-table>
