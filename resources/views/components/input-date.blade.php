@@ -9,37 +9,46 @@
             let value = $event.target.value.replace(/\D/g, '').slice(0, 8);
             let formatted = '';
 
-            // Yıl kısmı (İlk 4 karakter)
+            // Gün kısmı (İlk 2 karakter)
             if(value.length >= 1) {
-                formatted = value.slice(0, 4) + '-';
+                let day = value.slice(0, 2);
+                if (value.length >= 2 && parseInt(day) > 31) day = '31';
+                else if (value.length >= 2 && parseInt(day) < 1) day = '01';
+                formatted = day;
+                if(value.length > 2) formatted += '.';
             }
 
-            // Ay kısmı (5. ve 6. karakter)
+            // Ay kısmı (3. ve 4. karakter)
+            if(value.length >= 3) {
+                let month = value.slice(2, 4);
+                if (value.length >= 4 && parseInt(month) > 12) month = '12';
+                else if (value.length >= 4 && parseInt(month) < 1) month = '01';
+                formatted += month;
+                if(value.length > 4) formatted += '.';
+            }
+
+            // Yıl kısmı (5. ve 8. karakter)
             if(value.length >= 5) {
-                let month = value.slice(4, 6);
-                if (parseInt(month) > 12) {
-                    month = '12'; // Ayı 12 ile sınırlandır
-                } else if (parseInt(month) < 1) {
-                    month = '01'; 
-                }
-                formatted += month + '-';
-            }
-
-            // Gün kısmı (7. ve 8. karakter)
-            if(value.length >= 7) {
-                let day = value.slice(6, 8);
-                if (parseInt(day) > 31) {
-                    day = '31'; // Günü 31 ile sınırlandır
-                } else if (parseInt(day) < 1) {
-                    day = '01'; 
-                }
-                formatted += day;
+                let year = value.slice(4, 8);
+                formatted += year;
             }
 
             $event.target.value = formatted;
+            
+            // Backend için Y-m-d formatına çevir
+            let backendFormat = '';
+            if (formatted.length === 10) {
+                let parts = formatted.split('.');
+                if (parts.length === 3) {
+                    backendFormat = parts[2] + '-' + parts[1] + '-' + parts[0]; // YYYY-MM-DD
+                }
+            }
+            
+            // Livewire model'i güncellemek için dispatch
+            $wire.set('{{ $model }}', backendFormat || formatted);
         "
         class="w-full" 
-        placeholder="YYYY-MM-DD" 
+        placeholder="GG.AA.YYYY" 
     />
     <x-input-error for="{{ $model }}" />
 </div>

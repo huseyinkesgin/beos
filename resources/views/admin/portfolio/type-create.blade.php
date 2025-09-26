@@ -1,12 +1,13 @@
 {{-- resources/views/livewire/portfolio/state-create.blade.php --}}
 <div>
 
-    <x-dark-button class="" wire:click="$dispatch('openCreateModal')">
-        Yeni Emlak Tipi
-    </x-dark-button>
+    <x-button-orange  wire:click="$dispatch('openCreateModal')">
+        <i class="mr-2 font-bold text-white cursor-pointer fa-solid fa-plus"></i>
+        YENİ MÜLK TİPİ OLUŞTUR
+    </x-button-orange>
     <x-dialog-modal wire:model="open">
         <x-slot name="title">
-            Yeni Emlak Tipi Oluştur
+            MÜLK TİPİ FORMU
         </x-slot>
 
         <x-slot name="content">
@@ -14,7 +15,7 @@
 
                 <div class="my-4">
                     <x-label>Kategori Seç</x-label>
-                    <x-select id="category_id" wire:model="category_id" class="w-full px-4 py-2 rounded">
+                    <x-select id="category_id" wire:model="category_id" >
                         <option value="">Seçiniz</option>
                         @foreach ($categories as $category )
                         <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -23,18 +24,14 @@
                 </div>
 
                 <div class="my-4">
-                    <x-label>Emlak Tipi</x-label>
+                    <x-label>Mülk Tipi Adı</x-label>
                     <x-input type="text" class="w-full" placeholder="Tip adını yazınız" wire:model.live="name" />
                     <x-input-error for="name" class="mt-2" />
                 </div>
 
-                <div class="my-4">
-                    <x-label>Durum</x-label>
-                    <x-select id="isActive" wire:model="isActive" class="w-full px-4 py-2 border rounded">
-                        <option value="1">Aktif</option>
-                        <option value="0">Pasif</option>
-                    </x-select>
-                </div>
+                  <!-- isActive -->
+                <x-select-active />
+
                 <div class="my-4">
                 <x-select wire:model.live="form_path">
                     <option value="">Form Seçiniz</option>

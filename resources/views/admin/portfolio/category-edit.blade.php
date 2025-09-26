@@ -1,6 +1,6 @@
 <x-dialog-modal wire:model="open" maxWidth="sm">
     <x-slot name="title">
-        {{ $name }}
+       <span class="text-black uppercase">  {{ $name }} DÜZENLEME FORMU</span>
     </x-slot>
 
     <x-slot name="content">

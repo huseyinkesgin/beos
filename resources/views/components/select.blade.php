@@ -1,6 +1,9 @@
 @props(['disabled' => false])
 
-<select {{ $disabled ? 'disabled' : '' }} {!! $attributes->merge(['class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block py-1.5 px-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500  w-full dark:focus:border-blue-500']) !!}>
+<select {{ $disabled ? 'disabled' : '' }} {!! $attributes->merge([
+    'class' =>
+        'bg-amber-50 border border-amber-300 text-black text-xs  focus:ring-amber-500 focus:border-amber-500 block py-1 px-2  w-full ',
+]) !!}>
 
-   {{ $slot }}
+    {{ $slot }}
 </select>

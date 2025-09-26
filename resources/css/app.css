@@ -8,3 +8,107 @@
 [x-cloak] {
     display: none;
 }
+
+/* Custom styles can be added below */
+
+/* Form elementlerini köşeli yapmak için rounded köşeleri kaldır */
+input,
+textarea,
+select,
+button,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="tel"],
+input[type="url"],
+input[type="search"],
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
+input[type="month"],
+input[type="week"],
+input[type="color"],
+input[type="file"],
+input[type="range"],
+input[type="checkbox"],
+input[type="radio"],
+input[type="submit"],
+input[type="reset"],
+input[type="button"] {
+    border-radius: 0 !important;
+    -webkit-border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+}
+
+/* Dropdown ve seçim elemanları */
+.form-control,
+.form-select,
+.form-input,
+.btn,
+.button {
+    border-radius: 0 !important;
+    -webkit-border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+}
+
+/* Form elementlerine focus olduğunda amber-200 arkaplan */
+input:focus,
+textarea:focus,
+select:focus,
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+input[type="tel"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="date"]:focus,
+input[type="time"]:focus,
+input[type="datetime-local"]:focus,
+input[type="month"]:focus,
+input[type="week"]:focus,
+input[type="color"]:focus,
+input[type="file"]:focus,
+input[type="range"]:focus {
+    background-color: #fef3c7 !important; /* amber-200 */
+    outline: none !important;
+}
+
+/* Form sınıfları için focus stilleri */
+.form-control:focus,
+.form-select:focus,
+.form-input:focus {
+    background-color: #fef3c7 !important; /* amber-200 */
+    outline: none !important;
+}
+
+/* Modal köşelerini dik yapmak için rounded köşeleri kaldır */
+.modal,
+.modal-dialog,
+.modal-content,
+.modal-header,
+.modal-body,
+.modal-footer,
+[role="dialog"],
+[x-data*="modal"],
+.fixed.inset-0 > div,
+.bg-white.shadow-lg,
+.bg-white.rounded,
+.rounded-lg,
+.rounded-md,
+.rounded-sm {
+    border-radius: 0 !important;
+    -webkit-border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+}
+
+/* Livewire ve Alpine.js modalları */
+[x-show*="modal"],
+.livewire-modal,
+.alpine-modal {
+    border-radius: 0 !important;
+    -webkit-border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+}
+

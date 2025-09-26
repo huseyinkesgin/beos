@@ -1,4 +1,4 @@
-<div class="flex items-center justify-between mx-5 ">
+<div class="flex items-center justify-between mx-1 ">
     <div class="flex space-x-4">
         <x-paginate />
         <x-filter-isactive />

@@ -52,6 +52,9 @@ class PersonnelExpenseEdit extends Component
         $this->validate();
 
         $expense = PersonnelExpense::findOrFail($this->expenseId);
+        $oldPersonnelId = $expense->personnel_id;
+        $oldPaymentMethod = $expense->payment_method;
+        
         $expense->update([
             'personnel_id' => $this->personnel_id,
             'expense_type' => $this->expense_type,
@@ -62,9 +65,17 @@ class PersonnelExpenseEdit extends Component
             'has_receipt' => $this->has_receipt,
         ]);
 
+        // Nakit harcama durumu değiştiyse balance güncellenmesi
+        if ($oldPaymentMethod === 'Nakit' || $this->payment_method === 'Nakit') {
+            \App\Models\PersonnelBalance::updateBalance($oldPersonnelId);
+            if ($oldPersonnelId !== $this->personnel_id) {
+                \App\Models\PersonnelBalance::updateBalance($this->personnel_id);
+            }
+        }
+
         $this->dispatch('expense-edited');
 
-        $this->dispatch('notify', title: 'Başarılı', text: 'İl başarıyla güncellendi!', type: 'success');
+        $this->dispatch('notify', title: 'Başarılı', text: 'Harcama başarıyla güncellendi!', type: 'success');
 
         $this->reset(['expenseId', 'personnel_id', 'expense_type', 'note', 'amount', 'payment_method', 'expense_date', 'has_receipt', 'open']);
     }

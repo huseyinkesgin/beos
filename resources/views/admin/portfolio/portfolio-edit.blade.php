@@ -1,6 +1,6 @@
 <x-dialog-modal wire:model="open" maxWidth="2xl">
     <x-slot name="title">Portföy Düzenle</x-slot>
-
+    <span class="text-black uppercase">  {{ $portfolio_no }} DÜZENLEME FORMU</span>
     <x-slot name="content">
         <x-form>
             @if ($currentStep == 1)

@@ -9,7 +9,7 @@
         </div>
     </x-slot>
 
-    <div class="mx-auto">
+    <div class="mx-auto my-2">
         <div class="overflow-hidden bg-white shadow-2xl sm:rounded-lg">
 
             @livewire('portfolio.portfolio-edit')

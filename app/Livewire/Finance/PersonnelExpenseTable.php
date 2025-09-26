@@ -46,7 +46,11 @@ class PersonnelExpenseTable extends Component
         $this->calculateTotals();
         $this->calculatePaymentMethodTotals();
 
-        $this->personnels = Personnel::all();
+        // Personellerin güncel balance'larını hesapla
+        $this->personnels = Personnel::all()->map(function ($personnel) {
+            $personnel->current_balance = PersonnelBalance::calculateBalance($personnel->id);
+            return $personnel;
+        });
     }
 
     // Harcama türüne göre ay ve yıl toplamlarını hesapla
@@ -99,8 +103,20 @@ class PersonnelExpenseTable extends Component
     #[On('expense-edited')]
     #[On('expense-trashed')]
     #[On('expense-deleted')]
+    #[On('balance-created')]
+    #[On('balance-edited')]
     public function render()
     {
+        // Totalleri yeniden hesapla
+        $this->calculateTotals();
+        $this->calculatePaymentMethodTotals();
+        
+        // Personel bakiyelerini yeniden hesapla
+        $this->personnels = Personnel::all()->map(function ($personnel) {
+            $personnel->current_balance = PersonnelBalance::calculateBalance($personnel->id);
+            return $personnel;
+        });
+
         $expenses = PersonnelExpense::filter($this->search, $this->deletedFilter)
         ->filterByDateRange($this->dateRange) // Trait'teki tarih aralığı filtresini kullanıyoruz
         ->orderBy($this->sortField, $this->sortDirection)

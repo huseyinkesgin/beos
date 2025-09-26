@@ -1,18 +1,11 @@
  {{-- resources/views/admin/location/state-table.blade.php --}}
 
 <div>
-    <div class="flex items-center justify-between mx-5">
-        <div class="flex space-x-4">
-            <x-paginate />
-            <x-filter-isactive />
-            <x-filter-trashed />
-        </div>
-        <x-search />
-    </div>
+   <x-standart />
 
-    <x-table>
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
+<x-table>
+        <x-thead>
+         
                 <x-th>Sıra No</x-th>
                 <x-th>
                     <button wire:click="sortBy('id')" class="flex items-center font-bold">
@@ -29,8 +22,8 @@
                 <x-th>Durum</x-th>
                 <x-th>Tarihler</x-th>
                 <x-th>İşlemler</x-th>
-            </tr>
-        </thead>
+   
+        </x-thead>
         <tbody>
             @forelse($states as $index => $state)
                 <tr>
@@ -65,6 +58,10 @@
                         <x-danger-button wire:click="$dispatch('openDeleteModal', { id: '{{ $state->id }}' })" wire:loading.attr="disabled" class="ml-2">
                             Sil
                         </x-danger-button>
+                        <x-secondary-button wire:click="openCityModal({{ $state->id }})"
+                                wire:loading.attr="disabled">
+                                İlçe Ekle
+                        </x-secondary-button>
                     @endif
                     </x-td>
                 </tr>

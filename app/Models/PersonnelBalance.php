@@ -44,10 +44,8 @@ class PersonnelBalance extends Model
     {
         $balance = static::calculateBalance($personnel_id);
 
-        // Personelin en son kaydını güncelle
+        // Personelin tüm kayıtlarının balance'ını güncelle
         static::where('personnel_id', $personnel_id)
-            ->latest()
-            ->first()
             ->update(['balance' => $balance]);
     }
     public function scopeFilter($query, $search, $deletedFilter, $personnelId = null)

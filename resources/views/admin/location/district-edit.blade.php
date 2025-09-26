@@ -1,7 +1,7 @@
  {{-- resources/views/livewire/location/city-edit.blade.php --}}
  <x-dialog-modal wire:model="open" maxWidth="sm">
     <x-slot name="title">
-        Bölge Düzenle
+       <span class="text-black uppercase">  {{ $name }} DÜZENLEME FORMU</span>
     </x-slot>
 
     <x-slot name="content">
@@ -14,7 +14,7 @@
             <x-select-boxs  label="İlçe Seç" model="city_id" :options="$cities" :selected="$city_id"/>
 
               <!-- name -->
-              <x-input-text label="Bölge Adı" model="name" />
+              <x-input-text label="Mahalle Adı" model="name" />
 
                <!-- isActive -->
                <x-select-active />

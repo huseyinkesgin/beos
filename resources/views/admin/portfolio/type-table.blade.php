@@ -4,8 +4,7 @@
    <x-standart />
 
 <x-table>
-    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-        <tr>
+   <x-thead>
             <x-th>Sıra No</x-th>
             <x-th>Form Tipi</x-th>
             <x-th>
@@ -28,9 +27,7 @@
             </x-th>
             <x-th>Durum</x-th>
             <x-th>Tarihler</x-th>
-            <x-th>İşlemler</x-th>
-        </tr>
-    </thead>
+    </x-thead>
     <tbody>
         @forelse($types as $index => $type)
         <tr>

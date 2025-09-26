@@ -2,16 +2,15 @@
 
 namespace App\Livewire\Location;
 
+use App\Livewire\BaseCreateComponent;
 use App\Models\City;
 use App\Models\State;
-use Livewire\Component;
 use Livewire\Attributes\On;
 
-class CityCreate extends Component
+class CityCreate extends BaseCreateComponent
 {
 
-    public $state_id, $name, $isActive = true, $note;
-    public $open = false;
+    public $state_id, $name ;
 
     protected $rules = [
         'state_id' => 'required',
@@ -20,13 +19,12 @@ class CityCreate extends Component
         'note' => 'nullable|string',
     ];
 
-
-    #[On('openCreateCityModal')]
-    public function openModal()
-    {
-        $this->open = true;
-    }
-
+    protected $messages = [
+        'state_id.required' => 'Lütfen bir il seçin.',
+        'name.required' => 'İlçe adı zorunludur.',
+        'name.unique' => 'Bu ilçe adı zaten kayıtlı.',
+        'name.max' => 'İlçe adı en fazla 255 karakter olabilir.',
+    ];
     public function save()
     {
         $this->validate();
@@ -50,5 +48,11 @@ class CityCreate extends Component
         return view('admin.location.city-create',[
             'states' => $states
         ]);
+    }
+
+    public function resetForm()
+    {
+        $this->reset('state_id', 'name',  'note');
+        $this->resetValidation();
     }
 }

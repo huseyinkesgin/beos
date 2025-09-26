@@ -1,10 +1,10 @@
 {{-- resources/views/livewire/location/state-create.blade.php --}}
 <div>
 
-    <x-button-orange wire:click="$dispatch('openCreateDistrictModal')"> <i class="mr-2 font-bold text-white cursor-pointer fa-solid fa-plus"></i>Bölge </x-button-orange>
+    <x-button-orange wire:click="$dispatch('openCreateDistrictModal')"> <i class="mr-2 font-bold text-white cursor-pointer fa-solid fa-plus"></i>YENİ MAHALLE </x-button-orange>
     <x-dialog-modal wire:model="open" maxWidth="sm">
         <x-slot name="title">
-            Yeni Bölge Oluştur
+           MAHALLE FORMU
         </x-slot>
 
         <x-slot name="content">
@@ -17,7 +17,7 @@
                 <x-select-boxo label="İlçe Seç" model="city_id" :options="$cities" />
 
                  <!-- name -->
-                 <x-input-text label="Bölge Adı" model="name" />
+                 <x-input-text label="Mahalle Adı" model="name" />
 
                 <!-- isActive -->
                 <x-select-active />

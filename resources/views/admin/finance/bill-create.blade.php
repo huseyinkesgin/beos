@@ -32,6 +32,7 @@
                     <x-select-box label="Ödeme Türü" model="payment_method"
                         :options="['Nakit','Kredi Kartı','Havale','Otomatik Ödeme']" />
                 </div>
+                   <x-input-date label="Ödeme Tarihi" model="payment_date" />
             </x-form>
         </x-slot>
 

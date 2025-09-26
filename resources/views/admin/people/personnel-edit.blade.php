@@ -1,7 +1,7 @@
 
     <x-dialog-modal wire:model="open" maxWidth="md">
         <x-slot name="title">
-          <span class="text-blue-600"> {{ $first_name }} {{ $last_name }}</span>
+          <span class="text-black uppercase"> {{ $first_name }} {{ $last_name }}</span>
         </x-slot>
         <x-slot name="content">
             <x-form>

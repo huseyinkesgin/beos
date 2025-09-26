@@ -2,15 +2,15 @@
 
 <div>
     <!-- Yeni Nakit İşlemi Ekle Butonu -->
-    <x-dark-button wire:click="openModal">Nakit Girişi</x-dark-button>
+    <x-dark-button  wire:click="openModal">Nakit Girişi</x-dark-button>
 
     <!-- Nakit Girişi Modal -->
-    <x-dialog-modal wire:model="open">
+    <x-dialog-modal wire:model="open" maxWidth="sm">
         <x-slot name="title">Nakit Girişi </x-slot>
 
         <x-slot name="content">
             <x-form>
-                <div class="flex flex-row py-3 space-x-3">
+                <div class="space-y-2">
                     <!-- personnel_id -->
                     <x-select-boxo label="Personel" model="personnel_id" :options="$personnels" />
                     <!-- cash_in -->

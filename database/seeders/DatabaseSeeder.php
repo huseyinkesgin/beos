@@ -16,6 +16,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+          User::factory()->create([
+            'name' => 'Burada Yapı',
+            'email' => 'info@buradayapi.com.tr',
+            'email_verified_at' => now(),
+            'password' => Hash::make('password'),
+            'two_factor_secret' => null,
+            'two_factor_recovery_codes' => null,
+            'remember_token' => Str::random(10),
+            'profile_photo_path' => null,
+            'current_team_id' => null,
+        ]);
         User::factory(100)->create();
 
         $this->call([
@@ -30,16 +41,6 @@ class DatabaseSeeder extends Seeder
             VehicleSeeder::class,
         ]);
 
-        User::factory()->create([
-            'name' => 'Burada Yapı',
-            'email' => 'info@buradayapi.com.tr',
-            'email_verified_at' => now(),
-            'password' => Hash::make('Burada2024'),
-            'two_factor_secret' => null,
-            'two_factor_recovery_codes' => null,
-            'remember_token' => Str::random(10),
-            'profile_photo_path' => null,
-            'current_team_id' => null,
-        ]);
+      
     }
 }

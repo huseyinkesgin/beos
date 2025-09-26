@@ -61,10 +61,17 @@ class BillTable extends Component
      * @param [type] $billId
      * @return void
      */
-    public function toggleSelectBox($billId)
+    public function toggleSelectBox(string $billId)
     {
-        $this->selectedBillId = $this->selectedBillId == $billId ? null : $billId;
-        $this->showSelectBox = ! $this->showSelectBox;
+        if ($this->selectedBillId == $billId) {
+            // Aynı item'a tıklanırsa kapat
+            $this->selectedBillId = null;
+            $this->showSelectBox = false;
+        } else {
+            // Farklı item'a tıklanırsa aç
+            $this->selectedBillId = $billId;
+            $this->showSelectBox = true;
+        }
     }
 
 
@@ -77,12 +84,16 @@ class BillTable extends Component
       * @param [type] $field
       * @return void
       */
-     public function editField($billId, $field)
+     public function editField(string $billId, string $field)
      {
          $this->editableBillId = $billId;
          $this->editableField = $field;
          $bill = Bill::find($billId);
-         $this->payment_date = $bill->payment_date;  // Eğer payment_date düzenleniyorsa, mevcut değeri al
+         
+         if ($field === 'payment_date') {
+             // Mevcut payment_date değerini Y-m-d formatında al (HTML input için)
+             $this->payment_date = $bill->payment_date ? \Carbon\Carbon::parse($bill->payment_date)->format('Y-m-d') : null;
+         }
      }
 
      /**
@@ -91,20 +102,32 @@ class BillTable extends Component
       * @param [type] $billId
       * @return void
       */
-     public function saveField($billId)
+     public function saveField(string $billId)
      {
          $bill = Bill::find($billId);
 
          if ($this->editableField === 'payment_date' && $bill->status == 'Ödendi') {
-            // Eğer payment_date boş değilse, Carbon ile formatla ve kaydet
-            $bill->payment_date = $this->payment_date ? \Carbon\Carbon::parse($this->payment_date) : null;
+            // Ödeme tarihini kaydet (Model'deki mutator otomatik formatları halleder)
+            $bill->payment_date = $this->payment_date;
         }
 
          $bill->save();
          $this->editableBillId = null;
          $this->editableField = null;
+         $this->payment_date = null;
 
+         $this->calculateTotals(); // Toplamları yeniden hesapla
          $this->dispatch('notify', title: 'Başarılı', text: 'Ödeme tarihi başarıyla güncellendi!', type: 'success');
+     }
+
+     /**
+      * Düzenleme modunu iptal et
+      */
+     public function cancelEdit()
+     {
+         $this->editableBillId = null;
+         $this->editableField = null;
+         $this->payment_date = null;
      }
 
      /**
@@ -142,7 +165,7 @@ class BillTable extends Component
      * @param [type] $newStatus
      * @return void
      */
-    public function updateStatus($billId, $newStatus)
+    public function updateStatus(string $billId, string $newStatus)
     {
         $bill = Bill::findOrFail($billId);
         $bill->status = $newStatus;
@@ -159,6 +182,8 @@ class BillTable extends Component
         $bill->save();
 
         $this->calculateTotals(); // Her güncellemeden sonra toplamları yeniden hesapla
+        
+        // Select box'ı kapat
         $this->selectedBillId = null;
         $this->showSelectBox = false;
 

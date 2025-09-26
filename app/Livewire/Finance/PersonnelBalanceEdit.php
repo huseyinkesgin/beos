@@ -46,12 +46,19 @@ class PersonnelBalanceEdit extends Component
         $this->validate();
 
         $balance = PersonnelBalance::findOrFail($this->balanceId);
+        $oldPersonnelId = $balance->personnel_id;
+        
         $balance->update([
             'personnel_id' => $this->personnel_id,
             'cash_in' => $this->cash_in,
             'cash_out' => $this->cash_out,
         ]);
 
+        // Balance güncellemesi
+        PersonnelBalance::updateBalance($this->personnel_id);
+        if ($oldPersonnelId !== $this->personnel_id) {
+            PersonnelBalance::updateBalance($oldPersonnelId);
+        }
 
         $this->dispatch('balance-edited');
         $this->dispatch('notify', title: 'Başarılı', text: 'Nakit Girişi başarıyla güncellendi!', type: 'success');

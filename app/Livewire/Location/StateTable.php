@@ -32,7 +32,31 @@ class StateTable extends Component
     public $sortDirection = 'desc';
     public $modelClass = State::class;
 
+    /* ------------------------- City Modal Özellikleri ------------------------- */
+    public $showCityModal = false;
+    public $selectedStateId = null;
 
+    public function openCityModal($stateId)
+    {
+        $this->selectedStateId = $stateId;
+        $this->showCityModal = true;
+        $this->dispatch('open-city-modal', state_id: $stateId);
+    }
+
+    #[On('city-added')]
+    public function closeCityModal()
+    {
+        $this->showCityModal = false;
+        $this->selectedStateId = null;
+        $this->dispatch('banner', message: 'İlçe başarıyla eklendi!', style: 'success');
+    }
+
+    #[On('close-city-modal')]
+    public function handleModalClose()
+    {
+        $this->showCityModal = false;
+        $this->selectedStateId = null;
+    }
 
     #[On('state-created')]
     #[On('state-edited')]

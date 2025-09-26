@@ -45,11 +45,11 @@ class BillEdit extends Component
         $this->amount = $bill->amount;
         $this->payment_method = $bill->payment_method;
         $this->bill_no = $bill->bill_no;
-        $this->last_date = $bill->last_date ? \Carbon\Carbon::parse($bill->last_date)->format('Y-m-d') : null;
-        $this->bill_date = $bill->bill_date ? \Carbon\Carbon::parse($bill->bill_date)->format('Y-m-d') : null;
+        $this->last_date = $bill->last_date ? \Carbon\Carbon::parse($bill->last_date)->format('d.m.Y') : null;
+        $this->bill_date = $bill->bill_date ? \Carbon\Carbon::parse($bill->bill_date)->format('d.m.Y') : null;
         $this->is_recurring = $bill->is_recurring;
         $this->status = $bill->status;
-        $this->payment_date = $bill->payment_date ? \Carbon\Carbon::parse($bill->payment_date)->format('Y-m-d') : null;
+        $this->payment_date = $bill->payment_date ? \Carbon\Carbon::parse($bill->payment_date)->format('d.m.Y') : null;
         $this->open = true;
     }
 

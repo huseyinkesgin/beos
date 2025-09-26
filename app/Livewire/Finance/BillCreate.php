@@ -13,14 +13,29 @@ class BillCreate extends Component
     public $open = false;
 
     protected $rules = [
-        'type' =>  ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
-        'amount' => 'required',
+        'type' =>  ['required', 'string'],
+        'amount' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
         'payment_method' => 'required|string',
+        'last_date' => 'required|date',
         'bill_no' => 'required|string',
         'last_date' => 'required|date',
         'bill_date' => 'required|date',
         'is_recurring' => 'boolean',
 
+    ];
+
+    protected $messages = [
+        'type.required' => 'Fatura türü gereklidir.',
+        'amount.required' => 'Tutar gereklidir.',
+        'amount.numeric' => 'Tutar geçerli bir sayı olmalıdır.',
+        'amount.regex' => 'Tutar en fazla iki ondalık basamak içerebilir.',
+        'payment_method.required' => 'Ödeme yöntemi gereklidir.',
+        'last_date.required' => 'Son ödeme tarihi gereklidir.',
+        'last_date.date' => 'Son ödeme tarihi geçerli bir tarih olmalıdır.',
+        'bill_no.required' => 'Fatura numarası gereklidir.',
+        'bill_date.required' => 'Fatura tarihi gereklidir.',
+        'bill_date.date' => 'Fatura tarihi geçerli bir tarih olmalıdır.',
+        'is_recurring.boolean' => 'Düzenli fatura değeri geçersiz.',
     ];
 
     #[On('openCreateModal')]

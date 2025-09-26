@@ -2,15 +2,13 @@
 
 namespace App\Livewire\Location;
 
+use App\Livewire\BaseCreateComponent;
 use App\Models\State;
-use Livewire\Component;
-use Illuminate\Support\Str;
-use Livewire\Attributes\On;
 
-class StateCreate extends Component
+class StateCreate extends BaseCreateComponent
 {
-    public $name , $isActive = true, $note;
-    public $open = false;
+    public $name;
+ 
 
     protected $rules = [
         'name' => 'required|string|max:255|unique:states,name,',
@@ -18,11 +16,13 @@ class StateCreate extends Component
         'note' => 'nullable|string',
     ];
 
-    #[On('openCreateStateModal')]
-    public function openModal()
-    {
-        $this->open = true;
-    }
+    protected $messages = [
+        'name.required' => 'İl adı zorunludur.',
+        'name.unique' => 'Bu il adı zaten kayıtlı.',
+        'name.max' => 'İl adı en fazla 255 karakter olabilir.',
+    ];
+
+   
 
     public function save()
     {
@@ -43,5 +43,11 @@ class StateCreate extends Component
     public function render()
     {
         return view('admin.location.state-create');
+    }
+
+    public function resetForm()
+    {
+        $this->reset('name',  'note');
+        $this->resetValidation();
     }
 }

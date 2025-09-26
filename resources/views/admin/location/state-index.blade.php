@@ -8,12 +8,13 @@
         </div>
     </x-slot>
 
-    <div class="mx-auto">
+   <div class="mx-auto my-2">
         <div class="overflow-hidden bg-white shadow-2xl sm:rounded-lg">
 
                 @livewire('location.state-edit')
                 @livewire('location.state-delete')
                 @livewire('location.state-table')
+                @livewire('location.city-add-modal')
 
             </div>
     </div>

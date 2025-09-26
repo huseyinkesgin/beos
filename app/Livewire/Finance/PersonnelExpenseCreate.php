@@ -47,6 +47,11 @@ class PersonnelExpenseCreate extends Component
             'has_receipt' => $this->has_receipt,
         ]);
 
+        // Nakit harcama yapıldığında PersonnelBalance güncellenmesi
+        if ($this->payment_method === 'Nakit') {
+            \App\Models\PersonnelBalance::updateBalance($this->personnel_id);
+        }
+
         $this->dispatch('expense-created');
         $this->dispatch('notify', title: 'Başarılı', text: 'Harcama başarıyla kayıt edildi!', type: 'success');
         $this->reset();

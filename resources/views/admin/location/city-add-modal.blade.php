@@ -1,7 +1,7 @@
 <div>
     <x-dialog-modal wire:model="open" maxWidth="sm">
         <x-slot name="title">
-         <span class="text-black uppercase">  {{ $name }} DÜZENLEME FORMU</span>
+            {{ $cityId ? 'İlçe Düzenle' : 'Yeni İlçe Ekle' }}
         </x-slot>
 
         <x-slot name="content">

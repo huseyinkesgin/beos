@@ -27,7 +27,7 @@ class CustomerTable extends Component
     public $search = '';
     public $activeFilter = 'all';
     public $deletedFilter = 'without';
-    public $pagination = 10;
+    public $pagination = 13;
     public $sortField = 'created_at';
     public $sortDirection = 'desc';
     public $modelClass = Customer::class;

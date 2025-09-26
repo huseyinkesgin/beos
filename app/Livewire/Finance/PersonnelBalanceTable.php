@@ -32,7 +32,7 @@ class PersonnelBalanceTable extends Component
      public $pagination = 10;
      public $sortField = 'created_at';
      public $sortDirection = 'desc';
-     public $modelClass = City::class;
+     public $modelClass = PersonnelBalance::class;
 
     // protected $listeners = ['refreshTable' => '$refresh'];
 
@@ -48,24 +48,10 @@ class PersonnelBalanceTable extends Component
 
     public function mount()
     {
-        // Tüm personeller ve nakit giriş/çıkış ve harcama toplamlarını hesaplıyoruz
+        // Tüm personeller ve doğru bakiye hesaplama
         $this->personnels = Personnel::all()->map(function ($personnel) {
-            // Nakit girişleri toplamı
-            $cashInTotal = PersonnelBalance::where('personnel_id', $personnel->id)
-                ->sum('cash_in');
-
-            // Nakit çıkışları toplamı
-            $cashOutTotal = PersonnelBalance::where('personnel_id', $personnel->id)
-                ->sum('cash_out');
-
-            // Nakit harcamalar toplamı (PersonnelExpense tablosunda ödeme yöntemi "Nakit" olanlar)
-            $cashExpenseTotal = PersonnelExpense::where('personnel_id', $personnel->id)
-                ->where('payment_method', 'Nakit')
-                ->sum('amount');
-
-            // Mevcut bakiye: girişler - çıkışlar - nakit harcamalar
-            $personnel->current_balance = $cashInTotal - $cashOutTotal - $cashExpenseTotal;
-
+            // Model metodunu kullanarak tutarlı hesaplama
+            $personnel->current_balance = PersonnelBalance::calculateBalance($personnel->id);
             return $personnel;
         });
 

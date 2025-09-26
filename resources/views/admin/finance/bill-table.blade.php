@@ -34,26 +34,12 @@
 
 
 
-
-    <div class="flex items-center justify-between mx-5">
-        <div class="flex space-x-4">
-            <x-paginate />
-
-            <x-filter-trashed />
-        </div>
-        <x-search />
-    </div>
+    <x-standart />
 
     <x-table>
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
+       <x-thead>
                 <x-th>Sıra No</x-th>
-                <x-th>
-                    <button wire:click="sortBy('id')" class="flex items-center font-bold">
-                        ID
-                        <span class="ml-1">{!! $this->getSortIcon('id') !!}</span>
-                    </button>
-                </x-th>
+              
                 <x-th>
                     <button wire:click="sortBy('name')" class="flex items-center font-bold">
                         Türü
@@ -70,20 +56,19 @@
                 <x-th>Ödenme Tarihi</x-th>
                 <x-th>Giriş/Güncellenme Tarihi</x-th>
                 <x-th>İşlemler</x-th>
-            </tr>
-        </thead>
+
+       </x-thead>
         <tbody>
             @forelse($bills as $index => $bill)
             <tr>
                 <x-td>{{ $index +1}}</x-td>
-                <x-td>{{ $bill->id }}</x-td>
                 <x-td>{{ $bill->type }}</x-td>
                 <x-td>
                     <span class="font-bold text-red-500"> {{ $bill->amount }} TL </span>
                 </x-td>
-                <x-td>{{ $bill->bill_date }}</x-td>
+                <x-td>{{ $bill->bill_date ? \Carbon\Carbon::parse($bill->bill_date)->format('d.m.Y') : '---' }}</x-td>
                 <x-td>
-                    {{ $bill->last_date }}
+                    {{ $bill->last_date ? \Carbon\Carbon::parse($bill->last_date)->format('d.m.Y') : '---' }}
                 </x-td>
                 <x-td>
                     {{ $bill->bill_no }}
@@ -95,14 +80,13 @@
                 <x-td>
                     <div class="flex items-center space-x-1">
                         @if ($selectedBillId === $bill->id && $showSelectBox)
-                        <x-select wire:change="updateStatus({{ $bill->id }}, $event.target.value)"
-                                  wire:model.defer="bills.{{ $bill->id }}.status">
-                            <option value="Durum">Durum</option>
-                            <option value="Ödenecek">Ödenecek</option>
-                            <option value="Ödendi">Ödendi</option>
-                        </x-select>
+                        <select wire:change="updateStatus('{{ $bill->id }}', $event.target.value)" class="form-select">
+                            <option value="">Seçiniz</option>
+                            <option value="Ödenecek" {{ $bill->status == 'Ödenecek' ? 'selected' : '' }}>Ödenecek</option>
+                            <option value="Ödendi" {{ $bill->status == 'Ödendi' ? 'selected' : '' }}>Ödendi</option>
+                        </select>
                     @else
-                        <span wire:click="toggleSelectBox({{ $bill->id }})" class="cursor-pointer">
+                        <span wire:click="toggleSelectBox('{{ $bill->id }}')" class="cursor-pointer">
                             @if ($bill->status == 'Ödenecek')
                                 <x-badge-red>Ödenecek</x-badge-red>
                             @elseif ($bill->status == 'Ödendi')
@@ -110,7 +94,6 @@
                             @endif
                         </span>
                     @endif
-
                     </div>
                 </x-td>
 
@@ -119,21 +102,26 @@
                     @if ($editableBillId === $bill->id && $editableField == 'payment_date')
                         <!-- Sadece Ödendi durumunda tarih input göster -->
                         @if ($bill->status == 'Ödendi')
-                            <input type="date" wire:model.defer="payment_date" wire:keydown.enter="saveField({{ $bill->id }})" />
-                            <button wire:click="saveField({{ $bill->id }})">Kaydet</button>
+                            <div class="flex items-center space-x-2">
+                                <input type="date" wire:model.defer="payment_date" wire:keydown.enter="saveField('{{ $bill->id }}')" class="form-input text-xs" />
+                                <button wire:click="saveField('{{ $bill->id }}')" class="px-2 py-1 text-xs text-white bg-green-500 rounded">Kaydet</button>
+                                <button wire:click="cancelEdit" class="px-2 py-1 text-xs text-white bg-gray-500 rounded">İptal</button>
+                            </div>
                         @else
-                            <!-- Eğer Ödenecek ise '---' göster ve input alanını gizle -->
                             <span>---</span>
                         @endif
                     @else
-                        <!-- Tıklanabilir text göster, sadece Ödendi durumunda tarihi göster -->
+                        <!-- Tıklanabilir text göster -->
                         @if ($bill->status == 'Ödendi')
-                            <span wire:click="editField({{ $bill->id }}, 'payment_date')">
-                                {{ $bill->payment_date ? \Carbon\Carbon::parse($bill->payment_date)->format('d.m.Y') : '---' }}
+                            <span wire:click="editField('{{ $bill->id }}', 'payment_date')" class="cursor-pointer hover:bg-yellow-100 px-2 py-1 rounded">
+                                @if ($bill->payment_date)
+                                    {{ \Carbon\Carbon::parse($bill->payment_date)->format('d.m.Y') }}
+                                @else
+                                    <span class="text-red-500">Tarih Ekle</span>
+                                @endif
                             </span>
                         @else
-                            <!-- Eğer Ödenecek ise '---' göster -->
-                            <span>---</span>
+                            <span class="text-gray-400">---</span>
                         @endif
                     @endif
                 </x-td>

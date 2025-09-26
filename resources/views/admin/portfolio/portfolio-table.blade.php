@@ -2,44 +2,44 @@
 
   <div class="grid grid-cols-6 gap-4 p-4 mb-5">
     <!-- Satılık Arsa Sayısı -->
-    <div class="p-6 text-center text-white bg-gradient-to-r from-purple-500 to-indigo-600">
+    <div class="p-6 text-center text-white bg-gradient-to-r from-orange-500 to-amber-600">
         <h3 class="mb-4 text-2xl font-bold">Satılık Arsa</h3>
         <p class="text-2xl font-extrabold">{{ $totalSatilikArsa }}</p>
     </div>
 
     <!-- Satılık Fabrika Sayısı -->
-    <div class="p-6 text-center text-white bg-gradient-to-r from-purple-500 to-indigo-600">
+    <div class="p-6 text-center text-white bg-gradient-to-r from-orange-500 to-amber-600">
         <h3 class="mb-4 text-2xl font-bold">Satılık Fabrika</h3>
         <p class="text-2xl font-extrabold">{{ $totalSatilikFabrika }}</p>
     </div>
 
     <!-- Kiralık Arsa Sayısı -->
-    <div class="p-6 text-center text-white bg-gradient-to-r from-purple-500 to-indigo-600">
+    <div class="p-6 text-center text-white bg-gradient-to-r from-orange-500 to-amber-600">
         <h3 class="mb-4 text-2xl font-bold">Kiralık Arsa</h3>
         <p class="text-2xl font-extrabold">{{ $totalKiralikArsa }}</p>
     </div>
 
     <!-- Kiralık Fabrika Sayısı -->
-    <div class="p-6 text-center text-white bg-gradient-to-r from-purple-500 to-indigo-600">
+    <div class="p-6 text-center text-white bg-gradient-to-r from-orange-500 to-amber-600">
         <h3 class="mb-4 text-2xl font-bold">Kiralık Fabrika</h3>
         <p class="text-2xl font-extrabold">{{ $totalKiralikFabrika }}</p>
     </div>
 
     <!-- Satılık Arsa Değeri -->
-    <div class="p-6 text-center text-white bg-gradient-to-r from-purple-500 to-indigo-600">
+    <div class="p-6 text-center text-white bg-gradient-to-r from-orange-500 to-amber-600">
         <h3 class="mb-4 text-2xl font-bold">Satılık Arsa Değeri</h3>
         <p class="text-2xl font-extrabold">{{ number_format($totalSatilikArsaDegeri, 0) }} ₺</p>
     </div>
 
     <!-- Satılık Fabrika Değeri -->
-    <div class="p-6 text-center text-white bg-gradient-to-r from-purple-500 to-indigo-600">
+    <div class="p-6 text-center text-white bg-gradient-to-r from-orange-500 to-amber-600">
         <h3 class="mb-4 text-2xl font-bold">Satılık Fabrika Değeri</h3>
         <p class="text-2xl font-extrabold">{{ number_format($totalSatilikFabrikaDegeri, 0) }} ₺</p>
     </div>
 </div>
 
-    <div class="flex items-center justify-between mx-5">
-        <div class="flex space-x-4">
+    <div class="flex items-center justify-between mx-1">
+        <div class="flex space-x-1">
             <x-paginate />
             <x-filter-isactive />
             <x-filter-trashed />
@@ -89,10 +89,10 @@
             </x-select>
         </div>
         <x-search />
-       <div class="flex justify-end mb-4">
-    <button wire:click="export" class="px-3 py-1 text-white bg-green-700 rounded">Excel'e Aktar</button>
-    <button wire:click="resetComponent" class="px-3 py-1 ml-2 text-white bg-blue-600 rounded">Yenile</button>
-</div>  
+       <div class="flex justify-end mb-1">
+    <button wire:click="export" class="px-1 py-1 text-white text-xs bg-green-700 rounded">Excel'e Aktar</button>
+    <button wire:click="resetComponent" class="px-1 py-1 ml-1 text-white text-xs bg-blue-600 rounded">Yenile</button>
+</div>
     </div>
 
     <x-table>

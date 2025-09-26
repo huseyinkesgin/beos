@@ -27,9 +27,11 @@
                 <x-select-box label="Ödeme Türü" model="payment_method"
                     :options="['Nakit','Kredi Kartı','Havale','Otomatik Ödeme']" />
             </div>
-
+ <div class="flex flex-row py-3 space-x-3">
             <x-select-box label="Durum" model="status"
                     :options="['Ödendi','Ödenecek']" />
+                       <x-input-date label="Ödeme Tarihi" model="payment_date" />
+            </div>
         </x-form>
     </x-slot>
 

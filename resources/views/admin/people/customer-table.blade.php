@@ -1,17 +1,17 @@
 <!-- resources/views/admin/location/customer-table.blade.php -->
 <div>
-    <div class="flex justify-between mx-5">
-        <div class="flex space-x-4">
+    <div class="flex justify-between mx-1">
+        <div class="flex space-x-2">
             <x-paginate />
             <x-filter-isactive />
             <x-filter-trashed />
-            <x-select wire:model.live="customer_type_filter" class="w-full">
+            <x-select wire:model.live="customer_type_filter">
                 <option value="">Tümü</option>
                 <option value="Bireysel">Bireysel</option>
                 <option value="Kurumsal">Kurumsal</option>
             </x-select>
-            <x-select wire:model.live="category_filter" class="w-full">
-                <option value="">Kategori</option>
+            <x-select wire:model.live="category_filter" class="w-96">
+                <option value="">Tüm Kategoriler</option>
                 <option value="Mal Sahibi">Mal Sahibi</option>
                 <option value="Alıcı">Alıcı</option>
                 <option value="Emlakçı">Emlakçı</option>
@@ -19,29 +19,27 @@
                 <option value="Referans">Referans</option>
             </x-select>
         </div>
-       <div>
-        <x-search />
-       </div>
+        <div>
+            <x-search />
+        </div>
     </div>
 
     <x-table>
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-                <x-th>Sıra No</x-th>
-                <x-th>Tip</x-th>
-                <x-th>
-                    <button wire:click="sortBy('name')" class="flex items-center font-bold">
-                        Adı
-                        <span class="ml-1">{!! $this->getSortIcon('name') !!}</span>
-                    </button>
-                </x-th>
+        <x-thead>
+            <x-th>Sıra No</x-th>
+            <x-th>Tip</x-th>
+            <x-th>
+                <button wire:click="sortBy('name')" class="flex items-center font-bold">
+                    Adı
+                    <span class="ml-1">{!! $this->getSortIcon('name') !!}</span>
+                </button>
+            </x-th>
 
-                <x-th>Kategori</x-th>
-                <x-th>Durum</x-th>
-                <x-th>Tarihler</x-th>
-                <x-th>İşlemler</x-th>
-            </tr>
-        </thead>
+            <x-th>Kategori</x-th>
+            <x-th>Durum</x-th>
+            <x-th>Tarihler</x-th>
+            <x-th>İşlemler</x-th>
+        </x-thead>
         <tbody>
             @forelse($customers as $index => $customer)
                 <tr>
@@ -61,15 +59,15 @@
 
                     <x-td>
                         @if ($customer->category == 'Mal Sahibi')
-                        <x-badge-indigo>Mal Sahibi</x-badge-indigo>
+                            <x-badge-indigo>Mal Sahibi</x-badge-indigo>
                         @elseif ($customer->category == 'Alıcı')
-                        <x-badge-green>Alıcı</x-badge-green>
+                            <x-badge-green>Alıcı</x-badge-green>
                         @elseif ($customer->category == 'Emlakçı')
-                        <x-badge-red>Emlakçı</x-badge-red>
+                            <x-badge-red>Emlakçı</x-badge-red>
                         @elseif ($customer->category == 'Partner')
-                        <x-badge-gray>Partner</x-badge-gray>
+                            <x-badge-gray>Partner</x-badge-gray>
                         @elseif ($customer->category == 'Referans')
-                        <x-badge-yellow>Referans</x-badge-yellow>
+                            <x-badge-yellow>Referans</x-badge-yellow>
                         @endif
 
                     </x-td>
@@ -100,13 +98,15 @@
                                 Kalıcı Sil
                             </x-danger-button>
                         @else
-                        <x-secondary-button wire:click="$dispatch('openEditModal', { id: '{{ $customer->id }}' })" wire:loading.attr="disabled">
-                            Düzenle
-                        </x-danger-button>
-                            <x-danger-button wire:click="$dispatch('openDeleteModal', { id: '{{ $customer->id }}' })"
-                                wire:loading.attr="disabled" class="ml-2">
-                                Sil
-                            </x-danger-button>
+                            <x-secondary-button wire:click="$dispatch('openEditModal', { id: '{{ $customer->id }}' })"
+                                wire:loading.attr="disabled">
+                                Düzenle
+                                </x-danger-button>
+                                <x-danger-button
+                                    wire:click="$dispatch('openDeleteModal', { id: '{{ $customer->id }}' })"
+                                    wire:loading.attr="disabled" class="ml-2">
+                                    Sil
+                                </x-danger-button>
                         @endif
                     </x-td>
                 </tr>
@@ -121,8 +121,8 @@
     </x-table>
 
 
-        <div class="m-3">
-            {{ $customers->links() }}
-        </div>
+    <div class="m-3">
+        {{ $customers->links() }}
+    </div>
 
 </div>
